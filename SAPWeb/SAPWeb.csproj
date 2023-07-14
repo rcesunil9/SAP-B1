@@ -123,6 +123,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SalesQuotationController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2327,6 +2328,7 @@
     <Content Include="Content\theme\less\style.less" />
     <Content Include="Content\theme\less\variables.less" />
     <Content Include="Content\theme\less\widgets.less" />
+    <Content Include="Views\SalesQuotation\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

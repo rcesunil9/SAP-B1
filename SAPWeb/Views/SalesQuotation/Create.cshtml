@@ -1,0 +1,217 @@
+﻿
+@{
+    ViewBag.Title = "Sales Quotation";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="white-box">
+            <h3 class="box-title m-b-0">Create Sales Quotation</h3>
+            <p class="text-muted m-b-30 font-13"></p>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtCustomer">Customer</label>
+                        <input type="text" class="form-control" id="txtCustomer" placeholder="Enter Customer">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtName">Name</label>
+                        <input type="text" class="form-control" id="txtName" placeholder="Enter Name">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ddlContactPerson">Contact Person</label>
+                        <select id="ddlContactPerson" class="form-control">
+                            <option>select contact person</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtCustomerRefNo">Customer Ref. No.</label>
+                        <input type="text" class="form-control" id="txtCustomerRefNo" placeholder="Customer Ref. No.">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ddlLocalCurrency">Local Curreny</label>
+                        <select id="dllLocalCurrency" class="form-control">
+                            <option> select Local Currency</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="dllNoType">No Type</label>
+                        <select id="dllNo" class="form-control">
+                            <option>No Type</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtNo">No</label>
+                        <input id="txtNo" class="form-control" id="txtNo" placeholder="No">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtStatus">Status</label>
+                        <input id="txtStatus" class="form-control" id="txtStatus" placeholder="Status">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtPostingDate">Posting Date</label>
+                        <input type="text" class="form-control mydatepicker" id="txtPostingDate" placeholder="dd/mm/yyyy">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtValidUntil">Valid Until</label>
+                        <input type="text" class="form-control" id="txtValidUntil" placeholder="ValidUntil">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtDocumnetDate">Document Date</label>
+                        <input type="text" class="form-control mydatepicker" id="txtDocumentDate" placeholder="dd/mm/yyyy">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtPlaceOfSupply">Place of Supply</label>
+                        <input type="text" class="form-control" id="txtPlaceOfSuppy" placeholder="Place Of Supply">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="dllBranch">Branch</label>
+                        <select id="dllBrach" class="form-control">
+                            <option>Select Branch</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtBranchRegNo">Branch Reg. No.</label>
+                        <input type="text" class="form-control" id="txtBranchRegNo" placeholder="Branch Reg. No.">
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#contents" aria-controls="contents" role="tab" data-toggle="tab" aria-expanded="true"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs"> Contents</span></a></li>
+                        <li role="presentation" class=""><a href="#logistics" aria-controls="logistics" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Logistics</span></a></li>
+                        <li role="presentation" class=""><a href="#accounting" aria-controls="accounting" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Accounting</span></a></li>
+                        <li role="presentation" class=""><a href="#tag" aria-controls="tag" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-settings"></i></span> <span class="hidden-xs">Tag</span></a></li>
+                        <li role="presentation" class=""><a href="#attachments" aria-controls="attachments" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-settings"></i></span> <span class="hidden-xs">Attachments</span></a></li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="contents">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ddlItemServices">Item/Service Type.</label>
+                                        <select id="ddlItemServices" class="form-control">
+                                            <option> Item</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="ddlSummaryType">Summary Type.</label>
+                                        <select id="ddlSummaryType" class="form-control">
+                                            <option> No Summary</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="table-responsive">
+                                        <table id="example23" class="display nowrap" cellspacing="0" width="100%">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Position</th>
+                                                    <th>Office</th>
+                                                    <th>Age</th>
+                                                    <th>Start date</th>
+                                                    <th>Salary</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th>Position</th>
+                                                    <th>Office</th>
+                                                    <th>Age</th>
+                                                    <th>Start date</th>
+                                                    <th>Salary</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Tiger Nixon</td>
+                                                    <td>System Architect</td>
+                                                    <td>Edinburgh</td>
+                                                    <td>61</td>
+                                                    <td>2011/04/25</td>
+                                                    <td>$320,800</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Garrett Winters</td>
+                                                    <td>Accountant</td>
+                                                    <td>Tokyo</td>
+                                                    <td>63</td>
+                                                    <td>2011/07/25</td>
+                                                    <td>$170,750</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="logistics">
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="accounting">
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="tag">
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="attachments">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('.mydatepicker').datepicker({
+                todayHighlight: true,
+                format: 'dd/mm/yyyy',
+            }).datepicker("setDate", new Date());
+            $('#example23').DataTable({
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        })
+    </script>
+}
