@@ -25,6 +25,13 @@ namespace SAPWeb
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            bundles.Add(new ScriptBundle("~/SAPWeb/js").Include(
+                "~/Content/Common/SAPWeb.ajax.js",
+                "~/Content/Common/SAPWeb.control.js",
+                "~/Content/Common/Common.js",
+                "~/Content/Common/extensionHelper.js",
+                "~/Content/Common/tableHelper.js"
+                ));
         }
     }
 }

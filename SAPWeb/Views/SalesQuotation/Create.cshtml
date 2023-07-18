@@ -111,90 +111,99 @@
             <hr />
             <div class="row">
                 <div class="col-lg-12 col-sm-12 col-xs-12">
-                    <ul class="nav nav-tabs" role="tablist">
-                        <li role="presentation" class="active"><a href="#contents" aria-controls="contents" role="tab" data-toggle="tab" aria-expanded="true"><span class="visible-xs"><i class="ti-home"></i></span><span class="hidden-xs"> Contents</span></a></li>
-                        <li role="presentation" class=""><a href="#logistics" aria-controls="logistics" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-user"></i></span> <span class="hidden-xs">Logistics</span></a></li>
-                        <li role="presentation" class=""><a href="#accounting" aria-controls="accounting" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-email"></i></span> <span class="hidden-xs">Accounting</span></a></li>
-                        <li role="presentation" class=""><a href="#tag" aria-controls="tag" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-settings"></i></span> <span class="hidden-xs">Tag</span></a></li>
-                        <li role="presentation" class=""><a href="#attachments" aria-controls="attachments" role="tab" data-toggle="tab" aria-expanded="false"><span class="visible-xs"><i class="ti-settings"></i></span> <span class="hidden-xs">Attachments</span></a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane active" id="contents">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="ddlItemServices">Item/Service Type.</label>
-                                        <select id="ddlItemServices" class="form-control">
-                                            <option> Item</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="ddlSummaryType">Summary Type.</label>
-                                        <select id="ddlSummaryType" class="form-control">
-                                            <option> No Summary</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="table-responsive">
-                                        <table id="example23" class="display nowrap" cellspacing="0" width="100%">
-                                            <thead>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Position</th>
-                                                    <th>Office</th>
-                                                    <th>Age</th>
-                                                    <th>Start date</th>
-                                                    <th>Salary</th>
-                                                </tr>
-                                            </thead>
-                                            <tfoot>
-                                                <tr>
-                                                    <th>Name</th>
-                                                    <th>Position</th>
-                                                    <th>Office</th>
-                                                    <th>Age</th>
-                                                    <th>Start date</th>
-                                                    <th>Salary</th>
-                                                </tr>
-                                            </tfoot>
-                                            <tbody>
-                                                <tr>
-                                                    <td>Tiger Nixon</td>
-                                                    <td>System Architect</td>
-                                                    <td>Edinburgh</td>
-                                                    <td>61</td>
-                                                    <td>2011/04/25</td>
-                                                    <td>$320,800</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Garrett Winters</td>
-                                                    <td>Accountant</td>
-                                                    <td>Tokyo</td>
-                                                    <td>63</td>
-                                                    <td>2011/07/25</td>
-                                                    <td>$170,750</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ddlItemServices">Item/Service Type.</label>
+                                <select id="ddlItemServices" class="form-control">
+                                    <option> Item</option>
+                                </select>
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="logistics">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="ddlSummaryType">Summary Type.</label>
+                                <select id="ddlSummaryType" class="form-control">
+                                    <option> No Summary</option>
+                                </select>
+                            </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane" id="accounting">
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="tag">
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="attachments">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dtItemDetails">
+                                    <thead class="thead">
+                                        <tr>
+                                            <th class="text-center"> Sr.No </th>
+                                            <th class="text-center"> Item Code </th>
+                                            <th class="text-center"> Description </th>
+                                            <th class="text-center" width="5%">Qty. </th>
+                                            <th class="text-center" width="5%">Price. </th>
+                                            <th class="text-center" width="5%"> Total Before Discount. </th>
+                                            <th class="text-center" width="5%"> Discount %. </th>
+                                            <th class="text-center" width="5%"> Discount Amount %. </th>
+                                            <th class="text-center"> TaxCode </th>
+                                            <th class="text-center" " width="5%"> TaxAmount </th>
+                                            <th class="text-center">Line Total</th>
+                                            <th class="text-center"> Warehouse </th>
+                                            <th></th>
+                                        </tr>
+                                    </thead><!-- /thead -->
+                                    <tbody id="tbody">
+                                        <tr class="text-center">
+                                            <td><label class="lblSrNo">1</label></td>
+                                            <td><input id="txtItemCode" type="text" class="form-control" value=""></td>
+                                            <td><textarea id="txtAremark" class="form-control form-control-sm" )></textarea></td>
+                                            <td><input id="txtQTY" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x number" value=""> </td>
+                                            <td><input id="txtPrice" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x number" value="" readonly>  </td>
+                                            <td> <input id="txtTotalBefore" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x number" value="" readonly> </td>
+                                            <td> <input id="txtDiscountPer" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x number" value=""> </td>
+                                            <td><input id="txtDiscountAmount" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x number" value="" readonly> </td>
+                                            <td> <input id="txtTaxCode" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x number" value="">  </td>
+                                            <td widtd="5%"> <input id="txtAmount" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x number" value="">  </td>
+                                            <td><input id="txtQTY" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x number" value="" readonly> </td>
+                                            <td> <label id="lblWarhouse"></label> </td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-lg-6 col-sm-6 col-xs-6">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Other Remarks</label>
+                        <textarea type="text" class="form-control" id="txtOtherRemarks" rows="6"></textarea>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-sm-6 col-xs-6">
+                    <div class="form-inline text-right">
+                        <label for="exampleInputEmail1"><b>Total Amount Before Discount :</b></label>
+                        <label type="text" class="form-control" id="lbTotalAmountl"></label>
+                    </div>
+                    <div class="form-inline text-right">
+                        <label for="exampleInputEmail1"><b>Total Discount % :</b></label>
+                        <label type="text" class="form-control" id="lblTotalDiscount"></label>
+                    </div>
+                    <div class="form-inline text-right">
+                        <label for="exampleInputEmail1"><b>Total Tax :</b></label>
+                        <label type="text" class="form-control" id="lblTotalTax"></label>
+                    </div>
+                    <div class="form-inline text-right">
+                        <label for="exampleInputEmail1"><b>Document Total  :</b></label>
+                        <label type="text" class="form-control" id="lblDocumentTotal"></label>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="text-right">
+                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Submit</button>
+                <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</button>
             </div>
         </div>
     </div>
@@ -206,12 +215,12 @@
                 todayHighlight: true,
                 format: 'dd/mm/yyyy',
             }).datepicker("setDate", new Date());
-            $('#example23').DataTable({
-                dom: 'Bfrtip',
-                buttons: [
-                    'copy', 'csv', 'excel', 'pdf', 'print'
-                ]
-            });
+            sapWEB.helper.GridHelper.init({ id: 'dtItemDetails', actionIndex: 12, rowFunc: Init, addBtn: true, deleteBtn: true })
         })
+        function Init() {
+            if ($(this)[0].id === 'btnAdd') {
+            }
+            return true;
+        }
     </script>
 }

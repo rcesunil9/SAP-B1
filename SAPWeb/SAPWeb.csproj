@@ -147,7 +147,9 @@
     <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Implementation\AuthRepository.cs" />
+    <Compile Include="Repository\Implementation\SalesQuotationRepository.cs" />
     <Compile Include="Repository\Interface\IAuthRepository.cs" />
+    <Compile Include="Repository\Interface\ISalesQuotationRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
@@ -166,6 +168,11 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Common\Common.js" />
+    <Content Include="Content\Common\extensionHelper.js" />
+    <Content Include="Content\Common\SAPWeb.ajax.js" />
+    <Content Include="Content\Common\SAPWeb.control.js" />
+    <Content Include="Content\Common\tableHelper.js" />
     <Content Include="Content\theme\plugins\components\blockUI\jquery.blockUI.js" />
     <Content Include="Content\theme\plugins\components\bootstrap-datepicker\bootstrap-datepicker.min.css" />
     <Content Include="Content\theme\plugins\components\bootstrap-datepicker\bootstrap-datepicker.min.js" />
@@ -1629,6 +1636,8 @@
     <Content Include="Content\theme\plugins\components\tiny-editable\numeric-input-example.js" />
     <Content Include="Content\theme\plugins\components\toast-master\css\jquery.toast.css" />
     <Content Include="Content\theme\plugins\components\toast-master\js\jquery.toast.js" />
+    <Content Include="Content\theme\plugins\components\toastr\css\toastr.css" />
+    <Content Include="Content\theme\plugins\components\toastr\js\toastr.min.js" />
     <Content Include="Content\theme\plugins\components\vectormap\gdp-data.js" />
     <Content Include="Content\theme\plugins\components\vectormap\jquery-jvectormap-2.0.2.css" />
     <Content Include="Content\theme\plugins\components\vectormap\jquery-jvectormap-2.0.2.min.js" />
@@ -1705,6 +1714,7 @@
     <Content Include="Content\theme\plugins\images\chair3.jpg" />
     <Content Include="Content\theme\plugins\images\chair4.jpg" />
     <Content Include="Content\theme\plugins\images\cloud.jpg" />
+    <Content Include="Content\theme\plugins\images\company\logo.png" />
     <Content Include="Content\theme\plugins\images\docs\sidebar.png" />
     <Content Include="Content\theme\plugins\images\docs\template-structure.png" />
     <Content Include="Content\theme\plugins\images\favicon.png" />
@@ -2349,6 +2359,7 @@
     <Content Include="Content\theme\less\variables.less" />
     <Content Include="Content\theme\less\widgets.less" />
     <Content Include="Views\SalesQuotation\Create.cshtml" />
+    <Content Include="Views\SalesQuotation\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

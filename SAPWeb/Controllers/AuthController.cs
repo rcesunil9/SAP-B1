@@ -12,6 +12,10 @@ namespace SAPWeb.Controllers
     {
         private readonly AuthRepository db = new AuthRepository();
         // GET: Auth
+        public ActionResult Index()
+        {
+            return View("Login");
+        }
         public ActionResult Login(UserLogin model)
         {
             UserDefault objUser = new UserDefault();
