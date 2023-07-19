@@ -51,20 +51,12 @@ sapWEB.ajax = (function () {
             contentType: 'application/json',
             success: function (responseData) {
                 hideLoader();
-                if (responseData.Code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (doneCallback) {
                     doneCallback(responseData);
                 }
             },
             error: function (responseData) {
                 hideLoader();
-                if (responseData.Code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (errorCallback) {
                     errorCallback(responseData);
                 }
@@ -84,20 +76,12 @@ sapWEB.ajax = (function () {
             //data: requestData,
             success: function (responseData) {
                 hideLoader();
-                if (responseData.Code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (doneCallback) {
                     doneCallback(responseData);
                 }
             },
             error: function (responseData) {
                 hideLoader();
-                if (responseData.responseJSON.code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (errorCallback) {
                     errorCallback(responseData);
                 }
@@ -117,20 +101,12 @@ sapWEB.ajax = (function () {
             data: requestData,
             success: function (responseData) {
                 hideLoader();
-                if (responseData.Code == 452) {
-                    window.location.href = '/sign-in';
-                    return;
-                }
                 if (doneCallback) {
                     doneCallback(responseData);
                 }
             },
             error: function (responseData) {
                 hideLoader();
-                if (responseData.responseJSON.code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (errorCallback) {
                     errorCallback(responseData);
                 }
@@ -150,20 +126,12 @@ sapWEB.ajax = (function () {
             data: requestData,
             success: function (responseData) {
                 hideLoader();
-                if (responseData.Code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (doneCallback) {
                     doneCallback(responseData);
                 }
             },
             error: function (responseData) {
                 hideLoader();
-                if (responseData.Code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (errorCallback) {
                     errorCallback(responseData);
                 }
@@ -180,19 +148,11 @@ sapWEB.ajax = (function () {
             contentType: "application/json; charset=utf-8",
             data: requestData,
             success: function (responseData) {
-                if (responseData.responseJSON.code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (doneCallback) {
                     doneCallback(responseData);
                 }
             },
             error: function (responseData) {
-                if (responseData.responseJSON.code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (errorCallback) {
                     errorCallback(responseData);
                 }
@@ -208,20 +168,12 @@ sapWEB.ajax = (function () {
             data: requestData,
             success: function (responseData) {
                 hideLoader();
-                if (responseData.responseJSON.code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (doneCallback) {
                     doneCallback(responseData);
                 }
             },
             error: function (responseData) {
                 hideLoader();
-                if (responseData.responseJSON.code == 452) {
-                    window.location.href = '/sign-in'
-                    return;
-                }
                 if (errorCallback) {
                     errorCallback(responseData);
                 }

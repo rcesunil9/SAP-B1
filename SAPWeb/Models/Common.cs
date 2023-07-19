@@ -211,6 +211,7 @@ namespace SAPWeb.Models
         public string MobileNo { get; set; }
         public string EmailID { get; set; }
         public string GSTNumber { get; set; }
+        public string Currency { get; set; }
     }
 
     #endregion
@@ -678,6 +679,7 @@ namespace SAPWeb.Models
         public string Block { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        public string Country { get; set; }
         public string GSTNo { get; set; }
         public string ContactPerson { get; set; }
 

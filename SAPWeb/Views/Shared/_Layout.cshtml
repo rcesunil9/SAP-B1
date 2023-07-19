@@ -20,7 +20,8 @@
     <link href="~/Content/theme/plugins/components/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
     <link href="~/Content/theme/plugins/components/datatables/jquery.dataTables.min.css" rel="stylesheet">
     <link href="~/Content/theme/plugins/components/toastr/css/toastr.css" rel="stylesheet">
-
+    <link href="~/Content/theme/plugins/components/jqueryui/jquery-ui.css" rel="stylesheet" />
+    <link href="~/Content/theme/plugins/components/autocomplete/css/jquery.auto-complete.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/buttons/1.2.2/css/buttons.dataTables.min.css" rel="stylesheet" type="text/css" />
     <!-- ===== Animation CSS ===== -->
     <link href="~/Content/theme/css/animate.css" rel="stylesheet">
@@ -28,6 +29,7 @@
     <link href="~/Content/theme/css/style.css" rel="stylesheet">
     <!-- ===== Color CSS ===== -->
     <link href="~/Content/theme/css/colors/red.css" id="theme" rel="stylesheet">
+    <link href="~/Content/custom.css" rel="stylesheet" />
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -251,6 +253,7 @@
     =============================== -->
     <!-- ===== jQuery ===== -->
     <script src="~/Content/theme/plugins/components/jquery/dist/jquery.min.js"></script>
+    <script src="~/Content/theme/plugins/components/jqueryui/jquery-ui.js"></script>
     <!-- ===== Bootstrap JavaScript ===== -->
     <script src="~/Content/theme/bootstrap/dist/js/bootstrap.min.js"></script>
     <!-- ===== Slimscroll JavaScript ===== -->
@@ -271,6 +274,7 @@
     <script src="~/Content/theme/plugins/components/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
     <script src="~/Content/theme/plugins/components/datatables/jquery.dataTables.min.js"></script>
     <script src="~/Content/theme/plugins/components/toastr/js/toastr.min.js"></script>
+    <script src="~/Content/theme/plugins/components/autocomplete/js/jquery.auto-complete.min.js"></script>
 
     <script src="https://cdn.datatables.net/buttons/1.2.2/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.2.2/js/buttons.flash.min.js"></script>
@@ -286,6 +290,7 @@
     <!-- ===== Style Switcher JS ===== -->
     <script src="~/Content/theme/plugins/components/styleswitcher/jQuery.style.switcher.js"></script>
     @Scripts.Render("~/SAPWeb/js")
+    @Scripts.Render("~/SAPWeb/page")
 
     @RenderSection("scripts", required: false)
 </body>

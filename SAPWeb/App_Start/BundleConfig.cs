@@ -32,6 +32,9 @@ namespace SAPWeb
                 "~/Content/Common/extensionHelper.js",
                 "~/Content/Common/tableHelper.js"
                 ));
+            bundles.Add(new ScriptBundle("~/SAPWeb/page").Include(
+               "~/Content/Page/SalesQuotation.js"
+               ));
         }
     }
 }

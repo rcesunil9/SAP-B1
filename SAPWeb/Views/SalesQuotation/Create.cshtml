@@ -11,14 +11,20 @@
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="txtCustomer">Customer</label>
-                        <input type="text" class="form-control" id="txtCustomer" placeholder="Enter Customer">
+                        <label for="txtCustomer">Customer Code *</label>
+                        <input type="text" class="form-control" id="txtCustomerCode" placeholder="Enter Customer">
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="txtName">Name</label>
-                        <input type="text" class="form-control" id="txtName" placeholder="Enter Name">
+                        <label for="txtName">Customer Name</label>
+                        <input type="text" class="form-control" id="txtCustomerName" placeholder="Enter Name" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtCustomerRefNo">Customer Ref. No.</label>
+                        <input type="text" class="form-control" id="txtCustomerRefNo" placeholder="Customer Ref. No.">
                     </div>
                 </div>
                 <div class="col-md-3">
@@ -29,44 +35,80 @@
                         </select>
                     </div>
                 </div>
+
+            </div>
+            <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="txtCustomerRefNo">Customer Ref. No.</label>
-                        <input type="text" class="form-control" id="txtCustomerRefNo" placeholder="Customer Ref. No.">
+                        <label for="ddlEmployee">Sales Employeee</label>
+                        <select id="ddlEmployee" class="form-control">
+                            <option>Select Employee</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtTerritoty">Territoty</label>
+                        <input id="txtTerritoty" class="form-control" placeholder="Territoty" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ddlLocalCurrency">Document Currency </label>
+                        <input type="text" class="form-control" id="txtCurrency" placeholder="Currency" readonly>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtExchangeRate">Exchange Rate </label>
+                        <input id="txtExchangeRate " class="form-control" placeholder="Status">
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="ddlLocalCurrency">Local Curreny</label>
-                        <select id="dllLocalCurrency" class="form-control">
-                            <option> select Local Currency</option>
+                        <label for="ddlBillToID">BillTo ID</label>
+                        <select id="ddlBillToID" class="form-control">
+                            <option>Select Bill To ID</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="dllNoType">No Type</label>
-                        <select id="dllNo" class="form-control">
-                            <option>No Type</option>
+                        <label for="txtBillToAddress">Address</label>
+                        <textarea type="text" class="form-control" id="txtBillToAddress" rows="2" readonly></textarea>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="ddlShipTOID ">ShipTO ID </label>
+                        <select id="ddlShipTOID" class="form-control">
+                            <option>Select Ship TO ID</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="txtNo">No</label>
-                        <input id="txtNo" class="form-control" id="txtNo" placeholder="No">
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="txtStatus">Status</label>
-                        <input id="txtStatus" class="form-control" id="txtStatus" placeholder="Status">
+                        <label for="txtShipAddress">Address</label>
+                        <textarea type="text" class="form-control" id="txtShipAddress" rows="2" readonly></textarea>
                     </div>
                 </div>
             </div>
             <div class="row">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtSeries">Series</label>
+                        <input type="text" class="form-control" id="txtSeries" placeholder="Series">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="txtQuotationNumber ">Quotation Number </label>
+                        <input type="text" class="form-control" id="txtQuotationNumber" readonly>
+                    </div>
+                </div>
                 <div class="col-md-3">
                     <div class="form-group">
                         <label for="txtPostingDate">Posting Date</label>
@@ -75,60 +117,14 @@
                 </div>
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label for="txtValidUntil">Valid Until</label>
-                        <input type="text" class="form-control" id="txtValidUntil" placeholder="ValidUntil">
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="txtDocumnetDate">Document Date</label>
-                        <input type="text" class="form-control mydatepicker" id="txtDocumentDate" placeholder="dd/mm/yyyy">
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="txtPlaceOfSupply">Place of Supply</label>
-                        <input type="text" class="form-control" id="txtPlaceOfSuppy" placeholder="Place Of Supply">
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="dllBranch">Branch</label>
-                        <select id="dllBrach" class="form-control">
-                            <option>Select Branch</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="form-group">
-                        <label for="txtBranchRegNo">Branch Reg. No.</label>
-                        <input type="text" class="form-control" id="txtBranchRegNo" placeholder="Branch Reg. No.">
+                        <label for="txtStatus ">Status </label>
+                        <input type="text" class="form-control" id="txtStatus" readonly>
                     </div>
                 </div>
             </div>
             <hr />
             <div class="row">
                 <div class="col-lg-12 col-sm-12 col-xs-12">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="ddlItemServices">Item/Service Type.</label>
-                                <select id="ddlItemServices" class="form-control">
-                                    <option> Item</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label for="ddlSummaryType">Summary Type.</label>
-                                <select id="ddlSummaryType" class="form-control">
-                                    <option> No Summary</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
@@ -211,13 +207,14 @@
 @section scripts{
     <script>
         $(document).ready(function () {
-            $('.mydatepicker').datepicker({
-                todayHighlight: true,
-                format: 'dd/mm/yyyy',
-            }).datepicker("setDate", new Date());
-            sapWEB.helper.GridHelper.init({ id: 'dtItemDetails', actionIndex: 12, rowFunc: Init, addBtn: true, deleteBtn: true })
+            customerCodeURL = '@Url.Action("GetCustomer", "Customer", new { area = "" })';
+            contactPersonURL = '@Url.Action("GetContactPerson", "Customer", new { area = "" })';
+            billTOIdURL = '@Url.Action("GetBillAddress", "Customer", new { area = "" })';
+            shipToIDURL = '@Url.Action("GetShipAddress", "Customer", new { area = "" })';
+            sapWEB.SalesQuotation.Init();
+            sapWEB.helper.GridHelper.init({ id: 'dtItemDetails', actionIndex: 12, rowFunc: dtGridHelper, addBtn: true, deleteBtn: true });
         })
-        function Init() {
+        var dtGridHelper = function () {
             if ($(this)[0].id === 'btnAdd') {
             }
             return true;

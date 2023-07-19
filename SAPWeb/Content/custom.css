@@ -1,0 +1,21 @@
+﻿
+.dropdown-menu {
+    z-index: 9999 !important;
+}
+
+.ui-autocomplete {
+    z-index: 1061 !important;
+}
+
+.ui-autocomplete {
+    max-height: 20% !important;
+    overflow-y: auto !important;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden !important;
+}
+/* IE 6 doesn't support max-height
+   * we use height instead, but this forces the menu to always be this tall
+   */
+* html .ui-autocomplete {
+    height: 100px !important;
+}
