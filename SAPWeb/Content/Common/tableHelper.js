@@ -183,6 +183,7 @@ function ManageTableAddRemove(tableId, allowDeleteAll) {
     $('#' + tableId + ' > tbody > tr').each(function () {
         $(this).attr('data-row-id', rowIndex);
         RenameCloneIdsAndNames($(this), false);
+        $(this).find('#lblSrNo_' + rowIndex).text(rowIndex+1);
         $(this).find('[id=btnAdd]').hide();
         if (!allowDeleteAll)
             $(this).find('[id=btnRemove]').show();

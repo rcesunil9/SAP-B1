@@ -2,6 +2,7 @@
 var contactPersonURL = '';
 var billTOIdURL = '';
 var shipToIDURL = '';
+var itemURL = '';
 var sapWEB = sapWEB || {}
 sapWEB.SalesQuotation = (function () {
     var init = function () {
@@ -12,6 +13,34 @@ sapWEB.SalesQuotation = (function () {
         autoComplete();
     }
     var autoComplete = function () {
+        $(".itemsearch").autocomplete({
+            maxShowItems: 10,
+            source: function (request, response) {
+                var param = $.param({ 'code': request.term })
+                sapWEB.ajax.jsonGet(itemURL + "?" + param, function (result) {
+                    // response($.map(result.slice(0, 10), function (item) {
+                    if (result.errorCode == "1") {
+                        response($.map(result.Items, function (item) {
+                            return {
+                                label: item.Code,
+                                price: item.ItemPrice,
+                                val: item.Code,
+                                name: item.Name
+                            };
+                        }))
+                    }
+                }, function (error) {
+                    console.log(error);
+                })
+            },
+            select: function (e, i) {
+                var selectedId = this.id.split('_')[1];
+                sapWEB.helper.SetValue('txtItemCode_' + selectedId, i.item.val);
+                sapWEB.helper.SetValue('txtItemName_' + selectedId, i.item.name);
+                sapWEB.helper.SetValue('txtPrice_' + selectedId, i.item.price);
+            },
+            minLength: 3
+        })
         $("#txtCustomerCode").autocomplete({
             maxShowItems: 10,
             source: function (request, response) {
@@ -42,6 +71,35 @@ sapWEB.SalesQuotation = (function () {
             minLength: 3,
             scroll: true
         })
+        fnChangeEvent();
+    }
+    var fnChangeEvent = function () {
+        $(".quantity,.rate,.disrate").on('change', function () {
+            var tr = $(this).closest('tr');
+            fnCalculation(tr);
+        });
+    }
+    var fnCalculation = function (tr)
+    {
+        var itemAmount = 0;
+        var quantity = parseFloat($(tr).find('.quantity').val());
+        var rate = parseFloat($(tr).find('.rate').val());
+        var discountRate = $(tr).find('.disrate').val() ==''?  0 : parseFloat($(tr).find('.disrate').val());
+        itemAmount = (quantity * rate);
+        disamount = itemAmount * (discountRate / 100);
+        $(tr).find('.itemamount').val(itemAmount);
+        $(tr).find('.disamount').val(disamount);
+        fnTotal();
+    }
+    var fnTotal = function () {
+        var totalItemAmount = 0;
+        var totalDiscountRate = 0;
+        $("#tbody tr").each(function (row) {
+            totalItemAmount += sapWEB.helper.GetNumeric(sapWEB.helper.GetString('txtTotalBefore_' + row));
+            totalDiscountRate += sapWEB.helper.GetNumeric(sapWEB.helper.GetString('txtDiscountPer_' + row));
+        })
+        sapWEB.helper.SetText('lbTotalAmount', totalItemAmount);
+        sapWEB.helper.SetText('lblTotalDiscount', totalDiscountRate);
     }
     var fnContactPerson = function () {
         var param = $.param({ 'code': sapWEB.helper.GetString('txtCustomerCode') })
@@ -121,6 +179,7 @@ sapWEB.SalesQuotation = (function () {
             function (error) { })
     }
     return {
-        Init :init
+        Init: init,
+        AutoComplete : autoComplete
     }
 }())

@@ -19,3 +19,17 @@
 * html .ui-autocomplete {
     height: 100px !important;
 }
+
+.tablecustome > tbody > tr > td,
+.tablecustome > tbody > tr > th,
+.tablecustome > tfoot > tr > td,
+.tablecustome > tfoot > tr > th,
+.tablecustome > thead > tr > td,
+.tablecustome > thead > tr > th {
+    padding: 5px 3px !important;
+}
+.table-no-bordered td {
+    border-top: none !important;
+    border-left: none !important;
+    padding: 5px 3px !important;
+}

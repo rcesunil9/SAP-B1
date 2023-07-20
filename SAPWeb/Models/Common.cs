@@ -343,6 +343,7 @@ namespace SAPWeb.Models
         public string ManBtchNum { get; set; }
         public string ManSerNum { get; set; }
         public string VendorCode { get; set; }
+        public decimal ItemPrice { get; set; }//ashwin added 2023-07-20
 
     }
     #endregion
