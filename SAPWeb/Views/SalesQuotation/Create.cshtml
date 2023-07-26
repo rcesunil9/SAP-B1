@@ -1,4 +1,4 @@
-﻿
+﻿@using SAPWeb.Models;
 @{
     ViewBag.Title = "Sales Quotation";
 }
@@ -96,7 +96,8 @@
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="txtSeries">Series</label>
-                        <input type="text" class="form-control" id="txtSeries" placeholder="Series">
+                        <select id="ddlSeries" class="form-control">
+                            </select>
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -152,7 +153,15 @@
                                             <td> <input id="txtTotalBefore_1" type="text" class="form-control itemamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
                                             <td> <input id="txtDiscountPer_1" type="text" class="form-control disrate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value=""> </td>
                                             <td><input id="txtDiscountAmount_1" type="text" class="form-control disamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
-                                            <td> <input id="txtTaxCode_1" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
+                                            <td> 
+                                                <select id="ddlTaxCode_1" class="form-control">
+                                                    <option value="">Select TaxCode</option>
+                                                    @foreach (var item in ViewBag.TaxCode as List<TaxCode>)
+                                                    {
+                                                        <option value="@item.Value">@item.Name</option>
+                                                    }
+                                                </select>
+                                            </td>
                                             <td widtd="5%"> <input id="txtAmount_1" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
                                             <td><input id="txtLineQTY_1" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
                                             <td> <label id="lblWarhouse_1"></label> </td>
@@ -225,6 +234,7 @@
             contactPersonURL = '@Url.Action("GetContactPerson", "Customer", new { area = "" })';
             billTOIdURL = '@Url.Action("GetBillAddress", "Customer", new { area = "" })';
             shipToIDURL = '@Url.Action("GetShipAddress", "Customer", new { area = "" })';
+            salesQuotationHeaderURL = '@Url.Action("GetSalesQuotation", "Customer", new { area = "" })';
             itemURL = '@Url.Action("GetItemDetails", "Item", new { area = "" })';
             sapWEB.SalesQuotation.Init();
             sapWEB.helper.GridHelper.init({ id: 'dtItemDetails', actionIndex: 12, rowFunc: dtGridHelper, addBtn: true, deleteBtn: true });

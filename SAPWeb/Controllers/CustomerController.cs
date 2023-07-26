@@ -39,6 +39,11 @@ namespace SAPWeb.Controllers
             var response = customerRepository.GetShipToId(code);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
-
+        [HttpGet]
+        public JsonResult GetSalesQuotation(string code)
+        {
+            var response = customerRepository.GetSalesQuotation(code);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
     }
 }

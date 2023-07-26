@@ -1,5 +1,6 @@
 ﻿var customerCodeURL = ''; 
 var contactPersonURL = '';
+var salesQuotationHeaderURL = '';
 var billTOIdURL = '';
 var shipToIDURL = '';
 var itemURL = '';
@@ -64,9 +65,10 @@ sapWEB.SalesQuotation = (function () {
                 sapWEB.helper.SetValue('txtCustomerCode', i.item.label);
                 sapWEB.helper.SetValue('txtCustomerName', i.item.name);
                 sapWEB.helper.SetValue('txtCurrency', i.item.currency);
-                fnContactPerson();
-                fnBillToID();
-                fnShipToID();
+                //fnContactPerson();
+                //fnBillToID();
+                //fnShipToID();
+                fnSalesQuotation();
             },
             minLength: 3,
             scroll: true
@@ -100,6 +102,76 @@ sapWEB.SalesQuotation = (function () {
         })
         sapWEB.helper.SetText('lbTotalAmount', totalItemAmount);
         sapWEB.helper.SetText('lblTotalDiscount', totalDiscountRate);
+    }
+    var fnSalesQuotation = function () {
+        var param = $.param({ 'code': sapWEB.helper.GetString('txtCustomerCode') })
+        sapWEB.ajax.jsonGet(salesQuotationHeaderURL + "?" + param,
+            function (response) {
+                if (response != null && response.errorCode == "1") {
+                    $("#ddlContactPerson").html('');
+                    $('#ddlContactPerson').append($('<option>select contact person</option>'));
+                    $.each(response.ContactPerson, function (i, item) {
+                        $('#ddlContactPerson').append($('<option></option>').val(item.CODE).html(item.NAME));
+                    });
+
+                    $("#ddlEmployee").html('');
+                    $('#ddlEmployee').append($('<option>select contact person</option>'));
+                    $.each(response.SalesEmployee, function (i, item) {
+                        $('#ddlEmployee').append($('<option></option>').val(item.Code).html(item.Name));
+                    });
+
+                    $("#ddlBillToID").html('');
+                    $('#ddlBillToID').append($('<option>Select Bill To ID</option>'));
+                    $.each(response.BillToAddressDetail, function (i, item) {
+                        var address = item.Address;
+                        if (item.Street != null) {
+
+                            address = address + ',' + item.Street;
+                        }
+                        if (item.Block != null) {
+                            address = address + "," + item.Block;
+                        }
+                        if (item.City != null) {
+                            address = address + "," + item.City;
+                        }
+                        if (item.State != null) {
+                            address = address + "," + item.State;
+                        }
+                        if (item.Country != null) {
+                            address = address + "," + item.Country;
+                        }
+                        $('#ddlBillToID').append($('<option></option>').val(item.Address).html(address));
+                    });
+                    $("#ddlShipTOID").html('');
+                    $('#ddlShipTOID').append($('<option>Select Bill To ID</option>'));
+                    $.each(response.ShipToAddressDetail, function (i, item) {
+                        var address = item.Address;
+                        if (item.Street != null) {
+
+                            address = address + ',' + item.Street;
+                        }
+                        if (item.Block != null) {
+                            address = address + "," + item.Block;
+                        }
+                        if (item.City != null) {
+                            address = address + "," + item.City;
+                        }
+                        if (item.State != null) {
+                            address = address + "," + item.State;
+                        }
+                        if (item.Country != null) {
+                            address = address + "," + item.Country;
+                        }
+                        $('#ddlShipTOID').append($('<option></option>').val(item.Address).html(address));
+                    });
+                    $("#ddlSeries").html('');
+                    $.each(response.SeriesQuotation, function (i, item) {
+                        $('#ddlSeries').append($('<option></option>').val(item.Series).html(item.U_SERIES));
+                        sapWEB.helper.SetValue('txtQuotationNumber', item.QuotationNumber);
+                    });
+                }
+            },
+            function (error) { })
     }
     var fnContactPerson = function () {
         var param = $.param({ 'code': sapWEB.helper.GetString('txtCustomerCode') })

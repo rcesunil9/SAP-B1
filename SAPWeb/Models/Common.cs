@@ -4,6 +4,24 @@ using System.Data;
 
 namespace SAPWeb.Models
 {
+
+    public class CommonSalesQuotation
+    {
+        public string errorCode { get; set; }
+        public string errorMsg { get; set; }
+        public List<SalesEmployee> SalesEmployee { get; set; }
+        public List<ContactPerson> ContactPerson { get; set; }
+        public List<AddressDetail> ShipToAddressDetail { get; set; }
+        public List<AddressDetail> BillToAddressDetail { get; set; }
+        public List<SeriesQuotation> SeriesQuotation { get; set; }
+
+    }
+    public class SeriesQuotation
+    {
+        public string Series { get; set; }
+        public string U_SERIES { get; set; }
+        public string QuotationNumber  { get; set; }
+    }
     public class CommonDefault
     {
         public string errorCode { get; set; }
@@ -474,6 +492,7 @@ namespace SAPWeb.Models
     {
         public string Code { get; set; }
         public string Value { get; set; }
+        public string Name { get; set; }
     }
     public class ParamListTaxCode
     {

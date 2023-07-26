@@ -46,5 +46,33 @@ namespace SAPWeb.Repository.Implementation
             }
             return objItemDefault;
         }
+        public TaxCodeDefault GetTaxCode()
+        {
+            TaxCodeDefault ObjUser = new TaxCodeDefault();
+            ObjUser.GetTaxCode = new List<TaxCode>();
+            try
+            {
+                var Data = objCon.ByQueryReturnDataTable(@"select Code,Name from OVTG where Code in ('O1','O2','O3','X0','E5')");
+                if (Data != null && Data.Rows.Count > 0)
+                {
+                    ObjUser.GetTaxCode = Data.ConvertToList<TaxCode>();
+                    ObjUser.errorCode = "1";
+                    ObjUser.errorMsg = "";
+                }
+                else
+                {
+                    ObjUser.errorCode = "0";
+                    ObjUser.errorMsg = "Wrong Username/Password.";
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjUser.errorCode = "0";
+                ObjUser.errorMsg = ex.Message;
+                return ObjUser;
+            }
+            return ObjUser;
+        }
+
     }
 }

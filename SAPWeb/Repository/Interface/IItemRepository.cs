@@ -9,6 +9,7 @@ namespace SAPWeb.Repository.Interface
 {
     internal interface IItemRepository
     {
-        ItemDefault GetItem(string code); 
+        ItemDefault GetItem(string code);
+        TaxCodeDefault GetTaxCode(); 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SAPWeb.Repository.Implementation;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,6 +9,11 @@ namespace SAPWeb.Controllers
 {
     public class SalesQuotationController : Controller
     {
+        ItemRepository itemRepository;
+        public SalesQuotationController()
+        {
+                itemRepository = new ItemRepository();
+        }
         // GET: SalesQuotation
         public ActionResult Index()
         {
@@ -15,7 +21,12 @@ namespace SAPWeb.Controllers
         }
         public ActionResult Create()
         {
+            Init();
             return View();
+        }
+        public void Init()
+        {
+            ViewBag.TaxCode = itemRepository.GetTaxCode().GetTaxCode;
         }
     }
 }

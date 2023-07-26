@@ -130,5 +130,43 @@ namespace SAPWeb.Repository.Implementation
             }
             return objAddressDetail;
         }
+
+        public CommonSalesQuotation GetSalesQuotation(string code)
+        {
+            CommonSalesQuotation objItemDefault = new CommonSalesQuotation();
+            objItemDefault.SalesEmployee = new List<SalesEmployee>();
+            objItemDefault.ContactPerson = new List<ContactPerson>();
+            objItemDefault.ShipToAddressDetail = new List<AddressDetail>();
+            objItemDefault.BillToAddressDetail = new List<AddressDetail>();
+            objItemDefault.SeriesQuotation = new List<SeriesQuotation>();
+            try
+            {
+                string ParamName = "@CODE|@seriessq";
+                string ParamVal = code.Trim() + "|" + SessionUtility.U_SERIESSQ;
+                var dtItemDetails = objCon.ByProcedureReturnDataSet("SAP_SalesQuotationHeaderList", 2, ParamName, ParamVal);
+                if(dtItemDetails!=null && dtItemDetails.Tables.Count > 0)
+                {
+                    objItemDefault.ContactPerson = dtItemDetails.Tables[1]?.ConvertToList<ContactPerson>();
+                    objItemDefault.SalesEmployee = dtItemDetails.Tables[0]?.ConvertToList<SalesEmployee>();
+                    objItemDefault.ShipToAddressDetail = dtItemDetails.Tables[2]?.ConvertToList<AddressDetail>();
+                    objItemDefault.BillToAddressDetail = dtItemDetails.Tables[3]?.ConvertToList<AddressDetail>();
+                    objItemDefault.SeriesQuotation = dtItemDetails.Tables[4]?.ConvertToList<SeriesQuotation>();
+                    objItemDefault.errorCode = "1";
+                    objItemDefault.errorMsg = "";
+                }
+                else
+                {
+                    objItemDefault.errorCode = "0";
+                    objItemDefault.errorMsg = "Data Not Found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                objItemDefault.errorCode = "0";
+                objItemDefault.errorMsg = ex.Message;
+                return objItemDefault;
+            }
+            return objItemDefault;
+        }
     }
 }
