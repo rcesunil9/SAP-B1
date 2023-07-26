@@ -1,6 +1,7 @@
 ﻿using SAPWeb.App_Start;
 using SAPWeb.Models;
 using SAPWeb.Repository.Interface;
+using SAPWeb.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,8 +23,29 @@ namespace SAPWeb.Repository.Implementation
         {
             UserDefault ObjUser = new UserDefault();
             ObjUser.User = new List<User>();
-
             try
+            {
+                var Data = objCon.ByQueryReturnDataTable(@"select * from [@A_USER] Where U_Pass = '" + model.Password + "' AND Name='" + model.UserName + "'");
+                if (Data != null && Data.Rows.Count > 0)
+                {
+                    ObjUser.User = Data.ConvertToList<User>();
+                    ObjUser.errorCode = "1";
+                    ObjUser.errorMsg = "";
+                }
+                else
+                {
+                    ObjUser.errorCode = "0";
+                    ObjUser.errorMsg = "Wrong Username/Password.";
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjUser.errorCode = "0";
+                ObjUser.errorMsg = ex.Message;
+                return ObjUser;
+            }
+            return ObjUser; 
+           /* try
             {
                 string ParamName = "@USERNAME|@PASSWORD|@DEVICEID";
                 string ParamVal = model.UserName.Trim() + "|" + model.Password.Trim() + "|" + model.DeviceID;
@@ -87,7 +109,7 @@ namespace SAPWeb.Repository.Implementation
                 return ObjUser;
             }
             return ObjUser;
-
+            */
         }
         #endregion
     }

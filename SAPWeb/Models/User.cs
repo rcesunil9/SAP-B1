@@ -40,6 +40,14 @@ namespace SAPWeb.Models
         public string MINBGCHARGES { get; set; }
         public string BGCHARGES { get; set; }
         public string PMCPER { get; set; }
+        //added by ashwin on 2023-07-25
+        public string Code { get; set; }
+        public string U_Pass { get; set; }
+        public string U_CashAc { get; set; }
+        public string U_WHS { get; set; }
+        public string U_SERIES { get; set; }
+        public string U_SERIESSQ { get; set; }
+
     }
 
 

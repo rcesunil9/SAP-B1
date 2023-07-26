@@ -157,6 +157,7 @@
     <Compile Include="Repository\Interface\IItemRepository.cs" />
     <Compile Include="Repository\Interface\ISalesQuotationRepository.cs" />
     <Compile Include="Utility\Extensions.cs" />
+    <Compile Include="Utility\SessionUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-grid.css" />
