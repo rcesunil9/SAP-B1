@@ -1,0 +1,286 @@
+﻿
+@using SAPWeb.Models;
+@{
+    ViewBag.Title = "A/R Invoice";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="white-box">
+            <h3 class="box-title m-b-0">Create @ViewBag.Title</h3>
+            <p class="text-muted m-b-30 font-13"></p>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtCustomer">Customer Code *</label>
+                        <input type="text" class="form-control" id="txtCustomerCode" placeholder="Enter Customer">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtName">Customer Name</label>
+                        <input type="text" class="form-control" id="txtCustomerName" placeholder="Enter Name" readonly>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtCustomerRefNo">Customer Ref. No.</label>
+                        <input type="text" class="form-control" id="txtCustomerRefNo" placeholder="CASH">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="ddlContactPerson">Contact Person</label>
+                        <select id="ddlContactPerson" class="form-control">
+                            <option>select contact person</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="ddlEmployee">Sales Employeee</label>
+                        <select id="ddlEmployee" class="form-control">
+                            <option>Select Employee</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtTerritoty">Territoty</label>
+                        <select id="ddlTerritoty" class="form-control">
+                            <option>CENTRAL UGANDA</option>
+                        </select>
+                        @*<input id="txtTerritoty" class="form-control" placeholder="Territoty" readonly>*@
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="ddlLocalCurrency">Document Currency </label>
+                        <input type="text" class="form-control" id="txtCurrency" placeholder="Currency" readonly>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="ddlBillToID">BillTo ID</label>
+                        <select id="ddlBillToID" class="form-control">
+                            <option>Select Bill To ID</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtBillToAddress">Address</label>
+                        <textarea type="text" class="form-control" id="txtBillToAddress" rows="2" readonly></textarea>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="ddlShipTOID ">Place of Supply </label>
+                        <select id="ddlShipTOID" class="form-control">
+                            <option>Select Ship TO ID</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtShipAddress">Address</label>
+                        <textarea type="text" class="form-control" id="txtShipAddress" rows="2" readonly></textarea>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtSeries">Series</label>
+                        <select id="ddlSeries" class="form-control">
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+               
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtQuotationNumber ">Quotation Number </label>
+                        <input type="text" class="form-control" id="txtQuotationNumber" readonly>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtPostingDate">Posting Date</label>
+                        <input type="text" class="form-control mydatepicker" id="txtPostingDate" placeholder="dd/mm/yyyy">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtPostingDate">Due Date</label>
+                        <input type="text" class="form-control mydatepicker" id="txtDueDate" placeholder="dd/mm/yyyy">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtPostingDate">Document Date</label>
+                        <input type="text" class="form-control mydatepicker" id="txtDocumentDate" placeholder="dd/mm/yyyy">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtStatus ">Status </label>
+                        <input type="text" class="form-control" id="txtStatus" readonly>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtQuotationNumber ">FiscalDoc</label>
+                        <input type="text" class="form-control" id="txtFiscalDoc" readonly>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtCardTIN">Card TIN</label>
+                        <input type="text" class="form-control" id="txtCardTin" readonly />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtBuyerType">Buyer Type</label>
+                        <input type="text" class="form-control" id="txtBuyerType" readonly />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtTruckNumber">Truck Number</label>
+                        <input type="text" class="form-control" id="txtTruckNumber" readonly />
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtQuotationNumber ">OriInvoiceID</label>
+                        <input type="text" class="form-control" id="txtOriInvoiceID" readonly>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtQuotationNumber ">URAPosted</label>
+                        <input type="text" class="form-control" id="txtURAPosted" readonly>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-lg-12 col-sm-12 col-xs-12">
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="table-responsive">
+                            <table class="table tablecustome table-bordered" id="dtItemDetails">
+                                <thead class="thead">
+                                    <tr>
+                                        <th class="text-center"> Sr.No </th>
+                                        <th class="text-center"> Item Code </th>
+                                        <th class="text-center"> Item Description </th>
+                                        <th class="text-center" width="5%">Quantity</th>
+                                        <th class="text-center" width="10%">Unit Price</th>
+                                        <th class="text-center" width="10%"> Total Before Discount</th>
+                                        <th class="text-center" width="5%"> Discount % </th>
+                                        <th class="text-center" width="5%"> Discount Amount</th>
+                                        <th class="text-center"> TaxCode </th>
+                                        <th class="text-center"> In Stock </th>
+                                        <th class="text-center"> Weight </th>
+                                        <th class="text-center"> Item Cost </th>
+                                        <th class="text-center"  width="5%"> WTaxAmount </th>
+                                        <th class="text-center">Line Total</th>
+                                        <th class="text-center"> Warehouse </th>
+                                        <th></th>
+                                    </tr>
+                                </thead><!-- /thead -->
+                                <tbody id="tbody">
+                                    <tr class="text-center">
+                                        <td><label id="lblSrNo_1">1</label></td>
+                                        <td><input id="txtItemCode_1" type="text" class="form-control itemsearch" value=""></td>
+                                        <td><input id="txtItemName_1" class="form-control form-control-sm" readonly /></td>
+                                        <td><input id="txtQTY_1" type="text" class="form-control quantity form-control-sm custom-select-sm form-control-sm-x numericdecimal" value=""> </td>
+                                        <td><input id="txtPrice_1" type="text" class="form-control rate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
+                                        <td> <input id="txtTotalBefore_1" type="text" class="form-control itemamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
+                                        <td> <input id="txtDiscountPer_1" type="text" class="form-control disrate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value=""> </td>
+                                        <td><input id="txtDiscountAmount_1" type="text" class="form-control disamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
+                                        <td>
+                                            <select id="ddlTaxCode_1" class="form-control">
+                                                <option value="">Select TaxCode</option>
+                                                @foreach (var item in ViewBag.TaxCode as List<TaxCode>)
+                                                {
+                                                    <option value="@item.Value">@item.Name</option>
+                                                }
+                                            </select>
+                                        </td>
+                                        <td><input id="txtInStock_1" type="text" class="form-control itemamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly /></td>
+                                        <td><input id="txtWeight_1" type="text" class="form-control itemamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly /></td>
+                                        <td><input id="txtItemCost_1" type="text" class="form-control itemamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly /></td>
+                                        <td widtd="5%"> <input id="txtAmount_1" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
+                                        <td><input id="txtLineQTY_1" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
+                                        <td> <label id="lblWarhouse_1"></label> </td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-lg-6 col-sm-6 col-xs-6">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Other Remarks</label>
+                    <textarea type="text" class="form-control" id="txtOtherRemarks" rows="6"></textarea>
+                </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 col-xs-6">
+                <table class="table table-borderless table-no-bordered">
+                    <tr>
+                        <td class="text-right">
+                            <label for="exampleInputEmail1"><b>Total Amount Before Discount :</b></label>
+                        </td>
+                        <td class="text-right">
+                            <label id="lbTotalAmount"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <label for="exampleInputEmail1"><b>Total Discount % :</b></label>
+                        </td>
+                        <td class="text-left">
+                            <label id="lblTotalDiscount"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <label for="exampleInputEmail1"><b>Total W Tax :</b></label>
+                        </td>
+                        <td class="text-left">
+                            <label id="lblTotalTax"></label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-right">
+                            <label for="exampleInputEmail1"><b>Document Total  :</b></label>
+                        </td>
+                        <td class="text-left">
+                            <label id="lblDocumentTotal"></label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <hr />
+        <div class="text-right">
+            <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Submit</button>
+            <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</button>
+        </div>
+    </div>
+</div>
+</div>
+
+

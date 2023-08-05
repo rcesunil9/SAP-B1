@@ -19,7 +19,58 @@ namespace SAPWeb.Models
         public DataTable tab { get; set; }
     }
 
-    #region CLASS
+    public class SalesOrderQuotationDocument
+    {
+        public SalesOrderQuotationDocument()
+        {
+            DocumentLines = new List<DataItems>();
+        }
+        public string EMPID { get; set; }
+        public string CardCode { get; set; }
+        public string NumAtCard { get; set; }
+        public int? ContactPersonCode { get; set; }
+        public string U_Territory { get; set; }
+        public string DocCurrency { get; set; }
+        public string PayToCode { get; set; }
+        public string ShipToCode { get; set; }
+        public int? Series { get; set; }
+        public DateTime DocDate { get; set; }
+        public int? SalesEmployee { get; set; }
+        public string Comments { get; set; }
+        //public string EMPID { get; set; }
+        public int? DocEntry { get; set; }
+        public int? DraftDocEntry { get; set; }
+        //public int? Series { get; set; }
+        //public int? SalesPersonCode { get; set; }
+        //public string DocCurrency { get; set; }
+        //public string U_Territory { get; set; }
+        public double? U_ExchRate { get; set; }
+        //public string OrderType { get; set; }
+        //public string CustomerCode { get; set; }
+        //public DateTime? PostingDate { get; set; }
+        public DateTime? DeliveryDate { get; set; }
+        //public DateTime DocDate { get; set; }
+        //public string PayToCode { get; set; }
+        //public string ShipToCode { get; set; }
+        //public double? TotalAmount { get; set; }
+        //public string Remarks { get; set; }
+        public string CreatedBy { get; set; }
+        public string WhsCode { get; set; }
+        public List<DataItems> DocumentLines { get; set; }
+    }
+    public class SalesOrderQuotationDocumentItem
+    {
+        public int? Linenum { get; set; }
+        public string ItemCode { get; set; }
+        public double? Quantity { get; set; }
+        public double? ItemPrice { get; set; }
+        public string TaxCode { get; set; }
+        public double? DiscountPercent { get; set; }
+        public string WarehouseCode { get; set; }
+
+
+    }
+    #region CLASS OLD Code
 
     public class SalesDocuments
     {
@@ -151,6 +202,8 @@ namespace SAPWeb.Models
         public int? BaseType { get; set; }
         public int? BaseEntry { get; set; }
         public int? BaseLine { get; set; }
+        public double? DiscountPercent { get; set; }
+        public string WarehouseCode { get; set; }
     }
 
     public class DataTermsAndCondition

@@ -1,4 +1,6 @@
-﻿using SAPWeb.Repository.Implementation;
+﻿using SAPWeb.Models;
+using SAPWeb.Repository.Implementation;
+using SAPWeb.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +12,11 @@ namespace SAPWeb.Controllers
     public class SalesQuotationController : Controller
     {
         ItemRepository itemRepository;
+        SalesQuotationRepository salesQuotationRepository;
         public SalesQuotationController()
         {
-                itemRepository = new ItemRepository();
+            itemRepository = new ItemRepository();
+            salesQuotationRepository = new SalesQuotationRepository();
         }
         // GET: SalesQuotation
         public ActionResult Index()
@@ -23,6 +27,20 @@ namespace SAPWeb.Controllers
         {
             Init();
             return View();
+        }
+        [HttpPost]
+        public ActionResult Save(SalesOrderQuotationDocument model)
+        {
+            SalesDocumentsDefault response = new SalesDocumentsDefault();
+            if (string.IsNullOrEmpty(SessionUtility.Code))
+            {
+                response.errorCode = "0";
+                response.errorMsg = "You Session is timeout, Please logout and login again.!";
+                return Json(response, JsonRequestBehavior.AllowGet);
+            }
+            model.EMPID = SessionUtility.Code;
+            response = salesQuotationRepository.SAPSalesQuotation(model);
+            return Json(response, JsonRequestBehavior.AllowGet);
         }
         public void Init()
         {

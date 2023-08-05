@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-12">
         <div class="white-box">
-            <h3 class="box-title m-b-0">Create Sales Quotation</h3>
+            <h3 class="box-title m-b-0">Create @ViewBag.Title</h3>
             <p class="text-muted m-b-30 font-13"></p>
             <div class="row">
                 <div class="col-md-2">
@@ -196,7 +196,7 @@
                             <td class="text-right">
                                 <label for="exampleInputEmail1"><b>Total Discount % :</b></label>
                             </td>
-                            <td class="text-left">
+                            <td class="text-right">
                                 <label id="lblTotalDiscount"></label>
                             </td>
                         </tr>
@@ -204,7 +204,7 @@
                             <td class="text-right">
                                 <label for="exampleInputEmail1"><b>Total Tax :</b></label>
                             </td>
-                            <td class="text-left">
+                            <td class="text-right">
                                 <label id="lblTotalTax"></label>
                             </td>
                         </tr>
@@ -212,7 +212,7 @@
                             <td class="text-right">
                         <label for="exampleInputEmail1"><b>Document Total  :</b></label>
                             </td>
-                            <td class="text-left">
+                            <td class="text-right">
                                 <label id="lblDocumentTotal"></label>
                             </td>
                         </tr>
@@ -221,7 +221,7 @@
             </div>
             <hr />
             <div class="text-right">
-                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10">Submit</button>
+                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10 btnSave">Submit</button>
                 <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</button>
             </div>
         </div>
@@ -237,6 +237,9 @@
             salesQuotationHeaderURL = '@Url.Action("GetSalesQuotation", "Customer", new { area = "" })';
             itemURL = '@Url.Action("GetItemDetails", "Item", new { area = "" })';
             sapWEB.SalesQuotation.Init();
+            $(".btnSave").off('click').on('click', function () {
+                saveSalesOrder();
+            })
             sapWEB.helper.GridHelper.init({ id: 'dtItemDetails', actionIndex: 12, rowFunc: dtGridHelper, addBtn: true, deleteBtn: true });
         })
         var dtGridHelper = function () {
@@ -244,6 +247,54 @@
             if ($(this)[0].id === 'btnAdd') {
             }
             return true;
+        }
+        var saveSalesOrder = function () {
+           var salesQuotationSaveURL = '@Url.Action("Save", "SalesQuotation", new { area = "" })';
+            var dataItems = [];
+            $('#tbody tr').each(function (row) {
+                var uniqueId = parseInt($(this).attr('data-row-id'));
+                dataItems.push({
+                    Linenum: -1,
+                    ItemItemCode: sapWEB.helper.GetString('txtItemCode_' + row),
+                    ItemQuantity: sapWEB.helper.GetNumericValue('txtQTY_' + row),
+                    ItemPrice: sapWEB.helper.GetNumericValue('txtPrice_' + row),
+                    ItemTax: sapWEB.helper.GetNumericValue('txtItemCode_' + row+' option:selected'),
+                    DiscountPercent: sapWEB.helper.GetNumericValue('txtDiscountPer_' + row),
+                    WarehouseCode: sapWEB.helper.GetStringText('lblWarhouse_' + row),
+                })
+            })
+
+
+            var model = {
+                CardCode: sapWEB.helper.GetString('txtCustomerCode'),
+                NumAtCard: sapWEB.helper.GetString('txtCustomerRefNo'),
+                ContactPersonCode: sapWEB.helper.GetString('ddlContactPerson option:selected'),
+                U_Territory: sapWEB.helper.GetString('txtTerritoty'),
+                DocCurrency: sapWEB.helper.GetString('txtCurrency'),
+                U_ExchRate: sapWEB.helper.GetString('txtExchangeRate'),
+                PayToCode: sapWEB.helper.GetString('ddlBillToID option:selected'),
+                ShipToCode: sapWEB.helper.GetString('ddlShipTOID option:selected'),
+                Series: sapWEB.helper.GetString('ddlSeries option:selected'),
+                DocDate: sapWEB.helper.GetString('txtPostingDate'),
+                SalesEmployee: sapWEB.helper.GetString('ddlEmployee option:selected'),
+                Comments: sapWEB.helper.GetString('txtOtherRemarks'),
+                DocumentLines: dataItems
+            }
+            sapWEB.ajax.jsonPost(salesQuotationSaveURL, { 'model': model },
+                function (response) {
+                    if (response.code == 200) {
+                        sapWEB.dialog.ShowToaster(DialogType.Success, response.message);
+                    }
+                    else {
+                        sapWEB.dialog.ShowToaster(DialogType.Error, response.message);
+                    }
+                },
+                function (error) {
+
+                    sapWEB.dialog.ShowToaster(DialogType.Error, error.responseText);
+
+                })
+
         }
     </script>
 }

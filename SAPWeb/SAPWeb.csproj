@@ -127,6 +127,7 @@
     <Compile Include="Controllers\CustomerController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\InvoiceController.cs" />
     <Compile Include="Controllers\ItemController.cs" />
     <Compile Include="Controllers\SalesQuotationController.cs" />
     <Compile Include="Global.asax.cs">
@@ -135,6 +136,7 @@
     <Compile Include="Models\Activities.cs" />
     <Compile Include="Models\BusinessPartners.cs" />
     <Compile Include="Models\Common.cs" />
+    <Compile Include="Models\ErrorObject.cs" />
     <Compile Include="Models\Expense.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\Leave.cs" />
@@ -2372,6 +2374,8 @@
     <Content Include="Content\theme\less\widgets.less" />
     <Content Include="Views\SalesQuotation\Create.cshtml" />
     <Content Include="Views\SalesQuotation\Index.cshtml" />
+    <Content Include="Views\Invoice\Create.cshtml" />
+    <Content Include="Views\Invoice\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
