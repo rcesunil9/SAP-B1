@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using SAPWeb.Utility;
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -8,8 +9,8 @@
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/theme/plugins/images/favicon.png">
-    <title>SAP Web</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="~/Content/theme/plugins/images/company/brower.png">
+    <title>@ViewBag.Title</title>
     <!-- ===== Bootstrap CSS ===== -->
     <link href="~/Content/theme/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <!-- ===== Plugin CSS ===== -->
@@ -46,30 +47,32 @@
         </div>
         <!-- ===== Top-Navigation ===== -->
         <nav class="navbar navbar-default navbar-static-top m-b-0">
-            <div class="navbar-header">
-                <a class="navbar-toggle font-20 hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse">
-                    <i class="fa fa-bars"></i>
-                </a>
-                <div class="top-left-part">
-                    <a class="logo" href="index.html">
-                        <b>
-                            <img src="~/Content/theme/plugins/images/logo.png" alt="home" />
-                        </b>
-                        <span>
-                            <img src="~/Content/theme/plugins/images/logo-text.png" alt="homepage" class="dark-logo" />
-                        </span>
+            <ul class="nav">
+                <li class="navbar-header">
+                    <a class="navbar-toggle font-20 hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse">
+                        <i class="fa fa-bars"></i>
                     </a>
-                </div>
-                <ul class="nav navbar-top-links navbar-left hidden-xs">
+                    <div class="top-left-part">
+                        <a class="logo" href="#">
+                            <b>
+                                <img src="~/Content/theme/plugins/images/company/logo.png" alt="home" />
+                            </b>
+                            @*<span>
+                            <img src="~/Content/theme/plugins/images/company/logo.png" alt="homepage" class="dark-logo" />
+                        </span>*@
+                        </a>
+                    </div>
+                    @*<ul class="nav navbar-top-links navbar-left hidden-xs">
                     <li>
                         <form role="search" class="app-search hidden-xs">
                             <i class="icon-magnifier"></i>
                             <input type="text" placeholder="Search..." class="form-control">
                         </form>
                     </li>
-                </ul>
-                <ul class="nav navbar-top-links navbar-right pull-right">
-                    <li class="dropdown">
+                </ul>*@
+                    <ul class="nav navbar-top-links navbar-right pull-right">
+
+                        @*<li class="dropdown">
                         <a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
                             <i class="icon-speech"></i>
                             <span class="badge badge-xs badge-danger">6</span>
@@ -210,24 +213,42 @@
                                 </a>
                             </li>
                         </ul>
-                    </li>
-                    <li class="right-side-toggle">
-                        <a class="right-side-toggler waves-effect waves-light b-r-0 font-20" href="javascript:void(0)">
-                            <i class="icon-settings"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                    </li>*@
+                        <li class="right-side-toggle">
+                            <a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
+                                @(SessionUtility.Name)
+                            </a>
+                        </li>
+                        <li class="right-side-toggle">
+                            <a class="dropdown-toggle waves-effect waves-light font-20" data-toggle="dropdown" href="javascript:void(0);">
+                                <i class="icon-settings"></i>
+                            </a><ul class="dropdown-menu mailbox animated slideInUp">
+                                <li>
+                                    <a href="/Auth/Logout">
+                                        <div>
+                                            <p>
+                                                <strong><i class="fa fa-sign-out"></i></strong>
+                                                <span class="pull-right text-muted">Logout</span>
+                                            </p>
+
+                                        </div>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                    </ul>
         </nav>
+            </div>
         <!-- ===== Top-Navigation-End ===== -->
         <!-- ===== Left-Sidebar ===== -->
         <aside class="sidebar">
             <div class="scroll-sidebar">
                 <nav class="sidebar-nav">
                     <ul id="side-menu">
-                        <li>
-                            <a class="active waves-effect" href="@Url.Action("index","Dashboard")" aria-expanded="false"><i class="icon-screen-desktop fa-fw"></i> <span class="hide-menu"> Dashboard </span></a>
-                        </li>
+                        @*<li>
+                                <a class="active waves-effect" href="@Url.Action("index","Dashboard")" aria-expanded="false"><i class="icon-screen-desktop fa-fw"></i> <span class="hide-menu"> Dashboard </span></a>
+                            </li>*@
                         <li class="two-column">
                             <a class="waves-effect" href="@Url.Action("index","SalesQuotation")" aria-expanded="false"><i class="icon-equalizer fa-fw"></i> <span class="hide-menu"> Sales Quotation</span></a>
                         </li>

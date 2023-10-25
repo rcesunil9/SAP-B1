@@ -17,6 +17,11 @@ namespace SAPWeb.Utility
                 returnValue = System.Web.HttpContext.Current.Session[key].ToString().Trim();
             return returnValue;
         }
+        public static string Name
+        {
+            get { return GetFromSession("Name"); }
+            set { System.Web.HttpContext.Current.Session["Name"] = value; }
+        }
         public static string Code
         {
             get { return GetFromSession("Code"); }
@@ -42,6 +47,36 @@ namespace SAPWeb.Utility
         {
             get { return GetFromSession("U_SERIESSQ"); }
             set { System.Web.HttpContext.Current.Session["U_SERIESSQ"] = value; }
+        }
+        public static string U_WhsCode
+        {
+            get { return GetFromSession("U_WhsCode"); }
+            set { System.Web.HttpContext.Current.Session["U_WhsCode"] = value; }
+        }
+        public static string U_Cash
+        {
+            get { return GetFromSession("U_Cash"); }
+            set { System.Web.HttpContext.Current.Session["U_Cash"] = value; }
+        }
+        public static string U_IN_Series
+        {
+            get { return GetFromSession("U_IN_Series"); }
+            set { System.Web.HttpContext.Current.Session["U_IN_Series"] = value; }
+        }
+        public static string U_Sale
+        {
+            get { return GetFromSession("U_Sale"); }
+            set { System.Web.HttpContext.Current.Session["U_Sale"] = value; }
+        }
+        public static string U_DiscRigths
+        {
+            get { return GetFromSession("U_DiscRigths"); }
+            set { System.Web.HttpContext.Current.Session["U_DiscRigths"] = value; }
+        }
+        public static string U_AdminRights
+        {
+            get { return GetFromSession("U_AdminRights"); }
+            set { System.Web.HttpContext.Current.Session["U_AdminRights"] = value; }
         }
     }
 }

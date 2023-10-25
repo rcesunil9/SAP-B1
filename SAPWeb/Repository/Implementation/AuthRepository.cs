@@ -25,7 +25,7 @@ namespace SAPWeb.Repository.Implementation
             ObjUser.User = new List<User>();
             try
             {
-                var Data = objCon.ByQueryReturnDataTable(@"select * from [@A_USER] Where U_Pass = '" + model.Password + "' AND Name='" + model.UserName + "'");
+                var Data = objCon.ByQueryReturnDataTable(@"select * from [@USER] Where U_Pass = '" + model.Password + "' AND Name='" + model.UserName + "'");
                 if (Data != null && Data.Rows.Count > 0)
                 {
                     ObjUser.User = Data.ConvertToList<User>();

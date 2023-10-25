@@ -1,4 +1,5 @@
 ﻿using SAPWeb.Repository.Implementation;
+using SAPWeb.Utility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Web.Mvc;
 
 namespace SAPWeb.Controllers
 {
-    public class ItemController : Controller
+    public class ItemController : BaseController
     {
         ItemRepository itemRepository;
         public ItemController()
@@ -21,7 +22,7 @@ namespace SAPWeb.Controllers
         }
         public JsonResult GetItemDetails(string code)
         {
-            var response = itemRepository.GetItem(code);
+            var response = itemRepository.GetItem(code,SessionUtility.U_WhsCode);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
     }

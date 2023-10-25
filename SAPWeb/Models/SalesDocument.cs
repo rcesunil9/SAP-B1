@@ -3,9 +3,85 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 
 namespace SAPWeb.Models
 {
+    #region SalesQuotation Get List
+    public class QuotationListDefault
+    {
+        public QuotationListDefault()
+        {
+            QuotationDetails = new QuotationListDetail();
+        }
+        public string errorCode { get; set; }
+        public string errorMsg { get; set; }
+        public QuotationListDetail QuotationDetails { get; set; }
+    }
+    public class QuotationListDetail
+    {
+        public QuotationListDetail()
+        {
+            Value = new List<SalesQuotationDetails>();
+        }
+
+        public List<SalesQuotationDetails> Value;
+        [JsonProperty("odata.nextLink")]
+        public string NextLink { get; set; }
+    }
+    public class SalesQuotationDetails
+    {
+        public int DocEntry { get; set; }
+        public int DocNum { get; set; }
+        public string DocType { get; set; }
+        public string HandWritten { get; set; }
+        public string Printed { get; set; }
+        public string DocDate { get; set; }
+        public string DocDueDate { get; set; }
+        public string CardCode { get; set; }
+        public string CardName { get; set; }
+        public string Address { get; set; }
+        public string NumAtCard { get; set; }
+        public double DocTotal { get; set; }
+        public string DocCurrency { get; set; }
+        public double DocRate { get; set; }
+        public string DocumentStatus { get; set; }
+        public string Cancelled { get; set; }
+
+        public string U_VerCode { get; set; }
+        public string U_FiscalDoc { get; set; }
+        public string U_URAPosted { get; set; }
+
+        public string DocumentStatusName
+        {
+            get
+            {
+                string status = "OPEN";
+                if (DocumentStatus == null || DocumentStatus.ToLower() == "bost_open" )
+                {
+                    status = "OPEN";
+                }
+                else if (DocumentStatus == null || DocumentStatus.ToLower() == "o")
+                {
+                    status = "DRAFT";
+                }
+                else if (DocumentStatus == null || DocumentStatus.ToLower() == "a")
+                {
+                    status = "APPROVED";
+                }
+                else if (!string.IsNullOrEmpty(Cancelled) && DocumentStatus.ToLower() == "bost_Close" && Cancelled.ToLower() == "tyes")
+                {
+                    status = "CANCEL";
+                }
+                else
+                {
+                    status = "CLOSE";
+                }
+                return status;
+            }
+        }
+    }
+    #endregion
     public class SalesDocumentsDefault
     {
         public string errorCode { get; set; }
@@ -25,18 +101,21 @@ namespace SAPWeb.Models
         {
             DocumentLines = new List<DataItems>();
         }
+        public int? QuotaionID { get; set; }
         public string EMPID { get; set; }
         public string CardCode { get; set; }
+        public string CardName { get; set; }
         public string NumAtCard { get; set; }
         public int? ContactPersonCode { get; set; }
         public string U_Territory { get; set; }
         public string DocCurrency { get; set; }
         public string PayToCode { get; set; }
         public string ShipToCode { get; set; }
-        public int? Series { get; set; }
-        public DateTime DocDate { get; set; }
+        public int? Series { get; set; } = 0;
+        public DateTime DocDate { get; set; } = DateTime.Today;
         public int? SalesEmployee { get; set; }
         public string Comments { get; set; }
+        public string Rounding { get; set; }
         //public string EMPID { get; set; }
         public int? DocEntry { get; set; }
         public int? DraftDocEntry { get; set; }
@@ -47,15 +126,49 @@ namespace SAPWeb.Models
         public double? U_ExchRate { get; set; }
         //public string OrderType { get; set; }
         //public string CustomerCode { get; set; }
-        //public DateTime? PostingDate { get; set; }
-        public DateTime? DeliveryDate { get; set; }
+        public DateTime? PostingDate { get; set; } = DateTime.Today;
+        public DateTime? DeliveryDate { get; set; } = DateTime.Today;
         //public DateTime DocDate { get; set; }
         //public string PayToCode { get; set; }
         //public string ShipToCode { get; set; }
         //public double? TotalAmount { get; set; }
         //public string Remarks { get; set; }
+
+        public double? RoundingDiffAmount { get; set; }
         public string CreatedBy { get; set; }
         public string WhsCode { get; set; }
+        public string DocumentStatus { get; set; }
+        
+        public string Cancelled { get; set; }
+        public string DocumentStatusName { get {
+                string status = "OPEN";
+                if (DocumentStatus == null || DocumentStatus.ToLower() == "bost_open")
+                {
+                    status = "OPEN";
+                }
+                else if (DocumentStatus == null || DocumentStatus.ToLower() == "o")
+                {
+                    status = "DRAFT";
+                }
+                else if (DocumentStatus == null || DocumentStatus.ToLower() == "a")
+                {
+                    status = "APPROVED";
+                }
+                else if (!string.IsNullOrEmpty(Cancelled) && DocumentStatus.ToLower() == "bost_Close" && Cancelled.ToLower() == "tyes")
+                {
+                    status = "CANCEL";
+                }
+                else
+                {
+                    status = "CLOSE";
+                }
+                return status;
+            } }
+        public int RequestType { get; set; }
+        public int? RETURNID { get; set; }
+        public string U_VerCode { get; set; }
+        public string U_FiscalDoc { get; set; }
+        public string U_URAPosted { get; set; }
         public List<DataItems> DocumentLines { get; set; }
     }
     public class SalesOrderQuotationDocumentItem
@@ -186,7 +299,9 @@ namespace SAPWeb.Models
     public class DataItems
     {
         public int? Linenum { get; set; }
+        public int? QuotaionDetailsID { get; set; }
         public string ItemBrand { get; set; }
+        public string ItemDescription { get; set; }
         public string ItemItemCode { get; set; }
         public string ItemSize { get; set; }
         public double? ItemPkgCarton { get; set; }
@@ -204,6 +319,9 @@ namespace SAPWeb.Models
         public int? BaseLine { get; set; }
         public double? DiscountPercent { get; set; }
         public string WarehouseCode { get; set; }
+        public decimal? Weight { get; set; }
+        public decimal? InStock { get; set; }
+        public decimal? ItemCost { get; set; }
     }
 
     public class DataTermsAndCondition
@@ -357,6 +475,7 @@ namespace SAPWeb.Models
         public string U_ORDERTYPE { get; set; }
 
         public string CardCode { get; set; }
+        public string CardName { get; set; }
         public string U_CONTAINERTYPE { get; set; }
         public string U_BRANDINGTYPE { get; set; }
 
@@ -429,8 +548,17 @@ namespace SAPWeb.Models
         public string U_LASTAPPROVEDDATETIME { get; set; }
 
         public int? AttachmentEntry { get; set; }
+        public decimal? DocTotal { get; set; }
+        public string DocumentStatus { get; set; } = string.Empty;
+        public string Cancelled { get; set; } = string.Empty;
+        public double? RoundingDiffAmount { get; set; }
+        public string Rounding { get; set; }
 
         public List<DocumentLines> DocumentLines { get; set; }
+        public string U_Territory { get; set; }
+        public string U_VerCode { get; set; }
+        public string U_FiscalDoc { get; set; }
+        public string U_URAPosted { get; set; }
     }
 
     public class DocumentLines
@@ -438,12 +566,14 @@ namespace SAPWeb.Models
         public int? LineNum { get; set; }
 
         public string U_BRAND { get; set; }
+        public string ItemDescription { get; set; }
         public string ItemCode { get; set; }
         public string U_SIZE { get; set; }
         public double? U_PKGCARTON { get; set; }
         public double? U_NOOFCARTON { get; set; }
         public double? Quantity { get; set; }
         public double? UnitPrice { get; set; }
+        public double? DiscountPercent { get; set; }
         public string TaxCode { get; set; }
         public string UseBaseUnits { get; set; }
         public int? UoMEntry { get; set; }

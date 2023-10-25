@@ -236,8 +236,33 @@ namespace SAPWeb.App_Start
         }
 
         #endregion
+        #region IncomingPayments
+        public Dictionary<int, string> SAPIncomingPayments(string Data)
+        {
+            var result = this.Interact((url + "IncomingPayments"), "POST", Data);
+            return result;
+        }
 
+        #endregion
         #region SalesQuotations
+        public QuotationListDetail SAPGetSalesQuotations(string quotations)
+        {
+            QuotationListDetail Data = new QuotationListDetail();
+            var Login = SAPLogin();
+            if (Login.FirstOrDefault().Key == 1)
+            {
+                var result = this.Interact(url + quotations, "GET");
+                if (result.FirstOrDefault().Key == 1)
+                {
+                    Data = JsonConvert.DeserializeObject<QuotationListDetail>(result.FirstOrDefault().Value);
+                    if (Data.Value != null && Data.Value.Count > 0)
+                    {
+                        Data.Value = Data.Value.OrderByDescending(x => x.DocEntry).ToList();
+                    }
+                }
+            }
+            return Data;
+        }
 
         public Documents SAPGetSalesQuotations(int DocEntry)
         {
@@ -260,7 +285,7 @@ namespace SAPWeb.App_Start
             var result = this.Interact((url + "Quotations"), "POST", Data);
             return result;
         }
-
+        
         public Dictionary<int, string> SAPUpdateToSalesQuotations(string Data, int DocEntry)
         {
             var result = this.Interact_Update((url + "Quotations(" + DocEntry + ")"), "PATCH", Data);
@@ -388,6 +413,25 @@ namespace SAPWeb.App_Start
         #endregion
 
         #region SalesInvoices
+        public QuotationListDetail SAPGetSalesInvoicesList(string quotations)
+        {
+            QuotationListDetail Data = new QuotationListDetail();
+            var Login = SAPLogin();
+            if (Login.FirstOrDefault().Key == 1)
+            {
+                var result = this.Interact(url + quotations, "GET");
+                if (result.FirstOrDefault().Key == 1)
+                {
+                    Data = JsonConvert.DeserializeObject<QuotationListDetail>(result.FirstOrDefault().Value);
+                    if(Data.Value!=null && Data.Value.Count>0)
+                    {
+                        Data.Value = Data.Value.OrderByDescending(x => x.DocEntry).ToList();
+                    }
+                }
+            }
+            return Data;
+        }
+
 
         public Documents SAPGetSalesInvoices(int DocEntry)
         {

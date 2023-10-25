@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace SAPWeb.Controllers
 {
-    public class CustomerController : Controller
+    public class CustomerController : BaseController
     {
         CustomerRepository customerRepository;
         public CustomerController()
@@ -43,6 +43,12 @@ namespace SAPWeb.Controllers
         public JsonResult GetSalesQuotation(string code)
         {
             var response = customerRepository.GetSalesQuotation(code);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
+        [HttpGet]
+        public JsonResult GetARInvoice(string code)
+        {
+            var response = customerRepository.GetARInvoice(code);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
     }

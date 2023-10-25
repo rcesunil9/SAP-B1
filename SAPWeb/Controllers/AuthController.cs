@@ -30,7 +30,7 @@ namespace SAPWeb.Controllers
                     return View(model);
                 }
                 AddSession(objUser.User.FirstOrDefault());
-                return RedirectToAction("", "Dashboard");
+                return RedirectToAction("", "SalesQuotation");
             }
             else
             {
@@ -43,10 +43,18 @@ namespace SAPWeb.Controllers
         private void AddSession(User user)
         {
             SessionUtility.Code = user.Code;
+            SessionUtility.Name = user.Name;
             SessionUtility.U_CashAc = user.U_CashAc;
             SessionUtility.U_WHS = user.U_WHS;
             SessionUtility.U_SERIES = user.U_SERIES;
             SessionUtility.U_SERIESSQ = user.U_SERIESSQ;
+            SessionUtility.U_Cash = user.U_Cash;
+            SessionUtility.U_WhsCode = user.U_WhsCode;
+            SessionUtility.U_DiscRigths = user.U_DiscRigths;
+            SessionUtility.U_IN_Series = user.U_IN_Series;
+            SessionUtility.U_Sale = user.U_Sale;
+            SessionUtility.U_AdminRights = user.U_AdminRights;
+
         }
         public ActionResult Logout()
         {
@@ -61,11 +69,11 @@ namespace SAPWeb.Controllers
                     var httpCookie = Response.Cookies[cookie];
                     if (httpCookie != null) httpCookie.Expires = DateTime.Now.AddDays(-1);
                 }
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "Auth");
             }
             catch (Exception ex)
             {
-                return RedirectToAction("Index", "Login");
+                return RedirectToAction("Index", "Auth");
             }
         }
     }

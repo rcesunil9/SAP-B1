@@ -252,7 +252,18 @@ sapWEB.helper = (function () {
 		else
 			return "<a href='#' class='btn  btn-sm btn-warning' ><i class='fa fa-thumbs-down'></i></a>";
 	}
-
+	var filedownload = function (url,filename) {
+		var a = document.createElement("a");
+		a.href = url;
+		a.download = filename;
+		// Trigger the download
+		a.style.display = "none";
+		document.body.appendChild(a);
+		a.click();
+		// Clean up
+		window.URL.revokeObjectURL(a.href);
+		document.body.removeChild(a);
+	}
 	return {
 		GetString: convertString,
 		GetStringAttribute: convertStringAttribute,
@@ -280,7 +291,8 @@ sapWEB.helper = (function () {
 		GridHelper: gridHelper,
 		DataNotFound: dataNotFound,
 		ActiveInActiveIcon: activeInActiveIcon,
-		WorkingStatus: workingStatus
+		WorkingStatus: workingStatus,
+		FileDownload: filedownload
 
 	}
 

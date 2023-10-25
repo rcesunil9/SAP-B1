@@ -14,5 +14,6 @@ namespace SAPWeb.Repository.Interface
         AddressDetailDefault GetBillToId(string code);
         AddressDetailDefault GetShipToId(string code);
         CommonSalesQuotation GetSalesQuotation(string code);
+        CommonSalesQuotation GetARInvoice(string code);
     }
 }

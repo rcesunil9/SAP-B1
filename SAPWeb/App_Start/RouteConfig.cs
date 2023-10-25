@@ -18,6 +18,16 @@ namespace SAPWeb
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Auth", action = "Index", id = UrlParameter.Optional }
             );
+            routes.MapRoute(
+                name: "SalesQuotationCreate",
+                url: "SalesQuotation/Create/{id}/{type}",
+                defaults: new { controller = "SalesQuotation", action = "Create" }
+            );
+            routes.MapRoute(
+                name: "InvoiceCreate",
+                url: "Invoice/Create/{id}/{type}",
+                defaults: new { controller = "Invoice", action = "Create" }
+            );
         }
     }
 }

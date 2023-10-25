@@ -257,7 +257,7 @@ namespace SAPWeb.App_Start
                     objCommand.CommandType = CommandType.StoredProcedure;
                     for (Pcount = 0; Pcount <= ParameterCount - 1; Pcount++)
                     {
-                        if (ParaMeterNm[Pcount] == "RETURNID")
+                        if (ParaMeterNm[Pcount] == "RETURNID" || ParaMeterNm[Pcount] == "@RETURNID")
                         {
                             objCommand.Parameters.Add(ParaMeterNm[Pcount], SqlDbType.Int).Direction = ParameterDirection.Output;
                         }
@@ -268,10 +268,10 @@ namespace SAPWeb.App_Start
                     }
                 }
 
-                if (objCommand.Parameters.Contains("RETURNID"))
+                if (objCommand.Parameters.Contains("@RETURNID"))
                 {
                     objCommand.ExecuteScalar();
-                    ReturnValMax = Convert.ToInt32(objCommand.Parameters["RETURNID"].Value);
+                    ReturnValMax = Convert.ToInt32(objCommand.Parameters["@RETURNID"].Value);
                 }
                 else
                 {

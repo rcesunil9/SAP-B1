@@ -80,7 +80,7 @@ namespace SAPWeb.Repository.Implementation
             try
             {
                 string ParamVal = q.Trim();
-                var Data = objCon.ByQueryReturnDataTable(@"SELECT CardCode,CardName,Currency,SlpCode FROM OCRD WHERE CardCode LIKE '%" + q+"%'");
+                var Data = objCon.ByQueryReturnDataTable(@"SELECT CardCode,CardName,t0.Currency,SlpCode,U_Territory,t1.Rate AS Rate FROM OCRD t0 LEFT JOIN ORTT t1 ON t1.Currency=t0.Currency and t1.Currency='USD' and CONVERT(DATE, t1.RateDate) >= CONVERT(DATE, GETDATE()) WHERE CardCode LIKE '%" + q+ "%' OR CardName LIKE '%" + q+"%'");
                 if(Data!=null && Data.Rows.Count>0)
                 {
                     ObjUser.Customer = Data.ConvertToList<Customer>();
@@ -141,13 +141,51 @@ namespace SAPWeb.Repository.Implementation
             objItemDefault.SeriesQuotation = new List<SeriesQuotation>();
             try
             {
-                string ParamName = "@CODE|@seriessq";
-                string ParamVal = code.Trim() + "|" + SessionUtility.U_SERIESSQ;
+                string ParamName = "@CODE|@seriessq|@LogiID";
+                string ParamVal = code.Trim() + "|" + SessionUtility.U_SERIES+"|"+SessionUtility.Code;
                 var dtItemDetails = objCon.ByProcedureReturnDataSet("SAP_SalesQuotationHeaderList", 2, ParamName, ParamVal);
                 if(dtItemDetails!=null && dtItemDetails.Tables.Count > 0)
                 {
-                    objItemDefault.ContactPerson = dtItemDetails.Tables[1]?.ConvertToList<ContactPerson>();
-                    objItemDefault.SalesEmployee = dtItemDetails.Tables[0]?.ConvertToList<SalesEmployee>();
+                    objItemDefault.ContactPerson = dtItemDetails.Tables[0]?.ConvertToList<ContactPerson>();
+                    objItemDefault.SalesEmployee = dtItemDetails.Tables[1]?.ConvertToList<SalesEmployee>();
+                    objItemDefault.ShipToAddressDetail = dtItemDetails.Tables[2]?.ConvertToList<AddressDetail>();
+                    objItemDefault.BillToAddressDetail = dtItemDetails.Tables[3]?.ConvertToList<AddressDetail>();
+                    objItemDefault.SeriesQuotation = dtItemDetails.Tables[4]?.ConvertToList<SeriesQuotation>();
+                    objItemDefault.errorCode = "1";
+                    objItemDefault.errorMsg = "";
+                }
+                else
+                {
+                    objItemDefault.errorCode = "0";
+                    objItemDefault.errorMsg = "Data Not Found.";
+                }
+            }
+            catch (Exception ex)
+            {
+                objItemDefault.errorCode = "0";
+                objItemDefault.errorMsg = ex.Message;
+                return objItemDefault;
+            }
+            return objItemDefault;
+        }
+
+        public CommonSalesQuotation GetARInvoice(string code)
+        {
+            CommonSalesQuotation objItemDefault = new CommonSalesQuotation();
+            objItemDefault.SalesEmployee = new List<SalesEmployee>();
+            objItemDefault.ContactPerson = new List<ContactPerson>();
+            objItemDefault.ShipToAddressDetail = new List<AddressDetail>();
+            objItemDefault.BillToAddressDetail = new List<AddressDetail>();
+            objItemDefault.SeriesQuotation = new List<SeriesQuotation>();
+            try
+            {
+                string ParamName = "@CODE|@seriessq|@LogiID";
+                string ParamVal = code.Trim() + "|" + SessionUtility.U_IN_Series + "|" + SessionUtility.Code;
+                var dtItemDetails = objCon.ByProcedureReturnDataSet("SAP_ARInoviceHeaderList", 2, ParamName, ParamVal);
+                if (dtItemDetails != null && dtItemDetails.Tables.Count > 0)
+                {
+                    objItemDefault.ContactPerson = dtItemDetails.Tables[0]?.ConvertToList<ContactPerson>();
+                    objItemDefault.SalesEmployee = dtItemDetails.Tables[1]?.ConvertToList<SalesEmployee>();
                     objItemDefault.ShipToAddressDetail = dtItemDetails.Tables[2]?.ConvertToList<AddressDetail>();
                     objItemDefault.BillToAddressDetail = dtItemDetails.Tables[3]?.ConvertToList<AddressDetail>();
                     objItemDefault.SeriesQuotation = dtItemDetails.Tables[4]?.ConvertToList<SeriesQuotation>();

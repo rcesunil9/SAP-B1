@@ -1,7 +1,119 @@
-﻿
+﻿@using SAPWeb.Utility;
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Sales Quotation List";
 }
+<style>
+    #tblSalesOrder tbody tr {
+        height: 30px; /* Adjust the height as needed */
+    }
 
-<h2>Index</h2>
+    #tblSalesOrder tbody td {
+        padding: 5px; /* Adjust the padding as needed */
+    }
+</style>
+<div class="row">
+    <div class="col-md-6">
+        <h3 class="box-title m-b-0">@ViewBag.Title</h3>
+    </div>
+    <div class="col-md-6 text-right">
+        <a class="btn btn-danger btn-1e" href="@Url.Action("Create","SalesQuotation")"><i class="fa fa-plus"></i></a>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12">
+        <div class="white-box">
+            <div class="table-responsive">
+                <table class="table" id="tblSalesOrder" width="100%">
+                    <thead>
+                        <tr>
+                            <th>CardCode</th>
+                            <th>CardName</th>
+                            <th>DocEntry</th>
+                            <th>DocNumber</th>
+                            <th>DocumentDate</th>
+                            <th>OwnerName</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+            var reportURL = '@Url.Action("GetReport", "SalesQuotation", new { area = "" })';
+        $(document).ready(function () {
+            salesQuotationGetURL = '@Url.Action("GetSalesQuotation", "SalesQuotation", new { area = "" })';
+            if ('@SessionUtility.U_AdminRights' == "Y") {
+                paging = true;
+            }
+            sapWEB.SalesQuotation.Init();
+        })
+            function getReport(docEntry) {
+                sapWEB.ajax.jsonGet(reportURL + "?id="+docEntry,
+                    function (response) {
+                        if (response.errorCode == 1) {
+                            sapWEB.dialog.ShowToaster(DialogType.Success, response.errorMsg);
+                            sapWEB.helper.FileDownload(response.path, response.fileName)
+                            //window.open(response.path, '_blank');
+                        }
+                        else {
+                            sapWEB.dialog.ShowToaster(DialogType.Error, response.errorMsg);
+                        }
+                    },
+                    function (error) {
+
+                        sapWEB.dialog.ShowToaster(DialogType.Error, error.responseText);
+
+                    })
+        }
+        const itemsPerPage = 20;
+        let skip = 0;
+        let currentPage = Math.floor(skip / itemsPerPage) + 1;
+            $(document).on('click', '#tblSalesOrder_previous', function () {
+                if (currentPage > 1) {
+                    currentPage--;
+                    prevLink = (currentPage - 1) * itemsPerPage;
+                }
+                else {
+                    prevLink = -1;
+                    firstLoad = true;
+                }
+                if (prevLink == 0) {
+                    firstLoad = true;
+                }
+                if (prevLink>=0) {
+                    sapWEB.SalesQuotation.LoadGrid(salesQuotationGetURL + "?skip=" + prevLink)
+                    //FnprevLink();
+                }
+            });
+            $(document).on('click', '#tblSalesOrder_next', function () {
+                if (nextLink) {
+                    currentPage++;
+                    prevLink = (currentPage - 1) * itemsPerPage;
+                    // Navigate to the next page using nextLink
+                    //prevLink = (nextLink.split('$')[1]).split('=')[1]
+                    sapWEB.SalesQuotation.LoadGrid(salesQuotationGetURL + "?" + nextLink.split('$')[1]);
+                    //FnprevLink();
+                }
+            });
+            function FnprevLink() {
+                    var countPage = 20;
+                if (nextLink) {
+                    var pageLink = (nextLink.split('$')[1]).split('=');
+                    var currentPageNo = pageLink[1];
+                    var prevNumber = 0;
+                    if (currentPageNo >= 20) {
+                        prevNumber = currentPageNo - countPage;
+                    }
+                    else {
+                        prevNumber = 0;
+                    }
+                    prevLink = "skip=" + prevNumber;
+                }
+            }
+    </script>
+}
 

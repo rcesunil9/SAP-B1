@@ -47,6 +47,13 @@ namespace SAPWeb.Models
         public string U_WHS { get; set; }
         public string U_SERIES { get; set; }
         public string U_SERIESSQ { get; set; }
+        public string U_WhsCode { get; set; }
+        public string U_Cash { get; set; }
+        public string U_IN_Series { get; set; }
+        public string U_Sale { get; set; }
+        public string U_DiscRigths { get; set; }
+        public string U_AdminRights { get; set; }
+
 
     }
 

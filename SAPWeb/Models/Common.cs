@@ -230,6 +230,8 @@ namespace SAPWeb.Models
         public string EmailID { get; set; }
         public string GSTNumber { get; set; }
         public string Currency { get; set; }
+        public string U_Territory { get; set; }
+        public decimal? Rate { get; set; }
     }
 
     #endregion
@@ -362,6 +364,9 @@ namespace SAPWeb.Models
         public string ManSerNum { get; set; }
         public string VendorCode { get; set; }
         public decimal ItemPrice { get; set; }//ashwin added 2023-07-20
+        public decimal ItemCost { get; set; }
+        public decimal InStock  { get; set; }
+        public decimal Weight  { get; set; }
 
     }
     #endregion
@@ -1365,6 +1370,7 @@ namespace SAPWeb.Models
     }
 
     #endregion
+ 
 
 }
 

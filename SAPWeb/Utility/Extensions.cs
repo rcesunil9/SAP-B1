@@ -10,6 +10,11 @@ namespace SAPWeb.Utility
 {
     public static class Extensions
     {
+        //ashwin add
+        public static string ToThousandNoDecimal(this decimal value)
+        {
+            return Math.Round(value, 0).ToString("###0");
+        }
         /// <summary>
         /// Convert datatable to list of model.
         /// </summary>

@@ -33,7 +33,8 @@ namespace SAPWeb
                 "~/Content/Common/tableHelper.js"
                 ));
             bundles.Add(new ScriptBundle("~/SAPWeb/page").Include(
-               "~/Content/Page/SalesQuotation.js"
+               "~/Content/Page/SalesQuotation.js",
+               "~/Content/Page/ARInvoice.js"
                ));
         }
     }

@@ -1,9 +1,23 @@
-﻿@using SAPWeb.Models;
+﻿@using SAPWeb.Utility;
+@using SAPWeb.Models;
+@model SalesOrderQuotationDocument
 @{
     ViewBag.Title = "Sales Quotation";
+    string dicRigth = string.Empty;
+    string adminRigth = "hide";
+    if (SessionUtility.U_DiscRigths.ToLower() != "y")
+    {
+        dicRigth = "readonly";
+    }
+    if (SessionUtility.U_AdminRights == "Y")
+    {
+        adminRigth = "";
+    }
 }
 
 <div class="row">
+    <input type="hidden" id="hdnDocEntry" value="@Model.DocEntry" />
+    <input type="hidden" id="hdnQuotaionID" value="@Model.QuotaionID" />
     <div class="col-12">
         <div class="white-box">
             <h3 class="box-title m-b-0">Create @ViewBag.Title</h3>
@@ -12,13 +26,13 @@
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="txtCustomer">Customer Code *</label>
-                        <input type="text" class="form-control" id="txtCustomerCode" placeholder="Enter Customer">
+                        <input type="text" class="form-control" id="txtCustomerCode" value="@Model.CardCode" placeholder="Enter Customer">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="txtName">Customer Name</label>
-                        <input type="text" class="form-control" id="txtCustomerName" placeholder="Enter Name" readonly>
+                        <input type="text" class="form-control" id="txtCustomerName" value="@Model.NumAtCard" placeholder="Enter Name">
                     </div>
                 </div>
                 <div class="col-md-2">
@@ -29,16 +43,16 @@
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="ddlContactPerson">Contact Person</label>
-                        <select id="ddlContactPerson" class="form-control">
+                        <label for="ddlContactPerson">Contact Person *</label>
+                        <select id="ddlContactPerson" class="form-control" data-contact="@Model.ContactPersonCode">
                             <option>select contact person</option>
                         </select>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="ddlEmployee">Sales Employeee</label>
-                        <select id="ddlEmployee" class="form-control">
+                        <label for="ddlEmployee">Sales Employeee *</label>
+                        <select id="ddlEmployee" class="form-control" data-employee="@Model.SalesEmployee">
                             <option>Select Employee</option>
                         </select>
                     </div>
@@ -46,7 +60,7 @@
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="txtTerritoty">Territoty</label>
-                        <input id="txtTerritoty" class="form-control" placeholder="Territoty" readonly>
+                        <input id="txtTerritoty" class="form-control" placeholder="Territoty" value="@(Model.U_Territory)" readonly>
                     </div>
                 </div>
             </div>
@@ -54,19 +68,19 @@
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="ddlLocalCurrency">Document Currency </label>
-                        <input type="text" class="form-control" id="txtCurrency" placeholder="Currency" readonly>
+                        <input type="text" class="form-control" id="txtCurrency" placeholder="Currency" value="@Model.DocCurrency" readonly>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="txtExchangeRate">Exchange Rate </label>
-                        <input id="txtExchangeRate " class="form-control" placeholder="Status">
+                        <input id="txtExchangeRate" readonly class="form-control" placeholder="Exchange Rate" value="@Model.U_ExchRate">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="ddlBillToID">BillTo ID</label>
-                        <select id="ddlBillToID" class="form-control">
+                        <label for="ddlBillToID">BillTo ID *</label>
+                        <select id="ddlBillToID" class="form-control" data-BillTo="@Model.PayToCode">
                             <option>Select Bill To ID</option>
                         </select>
                     </div>
@@ -79,8 +93,8 @@
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="ddlShipTOID ">ShipTO ID </label>
-                        <select id="ddlShipTOID" class="form-control">
+                        <label for="ddlShipTOID ">ShipTO ID *</label>
+                        <select id="ddlShipTOID" class="form-control" data-ShipTo="@Model.ShipToCode">
                             <option>Select Ship TO ID</option>
                         </select>
                     </div>
@@ -96,26 +110,60 @@
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="txtSeries">Series</label>
-                        <select id="ddlSeries" class="form-control">
-                            </select>
+                        <select id="ddlSeries" class="form-control" data-series="@Model.Series">
+                        </select>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="txtQuotationNumber ">Quotation Number </label>
-                        <input type="text" class="form-control" id="txtQuotationNumber" readonly>
+                        <input type="text" class="form-control" id="txtQuotationNumber" value="@Model.DocEntry" readonly>
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="txtPostingDate">Posting Date</label>
-                        <input type="text" class="form-control mydatepicker" id="txtPostingDate" placeholder="dd/mm/yyyy">
+                        <label for="txtPostingDate">Posting Date *</label>
+                        <input type="text" class="form-control mydatepicker" id="txtPostingDate" value="@Model.PostingDate.Value.ToString("dd/MM/yyyy")" placeholder="dd/mm/yyyy" readonly>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtPostingDate">Due Date *</label>
+                        <input type="text" class="form-control mydatepicker" id="txtDueDate" value="@Model.DeliveryDate.Value.ToString("dd/MM/yyyy")" placeholder="dd/mm/yyyy">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="txtPostingDate">Document Date *</label>
+                        <input type="text" class="form-control mydatepicker" id="txtDocumentDate" value="@Model.DocDate.ToString("dd/MM/yyyy")" placeholder="dd/mm/yyyy">
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
                         <label for="txtStatus ">Status </label>
-                        <input type="text" class="form-control" id="txtStatus" readonly>
+                        <input type="text" class="form-control" id="txtStatus" value="@Model.DocumentStatusName" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row @adminRigth">
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label for="ddlStatus ">Status </label>
+                        <select id="ddlStatus" class="form-control" @((bool)ViewBag.Approved == false ?"":"disabled")>
+
+                            @if (Model.DocumentStatusName == "OPEN" && !string.IsNullOrEmpty(Model.DocumentStatus))
+                            {
+
+                                <option value="O">DRAFT</option>
+                                <option value="A" selected>APPROVED</option>
+                            }
+                            else
+                            {
+                                <option value="O" selected>DRAFT</option>
+                                <option value="A">APPROVED</option>
+                            }
+                        </select>
                     </div>
                 </div>
             </div>
@@ -137,36 +185,115 @@
                                             <th class="text-center" width="5%"> Discount % </th>
                                             <th class="text-center" width="5%"> Discount Amount</th>
                                             <th class="text-center"> TaxCode </th>
-                                            <th class="text-center" " width="5%"> TaxAmount </th>
                                             <th class="text-center">Line Total</th>
+                                            <th class="text-center" width="5%"> TaxAmount </th>
                                             <th class="text-center"> Warehouse </th>
                                             <th></th>
                                         </tr>
                                     </thead><!-- /thead -->
                                     <tbody id="tbody">
-                                        <tr class="text-center">
-                                            <td><label id="lblSrNo_1">1</label></td>
-                                            <td><input id="txtItemCode_1" type="text" class="form-control itemsearch" value=""></td>
-                                            <td><input id="txtItemName_1" class="form-control form-control-sm" readonly /></td>
-                                            <td><input id="txtQTY_1" type="text" class="form-control quantity form-control-sm custom-select-sm form-control-sm-x numericdecimal" value=""> </td>
-                                            <td><input id="txtPrice_1" type="text" class="form-control rate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
-                                            <td> <input id="txtTotalBefore_1" type="text" class="form-control itemamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
-                                            <td> <input id="txtDiscountPer_1" type="text" class="form-control disrate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value=""> </td>
-                                            <td><input id="txtDiscountAmount_1" type="text" class="form-control disamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
-                                            <td> 
-                                                <select id="ddlTaxCode_1" class="form-control">
-                                                    <option value="">Select TaxCode</option>
-                                                    @foreach (var item in ViewBag.TaxCode as List<TaxCode>)
-                                                    {
-                                                        <option value="@item.Value">@item.Name</option>
-                                                    }
-                                                </select>
-                                            </td>
-                                            <td widtd="5%"> <input id="txtAmount_1" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
-                                            <td><input id="txtLineQTY_1" type="text" class="form-control form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
-                                            <td> <label id="lblWarhouse_1"></label> </td>
-                                            <td></td>
-                                        </tr>
+                                        @if (Model.DocumentLines.Count > 0)
+                                        {
+                                            int count = 0;
+                                            foreach (var item in Model.DocumentLines)
+                                            {
+                                                count++;
+
+                                                <tr class="text-center">
+                                                    <td>
+                                                        <input type="hidden" id="hdnQuotaionDetailsID_@(count)" value="@(item.QuotaionDetailsID)" />
+                                                        <label id="lblSrNo_@(count)">@(count)</label>
+                                                    </td>
+                                                    <td><input id="txtItemCode_@(count)" type="text" class="form-control itemsearch" value="@(item.ItemItemCode)"></td>
+                                                    <td><input id="txtItemName_@(count)" class="form-control form-control-sm itemsearch" value="@(item.ItemDescription)" /></td>
+                                                    <td><input id="txtQTY_@(count)" type="text" class="form-control quantity form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="@item.ItemQuantity"> </td>
+                                                    <td><input id="txtPrice_@(count)" readonly type="text" class="form-control rate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="@item.ItemPrice">  </td>
+                                                    <td> <input id="txtTotalBefore_@(count)" type="text" class="form-control itemamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
+                                                    <td> <input @dicRigth id="txtDiscountPer_@(count)" type="text" class="form-control disrate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="@item.DiscountPercent"> </td>
+                                                    <td><input id="txtDiscountAmount_@(count)" type="text" class="form-control disamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
+                                                    <td>
+                                                        <select id="ddlTaxCode_@(count)" class="form-control taxcode">
+                                                            <option value="">Select TaxCode</option>
+                                                            @foreach (var tax in ViewBag.TaxCode as List<TaxCode>)
+                                                            {
+                                                                if (tax.Code == item.ItemTax)
+                                                                {
+                                                                    <option value="@tax.Code" data-rate="@(tax.Value)" selected>@tax.Name</option>
+                                                                }
+                                                                else
+                                                                {
+
+                                                                    <option value="@tax.Code" data-rate="@(tax.Value)">@tax.Name</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    <td><input id="txtLineQTY_@(count)" type="text" class="form-control form-control-sm lineAmount custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
+                                                    <td widtd="5%"> <input id="txtAmount_@(count)" type="text" class="form-control taxAmount  form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
+                                                    <td>
+                                                        <select id="ddlWarCode_@(count)" class="form-control warecode">
+                                                            <option value="">Select TaxCode</option>
+                                                            @foreach (var ware in ViewBag.WarHouseCode as List<WareHouse>)
+                                                            {
+                                                                if (ware.Code == item.WarehouseCode)
+                                                                {
+                                                                    <option value="@ware.Code" selected>@ware.Name</option>
+                                                                }
+                                                                else
+                                                                {
+
+                                                                    <option value="@ware.Code">@ware.Name</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </td>
+                                                    @*<td> <label id="lblWarhouse_@(count)">@SessionUtility.U_WhsCode</label> </td>*@
+                                                    <td></td>
+                                                </tr>
+
+                                            }
+                                        }
+                                        else
+                                        {
+
+
+                                            <tr class="text-center">
+                                                <td>
+                                                    <input type="hidden" id="hdnQuotaionDetailsID_1" />
+                                                    <label id="lblSrNo_1">1</label>
+                                                </td>
+                                                <td><input id="txtItemCode_1" type="text" class="form-control itemsearch" value=""></td>
+                                                <td><input id="txtItemName_1" class="form-control form-control-sm itemsearch" /></td>
+                                                <td><input id="txtQTY_1" type="text" class="form-control quantity form-control-sm custom-select-sm form-control-sm-x numericdecimal" value=""> </td>
+                                                <td><input id="txtPrice_1" readonly type="text" class="form-control rate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
+                                                <td> <input id="txtTotalBefore_1" type="text" class="form-control itemamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
+                                                <td> <input @dicRigth id="txtDiscountPer_1" type="text" class="form-control disrate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value=""> </td>
+                                                <td><input id="txtDiscountAmount_1" type="text" class="form-control disamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
+                                                <td>
+                                                    <select id="ddlTaxCode_1" class="form-control taxcode">
+                                                        <option value="">Select TaxCode</option>
+                                                        @foreach (var item in ViewBag.TaxCode as List<TaxCode>)
+                                                        {
+                                                            <option value="@item.Code" data-rate="@(item.Value)">@item.Name</option>
+                                                        }
+                                                    </select>
+                                                </td>
+                                                <td><input id="txtLineQTY_1" type="text" class="form-control form-control-sm lineAmount custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
+                                                <td widtd="5%"> <input id="txtAmount_1" type="text" class="form-control taxAmount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
+                                                <td>
+                                                    <select id="ddlWarCode_1" class="form-control warecode">
+                                                        <option value="">Select WarHouse</option>
+                                                        @foreach (var ware in ViewBag.WarHouseCode as List<WareHouse>)
+                                                        {
+                                                            <option value="@ware.Code" selected>@ware.Name</option>
+                                                        }
+                                                    </select>
+                                                </td>
+                                                @* <td> <label id="lblWarhouse_1">@SessionUtility.U_WhsCode</label> </td>*@
+                                                <td></td>
+                                            </tr>
+                                        }
+
                                     </tbody>
                                 </table>
                             </div>
@@ -179,7 +306,7 @@
                 <div class="col-lg-6 col-sm-6 col-xs-6">
                     <div class="form-group">
                         <label for="exampleInputEmail1">Other Remarks</label>
-                        <textarea type="text" class="form-control" id="txtOtherRemarks" rows="6"></textarea>
+                        <textarea type="text" class="form-control" id="txtOtherRemarks" rows="6">@Model.Comments</textarea>
                     </div>
                 </div>
                 <div class="col-lg-6 col-sm-6 col-xs-6">
@@ -194,10 +321,26 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                                <label for="exampleInputEmail1"><b>Total Discount % :</b></label>
+                                <label for="exampleInputEmail1"><b>Total Discount :</b></label>
                             </td>
                             <td class="text-right">
                                 <label id="lblTotalDiscount"></label>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <label for="exampleInputEmail1"><b><input type="checkbox" id="rdtRoundOff" @(Model.Rounding == "tYES" ? "checked" : "") />   Rounding :</b></label>
+                            </td>
+                            <td class="text-right">
+                                @if (Model.Rounding == "tYES")
+                                {
+                                    <input type="text" id="txtRounding" style="max-width:50% !important;" class="numericdecimal" value="@Model.RoundingDiffAmount" />
+                                }
+                                else
+                                {
+
+                                    <input type="text" id="txtRounding" style="max-width:50% !important;" class="numericdecimal" value="@Model.RoundingDiffAmount" disabled="disabled" />
+                                }
                             </td>
                         </tr>
                         <tr>
@@ -210,7 +353,7 @@
                         </tr>
                         <tr>
                             <td class="text-right">
-                        <label for="exampleInputEmail1"><b>Document Total  :</b></label>
+                                <label for="exampleInputEmail1"><b>Document Total  :</b></label>
                             </td>
                             <td class="text-right">
                                 <label id="lblDocumentTotal"></label>
@@ -221,80 +364,63 @@
             </div>
             <hr />
             <div class="text-right">
-                <button type="submit" class="btn btn-success waves-effect waves-light m-r-10 btnSave">Submit</button>
-                <button type="submit" class="btn btn-inverse waves-effect waves-light">Cancel</button>
+                @*@if (Model.DocumentStatus == null || Model.DocumentStatus.Contains("Open") || Model.DocumentStatus.Contains("O"))*@
+                @if ((bool)ViewBag.Approved == false)
+                {
+                    <button type="submit" class="btn btn-success waves-effect waves-light m-r-10 btnSave">Submit</button>
+                }
+                <a href="/SalesQuotation" class="btn btn-inverse waves-effect waves-light">Cancel</a>
             </div>
         </div>
     </div>
 </div>
 @section scripts{
     <script>
-        $(document).ready(function () {
-            customerCodeURL = '@Url.Action("GetCustomer", "Customer", new { area = "" })';
-            contactPersonURL = '@Url.Action("GetContactPerson", "Customer", new { area = "" })';
-            billTOIdURL = '@Url.Action("GetBillAddress", "Customer", new { area = "" })';
-            shipToIDURL = '@Url.Action("GetShipAddress", "Customer", new { area = "" })';
-            salesQuotationHeaderURL = '@Url.Action("GetSalesQuotation", "Customer", new { area = "" })';
-            itemURL = '@Url.Action("GetItemDetails", "Item", new { area = "" })';
-            sapWEB.SalesQuotation.Init();
-            $(".btnSave").off('click').on('click', function () {
-                saveSalesOrder();
-            })
-            sapWEB.helper.GridHelper.init({ id: 'dtItemDetails', actionIndex: 12, rowFunc: dtGridHelper, addBtn: true, deleteBtn: true });
-        })
-        var dtGridHelper = function () {
-             sapWEB.SalesQuotation.AutoComplete();
-            if ($(this)[0].id === 'btnAdd') {
-            }
-            return true;
+        var whsCode = '@SessionUtility.U_WhsCode';
+    $(document).ready(function () {
+
+        customerCodeURL = '@Url.Action("GetCustomer", "Customer", new { area = "" })';
+        contactPersonURL = '@Url.Action("GetContactPerson", "Customer", new { area = "" })';
+        billTOIdURL = '@Url.Action("GetBillAddress", "Customer", new { area = "" })';
+        shipToIDURL = '@Url.Action("GetShipAddress", "Customer", new { area = "" })';
+        salesQuotationHeaderURL = '@Url.Action("GetSalesQuotation", "Customer", new { area = "" })';
+        itemURL = '@Url.Action("GetItemDetails", "Item", new { area = "" })';
+        salesQuotationSaveURL = '@Url.Action("Save", "SalesQuotation", new { area = "" })';
+        sapWEB.SalesQuotation.Init();
+
+        sapWEB.helper.GridHelper.init({ id: 'dtItemDetails', actionIndex: 12, rowFunc: dtGridHelper, addBtn: true, deleteBtn: true });
+        if (sapWEB.helper.GetNumericValue('hdnDocEntry') > 0 || sapWEB.helper.GetNumericValue('hdnQuotaionID') > 0) {
+            sapWEB.SalesQuotation.FNSalesQuotation();
+            sapWEB.SalesQuotation.FNChangeEvent();
         }
-        var saveSalesOrder = function () {
-           var salesQuotationSaveURL = '@Url.Action("Save", "SalesQuotation", new { area = "" })';
-            var dataItems = [];
-            $('#tbody tr').each(function (row) {
-                var uniqueId = parseInt($(this).attr('data-row-id'));
-                dataItems.push({
-                    Linenum: -1,
-                    ItemItemCode: sapWEB.helper.GetString('txtItemCode_' + row),
-                    ItemQuantity: sapWEB.helper.GetNumericValue('txtQTY_' + row),
-                    ItemPrice: sapWEB.helper.GetNumericValue('txtPrice_' + row),
-                    ItemTax: sapWEB.helper.GetNumericValue('txtItemCode_' + row+' option:selected'),
-                    DiscountPercent: sapWEB.helper.GetNumericValue('txtDiscountPer_' + row),
-                    WarehouseCode: sapWEB.helper.GetStringText('lblWarhouse_' + row),
-                })
-            })
-
-
-            var model = {
-                CardCode: sapWEB.helper.GetString('txtCustomerCode'),
-                NumAtCard: sapWEB.helper.GetString('txtCustomerRefNo'),
-                ContactPersonCode: sapWEB.helper.GetString('ddlContactPerson option:selected'),
-                U_Territory: sapWEB.helper.GetString('txtTerritoty'),
-                DocCurrency: sapWEB.helper.GetString('txtCurrency'),
-                U_ExchRate: sapWEB.helper.GetString('txtExchangeRate'),
-                PayToCode: sapWEB.helper.GetString('ddlBillToID option:selected'),
-                ShipToCode: sapWEB.helper.GetString('ddlShipTOID option:selected'),
-                Series: sapWEB.helper.GetString('ddlSeries option:selected'),
-                DocDate: sapWEB.helper.GetString('txtPostingDate'),
-                SalesEmployee: sapWEB.helper.GetString('ddlEmployee option:selected'),
-                Comments: sapWEB.helper.GetString('txtOtherRemarks'),
-                DocumentLines: dataItems
-            }
-            sapWEB.ajax.jsonPost(salesQuotationSaveURL, { 'model': model },
-                function (response) {
-                    if (response.code == 200) {
-                        sapWEB.dialog.ShowToaster(DialogType.Success, response.message);
-                    }
-                    else {
-                        sapWEB.dialog.ShowToaster(DialogType.Error, response.message);
-                    }
-                },
-                function (error) {
-
-                    sapWEB.dialog.ShowToaster(DialogType.Error, error.responseText);
-
-                })
-
+        if ((sapWEB.helper.GetString('hdnDocEntry') != '' && sapWEB.helper.GetString('hdnDocEntry') !== "0")
+            || (sapWEB.helper.GetString('hdnQuotaionID') != '' && sapWEB.helper.GetString('hdnQuotaionID') !== "0")
+        ) {
+            $('#txtPostingDate').datepicker({
+                todayHighlight: true,
+                format: 'dd/mm/yyyy',
+            }).datepicker("setDate", new Date($("#txtPostingDate").attr('value').split('-').reverse().join('-')));
+            $('#txtDueDate').datepicker({
+                todayHighlight: true,
+                format: 'dd/mm/yyyy',
+            }).datepicker("setDate", new Date($("#txtDueDate").attr('value').split('-').reverse().join('-')));
+            $('#txtDocumentDate').datepicker({
+                todayHighlight: true,
+                format: 'dd/mm/yyyy',
+            }).datepicker("setDate", new Date($("#txtDocumentDate").attr('value').split('-').reverse().join('-')));
         }
+        $("#txtPostingDate").datepicker("destroy");
+    })
+    var dtGridHelper = function () {
+         sapWEB.SalesQuotation.AutoComplete();
+        if ($(this)[0].id === 'btnAdd') {
+            var row = $('#tbody tr:last');
+            var rowIndex = $(row).attr('data-row-id');
+            $(row).find('#ddlWarCode_' + rowIndex).val(whsCode);
+            $('#ddlWarCode_' + rowIndex).trigger('change');
+            //$(row).find('#lblWarhouse_' + rowIndex).text(whsCode);
+        }
+        return true;
+    }
     </script>
 }

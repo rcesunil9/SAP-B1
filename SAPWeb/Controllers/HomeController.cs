@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Security;
+using System.Web.SessionState;
 
 namespace SAPWeb.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {
@@ -26,5 +28,6 @@ namespace SAPWeb.Controllers
 
             return View();
         }
+       
     }
 }
