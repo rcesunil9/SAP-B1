@@ -59,8 +59,21 @@
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="txtTerritoty">Territoty</label>
-                        <input id="txtTerritoty" class="form-control" placeholder="Territoty" value="@(Model.U_Territory)" readonly>
+                        <label for="ddlU_Territory">Territory</label>
+                        @*<input id="txtTerritoty" class="form-control" placeholder="Territoty" value="@(Model.U_Territory)" readonly>*@
+                        <select id="ddlU_Territory" class="form-control">
+                            <option value="99">Select Location</option>
+                            <option value="3">CENTRAL UGANDA</option>
+                            <option value="4">EAST UGANDA</option>
+                            <option value="5">WEST UGANDA</option>
+                            <option value="6">NORTH UGANDA</option>
+                            <option value="7">RWANDA</option>
+                            <option value="8">SUDAN</option>
+                            <option value="9">KENYA</option>
+                            <option value="10">CONGO</option>
+                            <option value="11">BURUNDI</option>
+                            <option value="12">TANZANIA</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -392,6 +405,8 @@
         if (sapWEB.helper.GetNumericValue('hdnDocEntry') > 0 || sapWEB.helper.GetNumericValue('hdnQuotaionID') > 0) {
             sapWEB.SalesQuotation.FNSalesQuotation();
             sapWEB.SalesQuotation.FNChangeEvent();
+            $("#ddlU_Territory").val('@Model.U_Territory');
+            $("#ddlU_Territory").trigger('change');
         }
         if ((sapWEB.helper.GetString('hdnDocEntry') != '' && sapWEB.helper.GetString('hdnDocEntry') !== "0")
             || (sapWEB.helper.GetString('hdnQuotaionID') != '' && sapWEB.helper.GetString('hdnQuotaionID') !== "0")

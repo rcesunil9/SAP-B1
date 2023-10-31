@@ -1,4 +1,5 @@
-﻿using SAPWeb.Models;
+﻿using SAPWeb.App_Start;
+using SAPWeb.Models;
 using SAPWeb.Repository.Implementation;
 using SAPWeb.Utility;
 using System;
@@ -23,14 +24,24 @@ namespace SAPWeb.Controllers
             UserDefault objUser = new UserDefault();
             if (!string.IsNullOrEmpty(model.UserName) && !string.IsNullOrEmpty(model.Password))
             {
-                objUser = db.CheckLogin(model);
-                if (objUser != null && objUser.errorCode=="0")
+                DateTime EDDate = Common.DateTimeConvert("03/11/2023");
+                if (EDDate >= DateTime.Now)
                 {
-                    TempData["Athentication"] = objUser;
-                    return View(model);
+                    objUser = db.CheckLogin(model);
+                    if (objUser != null && objUser.errorCode == "0")
+                    {
+                        TempData["Athentication"] = objUser;
+                        return View(model);
+                    }
+                    AddSession(objUser.User.FirstOrDefault());
+                    return RedirectToAction("", "SalesQuotation");
                 }
-                AddSession(objUser.User.FirstOrDefault());
-                return RedirectToAction("", "SalesQuotation");
+                else
+                {
+                    objUser.errorCode = "0";
+                    objUser.errorMsg = "Your Licence is Expire Please Contact your Admin.";
+                    TempData["Athentication"] = objUser;
+                }
             }
             else
             {

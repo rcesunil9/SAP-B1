@@ -80,7 +80,7 @@ namespace SAPWeb.Repository.Implementation
             try
             {
                 string ParamVal = q.Trim();
-                var Data = objCon.ByQueryReturnDataTable(@"SELECT CardCode,CardName,t0.Currency,SlpCode,U_Territory,t1.Rate AS Rate FROM OCRD t0 LEFT JOIN ORTT t1 ON t1.Currency=t0.Currency and t1.Currency='USD' and CONVERT(DATE, t1.RateDate) >= CONVERT(DATE, GETDATE()) WHERE CardCode LIKE '%" + q+ "%' OR CardName LIKE '%" + q+"%'");
+                var Data = objCon.ByQueryReturnDataTable(@"SELECT CardCode,CardName,t0.Currency,SlpCode,t1.Rate AS Rate FROM OCRD t0 LEFT JOIN ORTT t1 ON t1.Currency=t0.Currency and t1.Currency='USD' and CONVERT(DATE, t1.RateDate) >= CONVERT(DATE, GETDATE()) WHERE CardCode LIKE '%" + q+ "%' OR CardName LIKE '%" + q+"%'");
                 if(Data!=null && Data.Rows.Count>0)
                 {
                     ObjUser.Customer = Data.ConvertToList<Customer>();

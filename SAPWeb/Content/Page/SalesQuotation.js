@@ -209,7 +209,7 @@ sapWEB.SalesQuotation = (function () {
             NumAtCard: sapWEB.helper.GetString('txtCustomerRefNo'),
             ContactPersonCode: sapWEB.helper.GetString('ddlContactPerson option:selected'),
             DocumentStatus: sapWEB.helper.GetString('ddlStatus option:selected'),
-            U_Territory: sapWEB.helper.GetString('txtTerritoty'),
+            U_Territory: sapWEB.helper.GetString('ddlU_Territory option:selected'),
             DocCurrency: sapWEB.helper.GetString('txtCurrency'),
             U_ExchRate: sapWEB.helper.GetString('txtExchangeRate'),
             PayToCode: sapWEB.helper.GetString('ddlBillToID option:selected'),
