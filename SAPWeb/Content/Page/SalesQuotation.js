@@ -273,7 +273,70 @@ sapWEB.SalesQuotation = (function () {
             },
             minLength: 2
         })
-        $("#txtCustomerCode,#txtCustomerName").autocomplete({
+        $(".itemsearchname").autocomplete({
+            maxShowItems: 10,
+            source: function (request, response) {
+                var param = $.param({ 'code': request.term })
+                sapWEB.ajax.jsonGet(itemURL + "?" + param, function (result) {
+                    // response($.map(result.slice(0, 10), function (item) {
+                    if (result.errorCode == "1") {
+                        response($.map(result.Items, function (item) {
+                            return {
+                                label: item.Name,
+                                price: item.ItemPrice,
+                                val: item.Code,
+                                name: item.Name
+                            };
+                        }))
+                    }
+                }, function (error) {
+                    console.log(error);
+                })
+            },
+            select: function (e, i) {
+                var selectedId = this.id.split('_')[1];
+                sapWEB.helper.SetValue('txtItemCode_' + selectedId, i.item.val);
+                sapWEB.helper.SetValue('txtItemName_' + selectedId, i.item.name);
+                sapWEB.helper.SetValue('txtPrice_' + selectedId, i.item.price);
+            },
+            minLength: 2
+        })
+        $("#txtCustomerName").autocomplete({
+            maxShowItems: 10,
+            source: function (request, response) {
+                var param = $.param({ 'q': request.term })
+                sapWEB.ajax.jsonGet(customerCodeURL + "?" + param, function (result) {
+                    if (result.errorCode == "1") {
+                        response($.map(result.Customer, function (item) {
+                            return {
+                                label: item.CardName,
+                                val: item.CardCode,
+                                name: item.CardName,
+                                currency: item.Currency,
+                                U_Territory: item.U_Territory,
+                                Rate: item.Rate
+                            };
+                        }))
+                    }
+                }, function (error) {
+                    console.log(error);
+                })
+            },
+            select: function (e, i) {
+                sapWEB.helper.SetValue('txtCustomerCode', i.item.label);
+                sapWEB.helper.SetValue('txtCustomerName', i.item.name);
+                sapWEB.helper.SetValue('txtCurrency', i.item.currency);
+                sapWEB.helper.SetValue('txtTerritoty', i.item.U_Territory);
+                sapWEB.helper.SetValue('txtExchangeRate', i.item.Rate);
+                //fnContactPerson();
+                //fnBillToID();
+                //fnShipToID();
+                fnSalesQuotation();
+            },
+            minLength: 2,
+            scroll: true
+        })
+        $("#txtCustomerCode").autocomplete({
             maxShowItems: 10,
             source: function (request, response) {
                 var param = $.param({ 'q': request.term })
