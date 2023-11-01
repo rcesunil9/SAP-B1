@@ -48,6 +48,7 @@ namespace SAPWeb.Repository.Implementation
             model.DocDate = GetByKey.TaxDate.HasValue ? GetByKey.TaxDate.Value : DateTime.Today;
             model.PayToCode = GetByKey.PayToCode;
             model.ShipToCode = GetByKey.ShipToCode;
+            model.U_Territory = GetByKey.U_Territory;
             model.Comments = GetByKey.Comments;
             model.RoundingDiffAmount = GetByKey.RoundingDiffAmount;
             foreach (var item in GetByKey.DocumentLines)
@@ -147,43 +148,43 @@ namespace SAPWeb.Repository.Implementation
                     oSalesInvoices.Comments = objModel.Comments;
                     oSalesInvoices.Rounding = objModel.Rounding;
                     oSalesInvoices.RoundingDiffAmount = objModel.RoundingDiffAmount;
-
-                  /*if (objModel.PaymentTerms != 0 && !String.IsNullOrEmpty(Convert.ToString(objModel.PaymentTerms)))
-                    {
-                        oSalesInvoices.PaymentGroupCode = objModel.PaymentTerms;
-                    }
-                    oSalesInvoices.U_CBM = objModel.CBM;
-                    oSalesInvoices.U_TOTALGROSSWEIGHT = objModel.TotalGrossWeight;
-                    oSalesInvoices.U_TOTALNETWEIGHT = objModel.TotalNetWeight;
-                    oSalesInvoices.U_SHIPMENTMODE = objModel.ShipmentMode;
-                    oSalesInvoices.U_FRIEGHTTERMS = objModel.FrieghtTerms;
-                    oSalesInvoices.U_DESTINATIONPORT = objModel.DestinationPort;
-                    oSalesInvoices.U_EXPORTCERTIFICATENO = objModel.ExportCertificateNo;
-                    oSalesInvoices.U_ETD = objModel.ETD;
-                    oSalesInvoices.U_PRECARRIAGEBY = objModel.PreCarriageBy;
-                    oSalesInvoices.U_MANUFACTURINGDATE = objModel.ManufacturingDate;
-                    oSalesInvoices.U_PRECARRIAGERECEIPTPLACE = objModel.PreCarriageReceiptPlace;
-                    oSalesInvoices.U_LEONO = objModel.LeoNo;
-                    oSalesInvoices.U_COMMISSION = Convert.ToDouble(objModel.Commission);
-                    oSalesInvoices.U_SHIPPINGBILLNO = objModel.ShippingBillNo;
-                    oSalesInvoices.U_ETA = objModel.ETA;
-                    oSalesInvoices.U_VESSEL = objModel.Vessel;
-                    oSalesInvoices.U_EXPIRYDATE = objModel.ExpiryDate;
-                    oSalesInvoices.U_DELIVERYPLACE = objModel.DeliveryPlace;
-                    oSalesInvoices.U_PORTCODE = objModel.PortCode;
-                    oSalesInvoices.U_PACKAGECHARGES = objModel.PackageCharges;
-                    oSalesInvoices.U_VALIDITYUPTO = objModel.ValidityUpTo;
-                    oSalesInvoices.U_BOOKINGPARTY = objModel.BookingParty;
-                    oSalesInvoices.U_FREIGHT = Convert.ToDouble(objModel.Freight);
-                    oSalesInvoices.U_REFERENCENO = objModel.ReferenceNo;
-                    oSalesInvoices.U_LOADINGPORT = objModel.LoadingPort;
-                    oSalesInvoices.U_RATE = Convert.ToDouble(objModel.Rate);
-                    oSalesInvoices.U_LETTERTEMPLATE = objModel.LetterTemplate;
-                    oSalesInvoices.U_LETTERTEMPLATEBODY = objModel.LetterTemplateBody;
-                    oSalesInvoices.U_PRODUCTTYPE = objModel.ProductType;
-                    oSalesInvoices.U_PRINCIPALCOMPANY = objModel.PrincipleCompany;
-                    oSalesInvoices.U_MODEL = objModel.Model;
-                    oSalesInvoices.U_SYSTEMID = objModel.System;*/
+                    oSalesInvoices.U_Territory = objModel.U_Territory;
+                    /*if (objModel.PaymentTerms != 0 && !String.IsNullOrEmpty(Convert.ToString(objModel.PaymentTerms)))
+                      {
+                          oSalesInvoices.PaymentGroupCode = objModel.PaymentTerms;
+                      }
+                      oSalesInvoices.U_CBM = objModel.CBM;
+                      oSalesInvoices.U_TOTALGROSSWEIGHT = objModel.TotalGrossWeight;
+                      oSalesInvoices.U_TOTALNETWEIGHT = objModel.TotalNetWeight;
+                      oSalesInvoices.U_SHIPMENTMODE = objModel.ShipmentMode;
+                      oSalesInvoices.U_FRIEGHTTERMS = objModel.FrieghtTerms;
+                      oSalesInvoices.U_DESTINATIONPORT = objModel.DestinationPort;
+                      oSalesInvoices.U_EXPORTCERTIFICATENO = objModel.ExportCertificateNo;
+                      oSalesInvoices.U_ETD = objModel.ETD;
+                      oSalesInvoices.U_PRECARRIAGEBY = objModel.PreCarriageBy;
+                      oSalesInvoices.U_MANUFACTURINGDATE = objModel.ManufacturingDate;
+                      oSalesInvoices.U_PRECARRIAGERECEIPTPLACE = objModel.PreCarriageReceiptPlace;
+                      oSalesInvoices.U_LEONO = objModel.LeoNo;
+                      oSalesInvoices.U_COMMISSION = Convert.ToDouble(objModel.Commission);
+                      oSalesInvoices.U_SHIPPINGBILLNO = objModel.ShippingBillNo;
+                      oSalesInvoices.U_ETA = objModel.ETA;
+                      oSalesInvoices.U_VESSEL = objModel.Vessel;
+                      oSalesInvoices.U_EXPIRYDATE = objModel.ExpiryDate;
+                      oSalesInvoices.U_DELIVERYPLACE = objModel.DeliveryPlace;
+                      oSalesInvoices.U_PORTCODE = objModel.PortCode;
+                      oSalesInvoices.U_PACKAGECHARGES = objModel.PackageCharges;
+                      oSalesInvoices.U_VALIDITYUPTO = objModel.ValidityUpTo;
+                      oSalesInvoices.U_BOOKINGPARTY = objModel.BookingParty;
+                      oSalesInvoices.U_FREIGHT = Convert.ToDouble(objModel.Freight);
+                      oSalesInvoices.U_REFERENCENO = objModel.ReferenceNo;
+                      oSalesInvoices.U_LOADINGPORT = objModel.LoadingPort;
+                      oSalesInvoices.U_RATE = Convert.ToDouble(objModel.Rate);
+                      oSalesInvoices.U_LETTERTEMPLATE = objModel.LetterTemplate;
+                      oSalesInvoices.U_LETTERTEMPLATEBODY = objModel.LetterTemplateBody;
+                      oSalesInvoices.U_PRODUCTTYPE = objModel.ProductType;
+                      oSalesInvoices.U_PRINCIPALCOMPANY = objModel.PrincipleCompany;
+                      oSalesInvoices.U_MODEL = objModel.Model;
+                      oSalesInvoices.U_SYSTEMID = objModel.System;*/
 
                     if (UPSERT == false)
                         oSalesInvoices.U_CREATEDBY = objModel.CreatedBy;
@@ -396,18 +397,18 @@ namespace SAPWeb.Repository.Implementation
                 ParamName = "@InvoiceID|@DocEntry|@DocNum|@DocStatus|@DocDate|@DocDueDate|@TaxDate|@CardCode|@CardName" +
                     "|@DocCur" +
                     "|@SlpCode|@CntctCode|@Series|@UserSign|@PayToCode|@ShipToCode|@Comments|" +
-                    //"@U_Territory|" +
+                    "@U_Territory|" +
                     "@RoundDif|@Rounding|@RETURNID";
                 ParamVal = objModel.QuotaionID + "|" + objModel.DocEntry + "|" + objModel.QuotaionID
                     + "|" + objModel.DocumentStatus + "|" + Convert.ToDateTime(objModel.PostingDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DeliveryDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DocDate).ToString("yyyy-MM-dd")
                     + "|" + objModel.CardCode + "|" + objModel.CardName
                     + "|" + objModel.DocCurrency + "|" + objModel.SalesEmployee + "|" + objModel.ContactPersonCode + "|" + objModel.Series
                     + "|" + SessionUtility.Code + "|" + objModel.PayToCode + "|" + objModel.ShipToCode + "|" + objModel.Comments
-                    //+ "|" + objModel.U_Territory 
+                    + "|" + objModel.U_Territory 
                     + "|" + objModel.RoundingDiffAmount + "|" + objModel.Rounding
                     + "|" + objModel.RETURNID;
 
-                var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OINVInsertUpdate", 20, ParamName, ParamVal);
+                var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OINVInsertUpdate", 21, ParamName, ParamVal);
                 if (dtItemDetails > 0)
                 {
                     SAPErrMsg = "Sales Quotation Submitted Successfully. Document Number : " + dtItemDetails.ToString();//Common.SAP_DOCUMENTNUMBER("OQUT", NEWDOCENTRY.ToString(), "DocEntry");
@@ -493,8 +494,8 @@ DocStatus as DocumentStatus FROM U_OINV WHERE DocStatus='O'";
                 RoundDif as RoundingDiffAmount,
                 DocStatus as DocumentStatus,
                 DocDueDate as DeliveryDate,
-				TaxDate as DocDate
-
+				TaxDate as DocDate,
+                U_Territory as U_Territory
                 from U_OINV WHERE InvoiceID = " + docEntry;
                 var Data = objCon.ByQueryReturnDataTable(queryHeader);
                 if (Data != null && Data.Rows.Count > 0)
@@ -515,6 +516,7 @@ DocStatus as DocumentStatus FROM U_OINV WHERE DocStatus='O'";
                     model.ShipToCode = Data.Rows[0]["ShipToCode"].ToString();
                     model.Comments = Data.Rows[0]["Comments"].ToString();
                     model.Rounding = Data.Rows[0]["Rounding"].ToString();
+                    model.U_Territory = Data.Rows[0]["U_Territory"].ToString();
                     model.RoundingDiffAmount = Convert.ToDouble(Data.Rows[0]["RoundingDiffAmount"].ToString());
                     var queryList = @"SELECT * FROM U_INV1 WHERE InvoiceID = " + docEntry;
                     var listItem = objCon.ByQueryReturnDataTable(queryList);

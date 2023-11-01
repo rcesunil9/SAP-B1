@@ -53,6 +53,7 @@ namespace SAPWeb.Models
         public string U_Sale { get; set; }
         public string U_DiscRigths { get; set; }
         public string U_AdminRights { get; set; }
+        public string U_SlpCode { get; set; }
 
 
     }

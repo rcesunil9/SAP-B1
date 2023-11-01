@@ -7,6 +7,7 @@ var nextLink;
 var prevLink;
 var paging = false;
 var firstLoad = true;
+var slpCode = 0;
 var sapWEB = sapWEB || {}
 sapWEB.ARInvoice = (function () {
     var init = function () {
@@ -124,6 +125,7 @@ sapWEB.ARInvoice = (function () {
             NumAtCard: sapWEB.helper.GetString('txtCustomerRefNo'),
             ContactPersonCode: sapWEB.helper.GetString('ddlContactPerson option:selected'),
             DocumentStatus: sapWEB.helper.GetString('ddlStatus option:selected'),
+            U_Territory: sapWEB.helper.GetString('ddlU_Territory option:selected'),
             DocCurrency: sapWEB.helper.GetString('txtCurrency'),
             U_ExchRate: sapWEB.helper.GetString('txtExchangeRate'),
             PayToCode: sapWEB.helper.GetString('ddlBillToID option:selected'),
@@ -166,6 +168,7 @@ sapWEB.ARInvoice = (function () {
             "serverSide": false, // for process server side
             "filter": true, // this is for disable filter (search box)
             "orderMulti": false, // for disable multiple column at once
+            "ordering":false,
             responsive: true,
             "paging": paging, // Disable pagination
             "ajax": {
@@ -258,6 +261,9 @@ sapWEB.ARInvoice = (function () {
                     var contact = $("#ddlContactPerson").data('contact');
                     $("#ddlContactPerson").val(contact);
                     var employee = $("#ddlEmployee").data('employee');
+                    if (employee == "") {
+                        employee = slpCode;
+                    }
                     $("#ddlEmployee").val(employee);
                     $("#ddlBillToID").html('');
                     $('#ddlBillToID').append($('<option value="">Select Bill To ID</option>'));
@@ -425,7 +431,7 @@ sapWEB.ARInvoice = (function () {
                 })
             },
             select: function (e, i) {
-                sapWEB.helper.SetValue('txtCustomerCode', i.item.label);
+                sapWEB.helper.SetValue('txtCustomerCode', i.item.val);
                 sapWEB.helper.SetValue('txtCustomerName', i.item.name);
                 sapWEB.helper.SetValue('txtCurrency', i.item.currency);
                 sapWEB.helper.SetValue('txtTerritoty', i.item.U_Territory);

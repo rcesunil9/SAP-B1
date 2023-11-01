@@ -65,6 +65,7 @@ namespace SAPWeb.Controllers
             SessionUtility.U_IN_Series = user.U_IN_Series;
             SessionUtility.U_Sale = user.U_Sale;
             SessionUtility.U_AdminRights = user.U_AdminRights;
+            SessionUtility.U_SlpCode = user.U_SlpCode;
 
         }
         public ActionResult Logout()

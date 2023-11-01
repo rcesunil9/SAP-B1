@@ -24,7 +24,7 @@ namespace SAPWeb.Repository.Implementation
             {
                 string ParamName = "@CODE|@WhsCode";
                 string ParamVal = code.Trim()+"|"+whsCode;
-                var dtItemDetails = objCon.ByProcedureReturnDataTable("SAP_ItemMasterList", 1, ParamName, ParamVal);
+                var dtItemDetails = objCon.ByProcedureReturnDataTable("SAP_ItemMasterList", 2, ParamName, ParamVal);
                 if (dtItemDetails != null && dtItemDetails.Rows.Count > 0)
                 {
                     objItemDefault.Items = dtItemDetails.ConvertToList<Item>();
@@ -52,7 +52,7 @@ namespace SAPWeb.Repository.Implementation
             ObjUser.GetTaxCode = new List<TaxCode>();
             try
             {
-                var Data = objCon.ByQueryReturnDataTable(@"select Code,Name,Rate as Value from OSTC where Code in ('O1','O2','O3','X0','E5')");
+                var Data = objCon.ByQueryReturnDataTable(@"select Code,Name,Rate as Value from OVTG where Code in ('O1','O2','O3','X0','E5')");
                 if (Data != null && Data.Rows.Count > 0)
                 {
                     ObjUser.GetTaxCode = Data.ConvertToList<TaxCode>();

@@ -13,6 +13,7 @@
     {
         adminRigth = "";
     }
+    string whsCode = SessionUtility.U_WhsCode;
 }
 
 <div class="row">
@@ -218,7 +219,7 @@
                                                         <label id="lblSrNo_@(count)">@(count)</label>
                                                     </td>
                                                     <td><input id="txtItemCode_@(count)" type="text" class="form-control itemsearch" value="@(item.ItemItemCode)"></td>
-                                                    <td><input id="txtItemName_@(count)" class="form-control form-control-sm itemsearch" value="@(item.ItemDescription)" /></td>
+                                                    <td><input id="txtItemName_@(count)" class="form-control form-control-sm itemsearchname" value="@(item.ItemDescription)" /></td>
                                                     <td><input id="txtQTY_@(count)" type="text" class="form-control quantity form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="@item.ItemQuantity"> </td>
                                                     <td><input id="txtPrice_@(count)" readonly type="text" class="form-control rate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="@item.ItemPrice">  </td>
                                                     <td> <input id="txtTotalBefore_@(count)" type="text" class="form-control itemamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
@@ -276,7 +277,7 @@
                                                     <label id="lblSrNo_1">1</label>
                                                 </td>
                                                 <td><input id="txtItemCode_1" type="text" class="form-control itemsearch" value=""></td>
-                                                <td><input id="txtItemName_1" class="form-control form-control-sm itemsearch" /></td>
+                                                <td><input id="txtItemName_1" class="form-control form-control-sm itemsearchname" /></td>
                                                 <td><input id="txtQTY_1" type="text" class="form-control quantity form-control-sm custom-select-sm form-control-sm-x numericdecimal" value=""> </td>
                                                 <td><input id="txtPrice_1" readonly type="text" class="form-control rate form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
                                                 <td> <input id="txtTotalBefore_1" type="text" class="form-control itemamount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
@@ -287,7 +288,15 @@
                                                         <option value="">Select TaxCode</option>
                                                         @foreach (var item in ViewBag.TaxCode as List<TaxCode>)
                                                         {
-                                                            <option value="@item.Code" data-rate="@(item.Value)">@item.Name</option>
+                                                            if (item.Code == "O1")
+                                                            {
+                                                                <option value="@item.Code" data-rate="@(item.Value)" selected>@item.Name</option>
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <option value="@item.Code" data-rate="@(item.Value)">@item.Name</option>
+                                                            }
                                                         }
                                                     </select>
                                                 </td>
@@ -298,7 +307,15 @@
                                                         <option value="">Select WarHouse</option>
                                                         @foreach (var ware in ViewBag.WarHouseCode as List<WareHouse>)
                                                         {
-                                                            <option value="@ware.Code" selected>@ware.Name</option>
+                                                            if (whsCode == ware.Code)
+                                                            {
+                                                                <option value="@ware.Code" selected>@ware.Name</option>
+                                                            }
+                                                            else
+                                                            {
+
+                                                                <option value="@ware.Code">@ware.Name</option>
+                                                            }
                                                         }
                                                     </select>
                                                 </td>
@@ -390,6 +407,7 @@
 @section scripts{
     <script>
         var whsCode = '@SessionUtility.U_WhsCode';
+         slpCode = '@SessionUtility.U_SlpCode';
     $(document).ready(function () {
 
         customerCodeURL = '@Url.Action("GetCustomer", "Customer", new { area = "" })';
@@ -433,6 +451,8 @@
             var rowIndex = $(row).attr('data-row-id');
             $(row).find('#ddlWarCode_' + rowIndex).val(whsCode);
             $('#ddlWarCode_' + rowIndex).trigger('change');
+            $(row).find('#ddlTaxCode_' + rowIndex).val("O1");
+            $('#ddlTaxCode_' + rowIndex).trigger('change');
             //$(row).find('#lblWarhouse_' + rowIndex).text(whsCode);
         }
         return true;

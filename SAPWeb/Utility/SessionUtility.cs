@@ -27,7 +27,11 @@ namespace SAPWeb.Utility
             get { return GetFromSession("Code"); }
             set { System.Web.HttpContext.Current.Session["Code"] = value; }
         }
-
+        public static string U_SlpCode
+        {
+            get { return GetFromSession("U_SlpCode"); }
+            set { System.Web.HttpContext.Current.Session["U_SlpCode"] = value; }
+        }
         public static string U_CashAc
         {
             get { return GetFromSession("U_CashAc"); }

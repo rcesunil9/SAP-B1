@@ -269,7 +269,7 @@ namespace SAPWeb.Repository.Implementation
             try
             {
                 QuotationListDetail SuccessData = new QuotationListDetail();
-                SuccessData = ServiceLayerData.SAPGetSalesQuotations("Quotations?$skip="+skip+ "&$orderby=DocEntry desc");
+                SuccessData = ServiceLayerData.SAPGetSalesQuotations("Quotations?$skip=" + skip + "&$orderby=DocEntry desc");
                 if (SuccessData.Value != null && SuccessData.Value.Count > 0)
                 {
                     obj.QuotationDetails = SuccessData;

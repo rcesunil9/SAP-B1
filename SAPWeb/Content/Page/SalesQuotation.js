@@ -12,6 +12,7 @@ var nextLink;
 var prevLink;
 var paging = false;
 var firstLoad = true;
+var slpCode = 0;
 var sapWEB = sapWEB || {}
 sapWEB.SalesQuotation = (function () {
     var init = function () {
@@ -49,6 +50,7 @@ sapWEB.SalesQuotation = (function () {
             "filter": true, // this is for disable filter (search box)
             "orderMulti": false, // for disable multiple column at once
             responsive: true,
+            "ordering": false,
             "paging": paging, // Disable pagination
             "ajax": {
                 "url": linkUrl,
@@ -323,7 +325,7 @@ sapWEB.SalesQuotation = (function () {
                 })
             },
             select: function (e, i) {
-                sapWEB.helper.SetValue('txtCustomerCode', i.item.label);
+                sapWEB.helper.SetValue('txtCustomerCode', i.item.val);
                 sapWEB.helper.SetValue('txtCustomerName', i.item.name);
                 sapWEB.helper.SetValue('txtCurrency', i.item.currency);
                 sapWEB.helper.SetValue('txtTerritoty', i.item.U_Territory);
@@ -446,6 +448,9 @@ sapWEB.SalesQuotation = (function () {
                     var contact = $("#ddlContactPerson").data('contact');
                     $("#ddlContactPerson").val(contact);
                     var employee = $("#ddlEmployee").data('employee');
+                    if (employee == "") {
+                        employee = slpCode;
+                    }
                     $("#ddlEmployee").val(employee);
                     $("#ddlBillToID").html('');
                     $('#ddlBillToID').append($('<option value="">Select Bill To ID</option>'));
