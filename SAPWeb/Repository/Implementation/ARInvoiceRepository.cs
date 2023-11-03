@@ -49,6 +49,8 @@ namespace SAPWeb.Repository.Implementation
             model.PayToCode = GetByKey.PayToCode;
             model.ShipToCode = GetByKey.ShipToCode;
             model.U_Territory = GetByKey.U_Territory;
+            model.U_USER = GetByKey.U_USER;
+
             model.Comments = GetByKey.Comments;
             model.RoundingDiffAmount = GetByKey.RoundingDiffAmount;
             foreach (var item in GetByKey.DocumentLines)
@@ -149,6 +151,7 @@ namespace SAPWeb.Repository.Implementation
                     oSalesInvoices.Rounding = objModel.Rounding;
                     oSalesInvoices.RoundingDiffAmount = objModel.RoundingDiffAmount;
                     oSalesInvoices.U_Territory = objModel.U_Territory;
+                    oSalesInvoices.U_USER = objModel.U_USER;
                     /*if (objModel.PaymentTerms != 0 && !String.IsNullOrEmpty(Convert.ToString(objModel.PaymentTerms)))
                       {
                           oSalesInvoices.PaymentGroupCode = objModel.PaymentTerms;
@@ -253,16 +256,19 @@ namespace SAPWeb.Repository.Implementation
                     if (SuccessData.FirstOrDefault().Key == 1)
                     {
                         int NEWDOCENTRY = 0;
+                        int docNum = 0;
 
                         if (UPSERT == true)
                         {
                             NEWDOCENTRY = objModel.DocEntry.Value;
+                            docNum = objModel.DocNum.Value;
                         }
                         else
                         {
                             Documents data1 = JsonConvert.DeserializeObject<Documents>(SuccessData.FirstOrDefault().Value);
                             NEWDOCENTRY = data1.DocEntry.Value;
-                            if(objModel.RequestType==1)
+                            docNum = data1.DocNum.Value;
+                            if (objModel.RequestType==1)
                             {
 
                            
@@ -288,6 +294,7 @@ namespace SAPWeb.Repository.Implementation
                         if (UPSERT == false || objModel.DocEntry == null)
                         {
                             objModel.DocEntry = NEWDOCENTRY;
+                            objModel.DocNum = docNum;
                             SAPARInvoiceInsertUpdateUser(objModel);
                         }
                         SAPErrMsg = "Sales Invoice Submitted Successfully. Document Number : " + NEWDOCENTRY.ToString();//Common.SAP_DOCUMENTNUMBER("OINV", NEWDOCENTRY.ToString(), "DocEntry");
@@ -399,7 +406,7 @@ namespace SAPWeb.Repository.Implementation
                     "|@SlpCode|@CntctCode|@Series|@UserSign|@PayToCode|@ShipToCode|@Comments|" +
                     "@U_Territory|" +
                     "@RoundDif|@Rounding|@RETURNID";
-                ParamVal = objModel.QuotaionID + "|" + objModel.DocEntry + "|" + objModel.QuotaionID
+                ParamVal = objModel.QuotaionID + "|" + objModel.DocEntry + "|" + objModel.DocNum
                     + "|" + objModel.DocumentStatus + "|" + Convert.ToDateTime(objModel.PostingDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DeliveryDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DocDate).ToString("yyyy-MM-dd")
                     + "|" + objModel.CardCode + "|" + objModel.CardName
                     + "|" + objModel.DocCurrency + "|" + objModel.SalesEmployee + "|" + objModel.ContactPersonCode + "|" + objModel.Series
@@ -437,18 +444,21 @@ namespace SAPWeb.Repository.Implementation
             QuotationListDefault obj = new QuotationListDefault();
             try
             {
-                string query = @"SELECT  InvoiceID as DocEntry,
+                string query = @"SELECT  InvoiceID,
+ (CASE WHEN DocEntry = 0 OR DocEntry is null THEN InvoiceID ELSE DocEntry end) as DocEntry,
+ DocNum,
 CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus FROM U_OINV WHERE UserSign='" + userID + "'";
+DocStatus as DocumentStatus,U.Name as U_USER  FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE UserSign='" + userID + "'";
                 if (SessionUtility.U_AdminRights == "Y")
                 {
-                    query = @"SELECT  InvoiceID as DocEntry,
+                    query = @"SELECT (CASE WHEN DocEntry = 0 OR DocEntry is null THEN InvoiceID ELSE DocEntry end) as DocEntry,
+ DocNum,
 CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus FROM U_OINV WHERE DocStatus='O'";
+DocStatus as DocumentStatus,U.Name as U_USER FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE DocStatus='O'";
                 }
                 var Data = objCon.ByQueryReturnDataTable(query);
                 if (Data != null && Data.Rows.Count > 0)
@@ -496,7 +506,9 @@ DocStatus as DocumentStatus FROM U_OINV WHERE DocStatus='O'";
                 DocDueDate as DeliveryDate,
 				TaxDate as DocDate,
                 U_Territory as U_Territory
-                from U_OINV WHERE InvoiceID = " + docEntry;
+,
+U.Name as U_USER
+                from U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign  WHERE InvoiceID = " + docEntry;
                 var Data = objCon.ByQueryReturnDataTable(queryHeader);
                 if (Data != null && Data.Rows.Count > 0)
                 {
@@ -504,7 +516,7 @@ DocStatus as DocumentStatus FROM U_OINV WHERE DocStatus='O'";
                     model.DocEntry = Convert.ToInt32(Data.Rows[0]["DocEntry"]);
                     model.QuotaionID = Convert.ToInt32(Data.Rows[0]["QuotaionID"]);
                     model.SalesEmployee = Convert.ToInt32(Data.Rows[0]["SalesEmployee"]);
-                    model.ContactPersonCode = Convert.ToInt32(Data.Rows[0]["ContactPersonCode"]);
+                    model.ContactPersonCode = Convert.ToInt32(!string.IsNullOrEmpty(Data.Rows[0]["ContactPersonCode"].ToString()) ? Data.Rows[0]["ContactPersonCode"].ToString() : "0");
                     model.NumAtCard = Data.Rows[0]["CardName"].ToString();
                     model.DocCurrency = Data.Rows[0]["DocCurrency"].ToString();
                     model.DocumentStatus = Data.Rows[0]["DocumentStatus"].ToString();
@@ -517,6 +529,7 @@ DocStatus as DocumentStatus FROM U_OINV WHERE DocStatus='O'";
                     model.Comments = Data.Rows[0]["Comments"].ToString();
                     model.Rounding = Data.Rows[0]["Rounding"].ToString();
                     model.U_Territory = Data.Rows[0]["U_Territory"].ToString();
+                    model.U_USER = Data.Rows[0]["U_USER"].ToString();
                     model.RoundingDiffAmount = Convert.ToDouble(Data.Rows[0]["RoundingDiffAmount"].ToString());
                     var queryList = @"SELECT * FROM U_INV1 WHERE InvoiceID = " + docEntry;
                     var listItem = objCon.ByQueryReturnDataTable(queryList);

@@ -45,7 +45,8 @@ namespace SAPWeb.Controllers
             if (id>0)
             {
                 //response = salesQuotationRepository.GetSalesQuotationById(id);
-                if (type=="DRAFT" || SessionUtility.U_AdminRights=="N" || string.IsNullOrEmpty(SessionUtility.U_AdminRights))
+                //if (type=="DRAFT" || SessionUtility.U_AdminRights=="N" || string.IsNullOrEmpty(SessionUtility.U_AdminRights))
+                if (type == "DRAFT")
                 {
                     response = salesQuotationRepository.GetSalesQuotationUserById(id);
                 }

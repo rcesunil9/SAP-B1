@@ -19,6 +19,45 @@ $(function () {
         return validOnlyInt(e);
     })
 })
+function validAllowNegetiveFloat(e, txt) {
+    var code;
+    //var tb = txtid;
+    //var txt = tb.value;
+
+    if (!e) var e = window.event;
+    if (e.keyCode)
+        code = e.keyCode;
+    else if (e.which)
+        code = e.which;
+    else
+        return true;
+
+
+    console.log(code + ' txt=>lenght  ' + txt.length);
+
+
+
+    if (code == 13 || code == 8 || code == 9 || code == 37 || code == 39) // 45 for minus allow
+        return true;
+
+    if (code == 46)
+        if (txt.indexOf('.') != -1)
+            code = 0;
+
+    if (txt.length == 1 && code == 45) {
+        if (txt.indexOf('-') != -1)
+            code = 0;
+    }
+
+    if (code == 45)
+        if (txt.indexOf('-') != -1)
+            code = 0;
+
+    if ((code < 45 || code > 57) || code == 47) { code = 0; return false; }
+    else {
+        return true;
+    }
+};
 function validInt(e) {
     var code;
     if (!e) var e = window.event;

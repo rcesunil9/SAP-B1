@@ -19,6 +19,7 @@
 <div class="row">
     <input type="hidden" id="hdnDocEntry" value="@Model.DocEntry" />
     <input type="hidden" id="hdnQuotaionID" value="@Model.QuotaionID" />
+    <input type="hidden" id="hdnU_User" value="@Model.U_USER" />
     <div class="col-12">
         <div class="white-box">
             <h3 class="box-title m-b-0">Create @ViewBag.Title</h3>
@@ -364,12 +365,12 @@
                             <td class="text-right">
                                 @if (Model.Rounding == "tYES")
                                 {
-                                    <input type="text" id="txtRounding" style="max-width:50% !important;" class="numericdecimal" value="@Model.RoundingDiffAmount" />
+                                    <input type="text" id="txtRounding" style="max-width:50% !important;" class="numericdecimalnegativeallow" value="@Model.RoundingDiffAmount" />
                                 }
                                 else
                                 {
 
-                                    <input type="text" id="txtRounding" style="max-width:50% !important;" class="numericdecimal" value="@Model.RoundingDiffAmount" disabled="disabled" />
+                                    <input type="text" id="txtRounding" style="max-width:50% !important;" class="numericdecimalnegativeallow" value="@Model.RoundingDiffAmount" disabled="disabled" />
                                 }
                             </td>
                         </tr>

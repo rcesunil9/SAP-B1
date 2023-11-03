@@ -120,6 +120,7 @@ sapWEB.ARInvoice = (function () {
         var model = {
             QuotaionID: sapWEB.helper.GetString('hdnQuotaionID'),
             DocEntry: sapWEB.helper.GetString('hdnDocEntry'),
+            U_USER: sapWEB.helper.GetString('hdnU_User'),
             CardCode: sapWEB.helper.GetString('txtCustomerCode'),
             CardName: sapWEB.helper.GetString('txtCustomerName'),
             NumAtCard: sapWEB.helper.GetString('txtCustomerRefNo'),
@@ -189,6 +190,7 @@ sapWEB.ARInvoice = (function () {
                 }
             },
             "columns": [
+                { "data": "U_USER", "name": "U_USER", "autoWidth": true },
                 { "data": "CardCode", "name": "CardCode", "autoWidth": true },
                 { "data": "CardName", "name": "CardName", "autoWidth": true },
                 { "data": "DocEntry", "name": "DocEntry", "autoWidth": true },
@@ -439,7 +441,7 @@ sapWEB.ARInvoice = (function () {
                 //fnContactPerson();
                 //fnBillToID();
                 //fnShipToID();
-                fnSalesQuotation();
+                fnARInvoice();
             },
             minLength: 2,
             scroll: true

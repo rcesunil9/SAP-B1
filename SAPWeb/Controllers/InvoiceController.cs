@@ -70,7 +70,8 @@ namespace SAPWeb.Controllers
             ViewBag.Approved = false;
             if (id > 0)
             {
-                if (type == "DRAFT" || SessionUtility.U_AdminRights == "N" || string.IsNullOrEmpty(SessionUtility.U_AdminRights))
+                //if (type == "DRAFT" || SessionUtility.U_AdminRights == "N" || string.IsNullOrEmpty(SessionUtility.U_AdminRights))
+                if (type == "DRAFT")
                 {
                     response = invoiceRepository.GetARInvoiceUserById(id);
                 }

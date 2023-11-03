@@ -34,6 +34,7 @@ namespace SAPWeb.Models
         public int DocEntry { get; set; }
         public int DocNum { get; set; }
         public string DocType { get; set; }
+        public string U_USER { get; set; }
         public string HandWritten { get; set; }
         public string Printed { get; set; }
         public string DocDate { get; set; }
@@ -105,6 +106,7 @@ namespace SAPWeb.Models
         public string EMPID { get; set; }
         public string CardCode { get; set; }
         public string CardName { get; set; }
+        public string U_USER { get; set; }
         public string NumAtCard { get; set; }
         public int? ContactPersonCode { get; set; }
         public string U_Territory { get; set; }
@@ -118,6 +120,7 @@ namespace SAPWeb.Models
         public string Rounding { get; set; }
         //public string EMPID { get; set; }
         public int? DocEntry { get; set; }
+        public int? DocNum { get; set; }
         public int? DraftDocEntry { get; set; }
         //public int? Series { get; set; }
         //public int? SalesPersonCode { get; set; }
@@ -464,6 +467,7 @@ namespace SAPWeb.Models
         }
 
         public int? DocEntry { get; set; }
+        public int? DocNum { get; set; }
         public string DocObjectCode { get; set; }
         public string U_DRAFTDOCENTRY { get; set; }
 
@@ -559,6 +563,7 @@ namespace SAPWeb.Models
         public string U_VerCode { get; set; }
         public string U_FiscalDoc { get; set; }
         public string U_URAPosted { get; set; }
+        public string U_USER { get; set; }
     }
 
     public class DocumentLines

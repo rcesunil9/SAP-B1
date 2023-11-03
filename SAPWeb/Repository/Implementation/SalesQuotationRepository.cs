@@ -71,7 +71,7 @@ namespace SAPWeb.Repository.Implementation
                     oSalesQuotations.DocDate = objModel.PostingDate;
                     oSalesQuotations.TaxDate = objModel.DocDate;
                     oSalesQuotations.DocDueDate = objModel.DeliveryDate;
-
+                    oSalesQuotations.U_USER = objModel.U_USER;
                     //oSalesQuotations.DocDueDate = objModel.DeliveryDate;
                     //oSalesQuotations.U_TRADEREGION = objModel.TradeRegion;
 
@@ -178,15 +178,17 @@ namespace SAPWeb.Repository.Implementation
                     if (SuccessData.FirstOrDefault().Key == 1)
                     {
                         int NEWDOCENTRY = 0;
+                        int docNum = 0;
                         if (UPSERT == true)
                         {
                             NEWDOCENTRY = objModel.DocEntry.Value;
+                            docNum = objModel.DocNum.Value;
                         }
                         else
                         {
                             Documents data1 = JsonConvert.DeserializeObject<Documents>(SuccessData.FirstOrDefault().Value);
                             NEWDOCENTRY = data1.DocEntry.Value;
-                           
+                            docNum = data1.DocNum.Value;
                         }
                         //--------------------------------------------------------
 
@@ -209,6 +211,7 @@ namespace SAPWeb.Repository.Implementation
                             if (UPSERT == false || objModel.DocEntry==null)
                             {
                                 objModel.DocEntry = NEWDOCENTRY;
+                                objModel.DocNum = docNum;
                                 SAPSalesQuotaionUser(objModel);
                             }
                             SAPErrMsg = "Sales Quotation Submitted Successfully. Document Number : " + NEWDOCENTRY.ToString();//Common.SAP_DOCUMENTNUMBER("OQUT", NEWDOCENTRY.ToString(), "DocEntry");
@@ -313,6 +316,7 @@ namespace SAPWeb.Repository.Implementation
             model.ShipToCode = GetByKey.ShipToCode;
             model.Comments = GetByKey.Comments;
             model.Rounding = GetByKey.Rounding;
+            model.U_USER = GetByKey.U_USER;
             model.U_Territory = GetByKey.U_Territory;
             model.RoundingDiffAmount = GetByKey.RoundingDiffAmount;
             foreach (var item in GetByKey.DocumentLines)
@@ -349,7 +353,7 @@ namespace SAPWeb.Repository.Implementation
                 ParamName = "@QuotaionID|@DocEntry|@DocNum|@DocStatus|@DocDate|@DocDueDate|@TaxDate|@CardCode|@CardName" +
                     "|@DocCur" +
                     "|@SlpCode|@CntctCode|@Series|@UserSign|@PayToCode|@ShipToCode|@Comments|@U_Territory|@RoundDif|@Rounding|@RETURNID";
-                ParamVal = objModel.QuotaionID + "|" + objModel.DocEntry + "|" + objModel.QuotaionID
+                ParamVal = objModel.QuotaionID + "|" + objModel.DocEntry + "|" + objModel.DocNum
                     + "|" + objModel.DocumentStatus + "|" + Convert.ToDateTime(objModel.PostingDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DeliveryDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DocDate).ToString("yyyy-MM-dd")
                     + "|" + objModel.CardCode + "|" + objModel.CardName 
                     + "|" + objModel.DocCurrency + "|" + objModel.SalesEmployee + "|" + objModel.ContactPersonCode + "|" + objModel.Series
@@ -386,18 +390,22 @@ namespace SAPWeb.Repository.Implementation
             QuotationListDefault obj = new QuotationListDefault();
             try
             {
-                string query = @"SELECT  QuotaionID as DocEntry,
+                string query = @"SELECT   (CASE WHEN DocEntry = 0 OR DocEntry is null THEN QuotaionID ELSE DocEntry end) as DocEntry,
+ DocNum,
 CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus FROM U_OQUT WHERE UserSign='" + userID+"'";
+DocStatus as DocumentStatus,U.Name as U_USER 
+FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE UserSign='" + userID+"'";
                 if(SessionUtility.U_AdminRights=="Y")
                 {
-                    query = @"SELECT  QuotaionID as DocEntry,
+                    query = @"SELECT 
+(CASE WHEN DocEntry = 0 OR DocEntry is null THEN QuotaionID ELSE DocEntry end) as DocEntry,
+ DocNum,
 CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus FROM U_OQUT WHERE DocStatus='O'";
+DocStatus as DocumentStatus,U.Name as U_USER FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE DocStatus='O'";
                 }
                 var Data = objCon.ByQueryReturnDataTable(query);
                 if (Data != null && Data.Rows.Count > 0)
@@ -445,8 +453,9 @@ DocStatus as DocumentStatus FROM U_OQUT WHERE DocStatus='O'";
                 DocStatus as DocumentStatus,
                 DocDueDate as DeliveryDate,
 				TaxDate as DocDate,
-U_Territory as U_Territory
-                from U_OQUT WHERE QuotaionID = " + docEntry;
+U_Territory as U_Territory,
+U.Name as U_USER
+                from U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE QuotaionID = " + docEntry;
                 var Data = objCon.ByQueryReturnDataTable(queryHeader);
                 if (Data != null && Data.Rows.Count > 0)
                 {
@@ -454,7 +463,7 @@ U_Territory as U_Territory
                     model.DocEntry = Convert.ToInt32(Data.Rows[0]["DocEntry"]);
                     model.QuotaionID = Convert.ToInt32(Data.Rows[0]["QuotaionID"]);
                     model.SalesEmployee = Convert.ToInt32(Data.Rows[0]["SalesEmployee"]);
-                    model.ContactPersonCode = Convert.ToInt32(Data.Rows[0]["ContactPersonCode"]);
+                    model.ContactPersonCode = Convert.ToInt32(!string.IsNullOrEmpty(Data.Rows[0]["ContactPersonCode"].ToString()) ? Data.Rows[0]["ContactPersonCode"].ToString() : "0");
                     model.NumAtCard = Data.Rows[0]["CardName"].ToString();
                     model.DocCurrency = Data.Rows[0]["DocCurrency"].ToString();
                     model.DocumentStatus = Data.Rows[0]["DocumentStatus"].ToString();
@@ -467,6 +476,7 @@ U_Territory as U_Territory
                     model.Comments = Data.Rows[0]["Comments"].ToString();
                     model.U_Territory = Data.Rows[0]["U_Territory"].ToString();
                     model.Rounding = Data.Rows[0]["Rounding"].ToString();
+                    model.U_USER = Data.Rows[0]["U_USER"].ToString();
                     model.RoundingDiffAmount = Convert.ToDouble(Data.Rows[0]["RoundingDiffAmount"].ToString());
                     var queryList = @"SELECT * FROM U_QUT1 WHERE QuotaionID = " + docEntry;
                     var listItem = objCon.ByQueryReturnDataTable(queryList);
