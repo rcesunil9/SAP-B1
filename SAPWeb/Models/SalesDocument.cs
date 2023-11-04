@@ -209,7 +209,7 @@ namespace SAPWeb.Models
 
         public string DocumentStatusName { get {
                 string status = "OPEN";
-                if(DocumentType.ToLower() =="ar")
+                if(DocumentType != null  && DocumentType.ToLower() =="ar")
                 {
                     if (DocumentStatus == null || DocumentStatus.ToLower() == "bost_open")
                     {
