@@ -83,6 +83,14 @@ sapWEB.SalesQuotation = (function () {
                     "orderable": false,
                     data: null,
                     render: function (data, type, row) {
+                        return row.DocTotal;
+                    }
+                },
+                {
+                    "className": "text-center",
+                    "orderable": false,
+                    data: null,
+                    render: function (data, type, row) {
                         var htmlContent = '';
                         if (row.DocumentStatusName == "OPEN" || row.DocumentStatusName == "APPROVED") {
                             htmlContent += '<span class="label label-success">' + row.DocumentStatusName + '</span>'
@@ -225,7 +233,8 @@ sapWEB.SalesQuotation = (function () {
             SalesEmployee: sapWEB.helper.GetString('ddlEmployee option:selected'),
             Comments: sapWEB.helper.GetString('txtOtherRemarks'),
             RoundingDiffAmount: sapWEB.helper.GetNumericValue('txtRounding'),
-            Rounding: $("#rdtRoundOff").is(':checked')?"tYES":"tNO",
+            Rounding: $("#rdtRoundOff").is(':checked') ? "tYES" : "tNO",
+            DocTotal: sapWEB.helper.GetNumeric(sapWEB.helper.GetStringText('lblDocumentTotal')),
             DocumentLines: dataItems
         }
         sapWEB.ajax.jsonPost(salesQuotationSaveURL, { 'model': model },

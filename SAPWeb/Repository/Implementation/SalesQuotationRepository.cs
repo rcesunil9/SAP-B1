@@ -381,7 +381,7 @@ namespace SAPWeb.Repository.Implementation
                     +"|"+ objModel.U_Territory +"|"+objModel.RoundingDiffAmount +"|"+objModel.Rounding
                     + "|" + objModel.DocTotal +"|"+objModel.RETURNID;
 
-                var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OQUTInsertUpdate", 21, ParamName, ParamVal);
+                var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OQUTInsertUpdate", 22, ParamName, ParamVal);
                 if(dtItemDetails>0)
                 {
                     SAPErrMsg = "Sales Quotation Submitted Successfully. Document Number : " + dtItemDetails.ToString();//Common.SAP_DOCUMENTNUMBER("OQUT", NEWDOCENTRY.ToString(), "DocEntry");
@@ -415,7 +415,7 @@ namespace SAPWeb.Repository.Implementation
 CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus,U.Name as U_USER 
+DocStatus as DocumentStatus,U.Name as U_USER , ISNULL(DocTotal,0) AS DocTotal
 FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE UserSign='" + userID+"'";
                 if(SessionUtility.U_AdminRights=="Y")
                 {
@@ -425,7 +425,7 @@ FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE UserSign='" +
 CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus,U.Name as U_USER FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE DocStatus='O'";
+DocStatus as DocumentStatus,U.Name as U_USER, ISNULL(DocTotal,0) AS DocTotal FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE DocStatus='O'";
                 }
                 var Data = objCon.ByQueryReturnDataTable(query);
                 if (Data != null && Data.Rows.Count > 0)

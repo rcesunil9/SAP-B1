@@ -33,6 +33,7 @@ namespace SAPWeb.Models
     {
         public int DocEntry { get; set; }
         public int DocNum { get; set; }
+        public decimal DocTotal { get; set; }
         public string DocType { get; set; }
         public string U_USER { get; set; }
         public string HandWritten { get; set; }
@@ -43,7 +44,6 @@ namespace SAPWeb.Models
         public string CardName { get; set; }
         public string Address { get; set; }
         public string NumAtCard { get; set; }
-        public double DocTotal { get; set; } = 0;
         public string DocCurrency { get; set; }
         public double DocRate { get; set; }
         public string DocumentStatus { get; set; }
@@ -52,18 +52,18 @@ namespace SAPWeb.Models
         public string U_VerCode { get; set; }
         public string U_FiscalDoc { get; set; }
         public string U_URAPosted { get; set; }
-        public string U_Payment { get; set; }
+        public string U_PT { get; set; }
         public string U_PaymentType
         {
             get { 
                 
                 string status = string.Empty;
 
-                if(U_Payment=="1")
+                if(U_PT == "1")
                 {
                     status = "AR Invoice + Payment";
                 }
-                else if(U_Payment=="2")
+                else if(U_PT == "2")
                 {
                     status = "AR Invoice";
                 }
@@ -80,13 +80,58 @@ namespace SAPWeb.Models
                 {
                     status = "OPEN";
                 }
-                else if (DocumentStatus == null || DocumentStatus.ToLower() == "o")
+                else if (DocumentStatus == null || DocumentStatus.ToLower() == "o" || DocumentStatus.ToLower()=="d")
                 {
                     status = "DRAFT";
                 }
                 else if (DocumentStatus == null || DocumentStatus.ToLower() == "a")
                 {
                     status = "APPROVED";
+                }
+                else if (!string.IsNullOrEmpty(Cancelled) && DocumentStatus.ToLower() == "bost_Close" && Cancelled.ToLower() == "tyes")
+                {
+                    status = "CANCEL";
+                }
+                else
+                {
+                    status = "CLOSE";
+                }
+                return status;
+            }
+        }
+        public string ARStatus { get; set; }
+        public string ARStatusName
+        {
+            get
+            {
+                string status = "APPROVED";
+                if (ARStatus != null && ARStatus.ToLower() == "o")
+                {
+                    status = "DRAFT";
+                }
+                else if (ARStatus != null &&( ARStatus.ToLower() == "o" || ARStatus.ToLower() == "bost_open"))
+                {
+                    status = "OPEN";
+                }
+                else if (ARStatus != null && ARStatus.ToLower() == "a")
+                {
+                    status = "APPROVED";
+                }
+                else if (ARStatus != null && ARStatus.ToLower() == "r")
+                {
+                    status = "REJECTED";
+                }
+                return status;
+            }
+        }
+        public string ARStatusTypeName
+        {
+            get
+            {
+                string status;
+                if (DocumentStatus == null || DocumentStatus.ToLower() == "bost_open")
+                {
+                    status = "OPEN";
                 }
                 else if (!string.IsNullOrEmpty(Cancelled) && DocumentStatus.ToLower() == "bost_Close" && Cancelled.ToLower() == "tyes")
                 {
@@ -159,29 +204,48 @@ namespace SAPWeb.Models
         public string CreatedBy { get; set; }
         public string WhsCode { get; set; }
         public string DocumentStatus { get; set; }
-        
         public string Cancelled { get; set; }
+        public string DocumentType { get; set; }
+
         public string DocumentStatusName { get {
                 string status = "OPEN";
-                if (DocumentStatus == null || DocumentStatus.ToLower() == "bost_open")
+                if(DocumentType.ToLower() =="ar")
                 {
-                    status = "OPEN";
-                }
-                else if (DocumentStatus == null || DocumentStatus.ToLower() == "o")
-                {
-                    status = "DRAFT";
-                }
-                else if (DocumentStatus == null || DocumentStatus.ToLower() == "a")
-                {
-                    status = "APPROVED";
-                }
-                else if (!string.IsNullOrEmpty(Cancelled) && DocumentStatus.ToLower() == "bost_Close" && Cancelled.ToLower() == "tyes")
-                {
-                    status = "CANCEL";
+                    if (DocumentStatus == null || DocumentStatus.ToLower() == "bost_open")
+                    {
+                        status = "OPEN";
+                    }
+                    else if (!string.IsNullOrEmpty(Cancelled) && DocumentStatus.ToLower() == "bost_Close" && Cancelled.ToLower() == "tyes")
+                    {
+                        status = "CANCEL";
+                    }
+                    else
+                    {
+                        status = "CLOSE";
+                    }
                 }
                 else
                 {
-                    status = "CLOSE";
+                    if (DocumentStatus == null || DocumentStatus.ToLower() == "bost_open")
+                    {
+                        status = "OPEN";
+                    }
+                    else if (DocumentStatus == null || DocumentStatus.ToLower() == "o")
+                    {
+                        status = "DRAFT";
+                    }
+                    else if (DocumentStatus == null || DocumentStatus.ToLower() == "a")
+                    {
+                        status = "APPROVED";
+                    }
+                    else if (!string.IsNullOrEmpty(Cancelled) && DocumentStatus.ToLower() == "bost_Close" && Cancelled.ToLower() == "tyes")
+                    {
+                        status = "CANCEL";
+                    }
+                    else
+                    {
+                        status = "CLOSE";
+                    }
                 }
                 return status;
             } }
@@ -191,6 +255,25 @@ namespace SAPWeb.Models
         public string U_FiscalDoc { get; set; }
         public string U_URAPosted { get; set; }
         public decimal? DocTotal { get; set; }
+        public string ARStatus { get; set; }
+        public string ARStatusName { get
+            {
+                string status = "OPEN";
+                if (ARStatus == null || ARStatus.ToLower() == "d")
+                {
+                    status = "DRAFT";
+                }
+                else if (ARStatus == null || ARStatus.ToLower() == "o" || ARStatus.ToLower() == "bost_open")
+                {
+                    status = "OPEN";
+                }
+                else if (ARStatus == null || ARStatus.ToLower() == "a")
+                {
+                    status = "APPROVED";
+                }
+                return status;
+            }
+        }
 
         public List<DataItems> DocumentLines { get; set; }
     }
@@ -574,6 +657,25 @@ namespace SAPWeb.Models
         public int? AttachmentEntry { get; set; }
         public decimal? DocTotal { get; set; }
         public string DocumentStatus { get; set; } = string.Empty;
+        public string DocumentStatusType { get
+            {
+                string status = "O";
+
+                if (DocumentStatus != null && DocumentStatus.ToLower() == "bost_open")
+                {
+                    status = "O";
+                }
+                else if (!string.IsNullOrEmpty(Cancelled) && DocumentStatus.ToLower() == "bost_Close" && Cancelled.ToLower() == "tyes")
+                {
+                    status = "C";
+                }
+                else
+                {
+                    status = "C";
+                }
+                return status;
+            }
+        }
         public string Cancelled { get; set; } = string.Empty;
         public double? RoundingDiffAmount { get; set; }
         public string Rounding { get; set; }

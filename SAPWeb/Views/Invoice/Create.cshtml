@@ -158,8 +158,17 @@
                     <div class="form-group">
                         <label for="txtStatus ">Type </label>
                         <select id="ddlType" class="form-control">
-                            <option value="1" selected>AR Invoice + Payment</option>
-                            <option value="2">AR Invoice</option>
+                            @if (Model.RequestType == 1)
+                            {
+
+                                <option value="1" selected>AR Invoice + Payment</option>
+                                <option value="2">AR Invoice</option>
+                            }
+                            else
+                            {
+                                <option value="1">AR Invoice + Payment</option>
+                                <option value="2" selected>AR Invoice</option>
+                            }
                         </select>
                     </div>
                 </div>
@@ -193,7 +202,7 @@
                     <div class="form-group">
                         <label for="ddlStatus ">Status </label>
                         <select id="ddlStatus" class="form-control" @((bool)ViewBag.Approved == false ? "" : "disabled")>
-                            @if (Model.DocumentStatusName == "OPEN" && !string.IsNullOrEmpty(Model.DocumentStatus))
+                            @if (Model.ARStatus == "A" && !string.IsNullOrEmpty(Model.ARStatus))
                             {
                                 <option value="O">DRAFT</option>
                                 <option value="A" selected>APPROVED</option>

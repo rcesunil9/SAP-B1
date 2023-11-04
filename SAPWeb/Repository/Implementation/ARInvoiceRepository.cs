@@ -37,6 +37,7 @@ namespace SAPWeb.Repository.Implementation
             model.DocCurrency = GetByKey.DocCurrency;
             model.U_ExchRate = GetByKey.DocRate;
             model.CardCode = GetByKey.CardCode;
+            model.DocumentType = "AR";
             model.DocumentStatus = GetByKey.DocumentStatus;
             model.Cancelled = GetByKey.Cancelled;
             model.U_VerCode = GetByKey.U_VerCode;
@@ -50,6 +51,8 @@ namespace SAPWeb.Repository.Implementation
             model.ShipToCode = GetByKey.ShipToCode;
             model.U_Territory = GetByKey.U_Territory;
             model.U_USER = GetByKey.U_USER;
+            model.RequestType = Convert.ToInt32(GetByKey.U_PT??"0");
+            model.ARStatus = GetByKey.U_Avalibility;
 
             model.Comments = GetByKey.Comments;
             model.RoundingDiffAmount = GetByKey.RoundingDiffAmount;
@@ -282,6 +285,7 @@ namespace SAPWeb.Repository.Implementation
                         string U_FiscalDoc;
                         string U_URAPosted;
                         string U_Payment;
+                        string status = "";
 
                         if (UPSERT == true)
                         {
@@ -301,6 +305,7 @@ namespace SAPWeb.Repository.Implementation
                             U_FiscalDoc = data1.U_FiscalDoc;
                             U_URAPosted = data1.U_URAPosted;
                             U_Payment = objModel.RequestType.ToString();
+                            status = data1.DocumentStatusType;
                             DocTotal = data1.DocTotal;
                             if (objModel.RequestType==1)
                             {
@@ -334,6 +339,8 @@ namespace SAPWeb.Repository.Implementation
                             objModel.U_URAPosted = U_URAPosted;
                             objModel.RequestType = Convert.ToInt32(U_Payment);
                             objModel.DocTotal = DocTotal;
+                            objModel.ARStatus = "A";
+                            objModel.DocumentStatus = status;
                             SAPARInvoiceInsertUpdateUser(objModel);
                         }
                         SAPErrMsg = "Sales Invoice Submitted Successfully. Document Number : " + NEWDOCENTRY.ToString();//Common.SAP_DOCUMENTNUMBER("OINV", NEWDOCENTRY.ToString(), "DocEntry");
@@ -444,17 +451,17 @@ namespace SAPWeb.Repository.Implementation
                     "|@DocCur" +
                     "|@SlpCode|@CntctCode|@Series|@UserSign|@PayToCode|@ShipToCode|@Comments|" +
                     "@U_Territory|@U_VerCode|@U_FiscalDoc|@U_URAPosted|@U_Payment" +
-                    "@RoundDif|@DocTotal|@Rounding|@RETURNID";
+                    "|@RoundDif|@DocTotal|@Rounding|@ARStatus|@RETURNID";
                 ParamVal = objModel.QuotaionID + "|" + objModel.DocEntry + "|" + objModel.DocNum
                     + "|" + objModel.DocumentStatus + "|" + Convert.ToDateTime(objModel.PostingDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DeliveryDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DocDate).ToString("yyyy-MM-dd")
                     + "|" + objModel.CardCode + "|" + objModel.CardName
                     + "|" + objModel.DocCurrency + "|" + objModel.SalesEmployee + "|" + objModel.ContactPersonCode + "|" + objModel.Series
                     + "|" + SessionUtility.Code + "|" + objModel.PayToCode + "|" + objModel.ShipToCode + "|" + objModel.Comments
                     + "|" + objModel.U_Territory +  "|" + objModel.U_VerCode + "|" + objModel.U_FiscalDoc + "|" + objModel.U_URAPosted + "|" + objModel.RequestType.ToString()
-                    + "|" + objModel.RoundingDiffAmount + "|" + objModel.DocTotal + "|" + objModel.Rounding
+                    + "|" + objModel.RoundingDiffAmount + "|" + objModel.DocTotal + "|" + objModel.Rounding + "|" + objModel.ARStatus
                     + "|" + objModel.RETURNID;
 
-                var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OINVInsertUpdate", 21, ParamName, ParamVal);
+                var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OINVInsertUpdate", 27, ParamName, ParamVal);
                 if (dtItemDetails > 0)
                 {
                     SAPErrMsg = "Sales Quotation Submitted Successfully. Document Number : " + dtItemDetails.ToString();//Common.SAP_DOCUMENTNUMBER("OQUT", NEWDOCENTRY.ToString(), "DocEntry");
@@ -489,7 +496,7 @@ namespace SAPWeb.Repository.Implementation
 CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted,DocTotal  FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE UserSign='" + userID + "'";
+DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, ISNULL(DocTotal,0) AS DocTotal,U_Payment as U_PT,ARStatus   FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE UserSign='" + userID + "'";
                 if (SessionUtility.U_AdminRights == "Y")
                 {
                     query = @"SELECT (CASE WHEN DocEntry = 0 OR DocEntry is null THEN InvoiceID ELSE DocEntry end) as DocEntry,
@@ -497,7 +504,7 @@ DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted,D
 CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted,DocTotal FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE DocStatus='O'";
+DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, ISNULL(DocTotal,0) AS DocTotal,U_Payment as U_PT,ARStatus  FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE DocStatus='O'";
                 }
                 var Data = objCon.ByQueryReturnDataTable(query);
                 if (Data != null && Data.Rows.Count > 0)
@@ -546,13 +553,14 @@ DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted,D
 				TaxDate as DocDate,
                 U_Territory as U_Territory
 ,
-U.Name as U_USER
+U.Name as U_USER,U_Payment,U_VerCode,U_FiscalDoc,U_URAPosted,ARStatus
                 from U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign  WHERE InvoiceID = " + docEntry;
                 var Data = objCon.ByQueryReturnDataTable(queryHeader);
                 if (Data != null && Data.Rows.Count > 0)
                 {
                     model.DocumentLines = new List<DataItems>();
                     model.DocEntry = Convert.ToInt32(Data.Rows[0]["DocEntry"]);
+                    model.DocumentType = "AR";
                     model.QuotaionID = Convert.ToInt32(Data.Rows[0]["QuotaionID"]);
                     model.SalesEmployee = Convert.ToInt32(Data.Rows[0]["SalesEmployee"]);
                     model.ContactPersonCode = Convert.ToInt32(!string.IsNullOrEmpty(Data.Rows[0]["ContactPersonCode"].ToString()) ? Data.Rows[0]["ContactPersonCode"].ToString() : "0");
@@ -568,7 +576,12 @@ U.Name as U_USER
                     model.Comments = Data.Rows[0]["Comments"].ToString();
                     model.Rounding = Data.Rows[0]["Rounding"].ToString();
                     model.U_Territory = Data.Rows[0]["U_Territory"].ToString();
+                    model.U_VerCode = Data.Rows[0]["U_VerCode"].ToString();
+                    model.U_FiscalDoc = Data.Rows[0]["U_FiscalDoc"].ToString();
+                    model.U_URAPosted = Data.Rows[0]["U_URAPosted"].ToString();
                     model.U_USER = Data.Rows[0]["U_USER"].ToString();
+                    model.RequestType = Convert.ToInt32(Data.Rows[0]["U_Payment"].ToString() ?? "0");
+                    model.ARStatus = Data.Rows[0]["ARStatus"].ToString();
                     model.RoundingDiffAmount = Convert.ToDouble(Data.Rows[0]["RoundingDiffAmount"].ToString());
                     var queryList = @"SELECT * FROM U_INV1 WHERE InvoiceID = " + docEntry;
                     var listItem = objCon.ByQueryReturnDataTable(queryList);

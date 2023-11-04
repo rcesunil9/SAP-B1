@@ -140,6 +140,7 @@ sapWEB.ARInvoice = (function () {
             Rounding: $("#rdtRoundOff").is(':checked') ? "tYES" : "tNO",
             RoundingDiffAmount: sapWEB.helper.GetNumericValue('txtRounding'),
             RequestType: sapWEB.helper.GetString('ddlType option:selected'),
+            DocTotal: sapWEB.helper.GetNumeric(sapWEB.helper.GetStringText('lblDocumentTotal')),
             DocumentLines: dataItems
         }
         sapWEB.ajax.jsonPost(invoiceSaveURL, { 'model': model },
@@ -202,18 +203,27 @@ sapWEB.ARInvoice = (function () {
                     "orderable": false,
                     data: null,
                     render: function (data, type, row) {
+                        return row.DocTotal;
+                    }
+                },
+                { "data": "U_PaymentType", "name": "U_PaymentType", "autoWidth": true },
+                {
+                    "className": "text-center",
+                    "orderable": false,
+                    data: null,
+                    render: function (data, type, row) {
                         var htmlContent = '';
-                        if (row.DocumentStatusName == "OPEN" || row.DocumentStatusName == "APPROVED") {
-                            htmlContent += '<span class="label label-success">' + row.DocumentStatusName + '</span>'
+                        if (row.ARStatusName == "OPEN" || row.ARStatusName == "APPROVED") {
+                            htmlContent += '<span class="label label-success">' + row.ARStatusName + '</span>'
                         }
-                        else if (row.DocumentStatusName == "CLOSE") {
-                            htmlContent += '<span class="label label-warning">' + row.DocumentStatusName + '</span>'
+                        else if (row.ARStatusName == "CLOSE") {
+                            htmlContent += '<span class="label label-warning">' + row.ARStatusName + '</span>'
                         }
-                        else if (row.DocumentStatusName == "DRAFT") {
-                            htmlContent += '<span class="label label-danger">' + row.DocumentStatusName + '</span>'
+                        else if (row.ARStatusName == "DRAFT") {
+                            htmlContent += '<span class="label label-danger">' + row.ARStatusName + '</span>'
                         }
-                        else if (row.DocumentStatusName == "CANCEL") {
-                            htmlContent += '<span class="label label-danger">' + row.DocumentStatusName + '</span>'
+                        else if (row.ARStatusName == "CANCEL") {
+                            htmlContent += '<span class="label label-danger">' + row.ARStatusName + '</span>'
                         }
                         return htmlContent
                     }
@@ -224,7 +234,28 @@ sapWEB.ARInvoice = (function () {
                     data: null,
                     render: function (data, type, row) {
                         var htmlContent = '';
-                        htmlContent += "<a href='/Invoice/Create/" + row.DocEntry + "/" + row.DocumentStatusName + "' class='btn btn-sm btn-primary' style='margin-right:5px;' onclick='' ><i class='fa fa-edit'></i></a>";
+                        if (row.ARStatusTypeName == "OPEN" || row.ARStatusTypeName == "APPROVED") {
+                            htmlContent += '<span class="label label-success">' + row.ARStatusTypeName + '</span>'
+                        }
+                        else if (row.ARStatusTypeName == "CLOSE") {
+                            htmlContent += '<span class="label label-warning">' + row.ARStatusTypeName + '</span>'
+                        }
+                        else if (row.ARStatusTypeName == "DRAFT") {
+                            htmlContent += '<span class="label label-danger">' + row.ARStatusTypeName + '</span>'
+                        }
+                        else if (row.ARStatusTypeName == "CANCEL") {
+                            htmlContent += '<span class="label label-danger">' + row.ARStatusTypeName + '</span>'
+                        }
+                        return htmlContent
+                    }
+                },
+                {
+                    "className": "text-center",
+                    "orderable": false,
+                    data: null,
+                    render: function (data, type, row) {
+                        var htmlContent = '';
+                        htmlContent += "<a href='/Invoice/Create/" + row.DocEntry + "/" + row.ARStatusName + "' class='btn btn-sm btn-primary' style='margin-right:5px;' onclick='' ><i class='fa fa-edit'></i></a>";
                         if (row.DocumentStatusName !== "DRAFT" && row.U_VerCode !== null && row.U_URAPosted.toLocaleLowerCase() == "yes" && row.U_FiscalDoc!=null) {
                             htmlContent += "<a href='#' class='btn  btn-sm btn-success'style='margin-right:5px;' onclick='getReport(" + row.DocEntry + ")' ><i class='fa fa-print'></i></a>";
                         }

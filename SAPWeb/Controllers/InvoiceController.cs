@@ -95,7 +95,7 @@ namespace SAPWeb.Controllers
                         }
                     }
                 }
-                if (response.DocumentStatus == "A" || type != "DRAFT" || response.DocumentStatus== "bost_Close")
+                if (response.DocumentStatus == "A" || response.ARStatus=="A" || type != "DRAFT" || response.DocumentStatus== "bost_Close")
                 {
                     ViewBag.Approved = true;
                 }
