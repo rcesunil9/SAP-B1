@@ -49,14 +49,14 @@ sapWEB.ARInvoice = (function () {
             sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select Sales Employeee");
             return;
         }
-        if (sapWEB.helper.GetString('ddlBillToID') == '') {
-            sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select BillTo");
-            return;
-        }
-        if (sapWEB.helper.GetString('ddlShipTOID') == '') {
-            sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select Place of Supply");
-            return;
-        }
+        //if (sapWEB.helper.GetString('ddlBillToID') == '') {
+        //    sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select BillTo");
+        //    return;
+        //}
+        //if (sapWEB.helper.GetString('ddlShipTOID') == '') {
+        //    sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select Place of Supply");
+        //    return;
+        //}
         if (sapWEB.helper.GetString('ddlSeries') == '') {
             sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select Series");
             return;

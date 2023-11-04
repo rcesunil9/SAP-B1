@@ -88,7 +88,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="ddlBillToID">BillTo ID *</label>
+                        <label for="ddlBillToID">BillTo ID</label>
                         <select id="ddlBillToID" class="form-control" data-BillTo="@Model.PayToCode">
                             <option>Select Bill To ID</option>
                         </select>
@@ -102,7 +102,7 @@
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="ddlShipTOID ">Place of Supply *</label>
+                        <label for="ddlShipTOID ">Place of Supply</label>
                         <select id="ddlShipTOID" class="form-control" data-ShipTo="@Model.ShipToCode">
                             <option>Select Ship TO ID</option>
                         </select>
@@ -308,7 +308,7 @@
                                                 <td><input id="txtLineQTY_@(count)" type="text" class="form-control lineAmount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
                                                 <td widtd="5%" class="hide"> <input id="txtAmount_@(count)" type="text" class="form-control taxAmount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
                                                 <td>
-                                                    <select id="ddlWarCode_@(count)" class="form-control warecode">
+                                                    <select id="ddlWarCode_@(count)" class="form-control warecode" disabled>
                                                         <option value="">Select TaxCode</option>
                                                         @foreach (var ware in ViewBag.WarHouseCode as List<WareHouse>)
                                                         {
@@ -367,7 +367,7 @@
                                             <td><input id="txtLineQTY_1" type="text" class="form-control lineAmount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="" readonly> </td>
                                             <td widtd="5%" class="hide"> <input id="txtAmount_1" type="text" class="form-control taxAmount form-control-sm custom-select-sm form-control-sm-x numericdecimal" value="">  </td>
                                             <td>
-                                                <select id="ddlWarCode_1" class="form-control warecode">
+                                                <select id="ddlWarCode_1" class="form-control warecode" disabled>
                                                     <option value="">Select WarHouse</option>
                                                     @foreach (var ware in ViewBag.WarHouseCode as List<WareHouse>)
                                                     {

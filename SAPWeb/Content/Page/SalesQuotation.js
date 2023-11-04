@@ -145,14 +145,14 @@ sapWEB.SalesQuotation = (function () {
             sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select Sales Employeee");
             return;
         }
-        if (sapWEB.helper.GetString('ddlBillToID') == '') {
-            sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select BillTo");
-            return;
-        }
-        if (sapWEB.helper.GetString('ddlShipTOID') == '') {
-            sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select ShipTO");
-            return;
-        }
+        //if (sapWEB.helper.GetString('ddlBillToID') == '') {
+        //    sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select BillTo");
+        //    return;
+        //}
+        //if (sapWEB.helper.GetString('ddlShipTOID') == '') {
+        //    sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select ShipTO");
+        //    return;
+        //}
         if (sapWEB.helper.GetString('ddlSeries') == '') {
             sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select Series");
             return;

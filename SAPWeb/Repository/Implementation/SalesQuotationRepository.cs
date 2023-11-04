@@ -79,8 +79,25 @@ namespace SAPWeb.Repository.Implementation
                     //oSalesQuotations.U_SUBJECT = objModel.Subject;
                     //oSalesQuotations.U_COVERINGBODY = objModel.CoveringBody;
 
-                    oSalesQuotations.PayToCode = objModel.PayToCode;
-                    oSalesQuotations.ShipToCode = objModel.ShipToCode;
+                    if(!string.IsNullOrEmpty(objModel.PayToCode) && objModel.PayToCode!="0")
+                    {
+
+                        oSalesQuotations.PayToCode = objModel.PayToCode;
+                    }
+                    else
+                    {
+                        oSalesQuotations.PayToCode = null;
+                    }
+                    if (!string.IsNullOrEmpty(objModel.ShipToCode) && objModel.ShipToCode != "0")
+                    {
+
+                        oSalesQuotations.ShipToCode = objModel.ShipToCode;
+                    }
+                    else
+                    {
+                        oSalesQuotations.ShipToCode = null;
+                    }
+                   // oSalesQuotations.ShipToCode = objModel.ShipToCode;
                     oSalesQuotations.Comments = objModel.Comments;
                     oSalesQuotations.Rounding = objModel.Rounding;
                     oSalesQuotations.RoundingDiffAmount = objModel.RoundingDiffAmount;
@@ -179,6 +196,7 @@ namespace SAPWeb.Repository.Implementation
                     {
                         int NEWDOCENTRY = 0;
                         int docNum = 0;
+                        decimal? docTotal = 0;
                         if (UPSERT == true)
                         {
                             NEWDOCENTRY = objModel.DocEntry.Value;
@@ -189,6 +207,7 @@ namespace SAPWeb.Repository.Implementation
                             Documents data1 = JsonConvert.DeserializeObject<Documents>(SuccessData.FirstOrDefault().Value);
                             NEWDOCENTRY = data1.DocEntry.Value;
                             docNum = data1.DocNum.Value;
+                            docTotal = data1.DocTotal;
                         }
                         //--------------------------------------------------------
 
@@ -212,6 +231,7 @@ namespace SAPWeb.Repository.Implementation
                             {
                                 objModel.DocEntry = NEWDOCENTRY;
                                 objModel.DocNum = docNum;
+                                objModel.DocTotal = docTotal;
                                 SAPSalesQuotaionUser(objModel);
                             }
                             SAPErrMsg = "Sales Quotation Submitted Successfully. Document Number : " + NEWDOCENTRY.ToString();//Common.SAP_DOCUMENTNUMBER("OQUT", NEWDOCENTRY.ToString(), "DocEntry");
@@ -352,14 +372,14 @@ namespace SAPWeb.Repository.Implementation
                 string ParamVal = "";
                 ParamName = "@QuotaionID|@DocEntry|@DocNum|@DocStatus|@DocDate|@DocDueDate|@TaxDate|@CardCode|@CardName" +
                     "|@DocCur" +
-                    "|@SlpCode|@CntctCode|@Series|@UserSign|@PayToCode|@ShipToCode|@Comments|@U_Territory|@RoundDif|@Rounding|@RETURNID";
+                    "|@SlpCode|@CntctCode|@Series|@UserSign|@PayToCode|@ShipToCode|@Comments|@U_Territory|@RoundDif|@Rounding|@DocTotal|@RETURNID";
                 ParamVal = objModel.QuotaionID + "|" + objModel.DocEntry + "|" + objModel.DocNum
                     + "|" + objModel.DocumentStatus + "|" + Convert.ToDateTime(objModel.PostingDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DeliveryDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DocDate).ToString("yyyy-MM-dd")
                     + "|" + objModel.CardCode + "|" + objModel.CardName 
                     + "|" + objModel.DocCurrency + "|" + objModel.SalesEmployee + "|" + objModel.ContactPersonCode + "|" + objModel.Series
                     + "|" + SessionUtility.Code + "|" + objModel.PayToCode + "|" + objModel.ShipToCode + "|" + objModel.Comments
                     +"|"+ objModel.U_Territory +"|"+objModel.RoundingDiffAmount +"|"+objModel.Rounding
-                    +"|"+objModel.RETURNID;
+                    + "|" + objModel.DocTotal +"|"+objModel.RETURNID;
 
                 var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OQUTInsertUpdate", 21, ParamName, ParamVal);
                 if(dtItemDetails>0)

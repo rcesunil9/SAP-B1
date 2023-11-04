@@ -43,7 +43,7 @@ namespace SAPWeb.Models
         public string CardName { get; set; }
         public string Address { get; set; }
         public string NumAtCard { get; set; }
-        public double DocTotal { get; set; }
+        public double DocTotal { get; set; } = 0;
         public string DocCurrency { get; set; }
         public double DocRate { get; set; }
         public string DocumentStatus { get; set; }
@@ -52,7 +52,25 @@ namespace SAPWeb.Models
         public string U_VerCode { get; set; }
         public string U_FiscalDoc { get; set; }
         public string U_URAPosted { get; set; }
+        public string U_Payment { get; set; }
+        public string U_PaymentType
+        {
+            get { 
+                
+                string status = string.Empty;
 
+                if(U_Payment=="1")
+                {
+                    status = "AR Invoice + Payment";
+                }
+                else if(U_Payment=="2")
+                {
+                    status = "AR Invoice";
+                }
+
+                return status;
+            }
+        }
         public string DocumentStatusName
         {
             get
@@ -172,6 +190,8 @@ namespace SAPWeb.Models
         public string U_VerCode { get; set; }
         public string U_FiscalDoc { get; set; }
         public string U_URAPosted { get; set; }
+        public decimal? DocTotal { get; set; }
+
         public List<DataItems> DocumentLines { get; set; }
     }
     public class SalesOrderQuotationDocumentItem
@@ -564,6 +584,8 @@ namespace SAPWeb.Models
         public string U_FiscalDoc { get; set; }
         public string U_URAPosted { get; set; }
         public string U_USER { get; set; }
+        public string U_Avalibility { get; set; }
+        public string U_PT { get; set; }
     }
 
     public class DocumentLines
