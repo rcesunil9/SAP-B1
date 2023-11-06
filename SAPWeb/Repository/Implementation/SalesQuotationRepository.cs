@@ -295,6 +295,7 @@ namespace SAPWeb.Repository.Implementation
                 SuccessData = ServiceLayerData.SAPGetSalesQuotations("Quotations?$skip=" + skip + "&$orderby=DocEntry desc");
                 if (SuccessData.Value != null && SuccessData.Value.Count > 0)
                 {
+                    SuccessData.Value.ForEach(x => x.DocDate = CommonAttributes.GetDate(x.DocDate).ToString("dd/MM/yyyyy"));
                     obj.QuotationDetails = SuccessData;
                     obj.errorCode = "1";
                     obj.errorMsg = "Data Found";
@@ -412,7 +413,7 @@ namespace SAPWeb.Repository.Implementation
             {
                 string query = @"SELECT   (CASE WHEN DocEntry = 0 OR DocEntry is null THEN QuotaionID ELSE DocEntry end) as DocEntry,
  DocNum,
-CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
+CONVERT(varchar, CAST(DocDate AS datetime), 103) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
 DocStatus as DocumentStatus,U.Name as U_USER , ISNULL(DocTotal,0) AS DocTotal
@@ -422,7 +423,7 @@ FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE UserSign='" +
                     query = @"SELECT 
 (CASE WHEN DocEntry = 0 OR DocEntry is null THEN QuotaionID ELSE DocEntry end) as DocEntry,
  DocNum,
-CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
+CONVERT(varchar, CAST(DocDate AS datetime), 103) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
 DocStatus as DocumentStatus,U.Name as U_USER, ISNULL(DocTotal,0) AS DocTotal FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE DocStatus='O'";

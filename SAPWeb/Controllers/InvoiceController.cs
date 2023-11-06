@@ -52,6 +52,9 @@ namespace SAPWeb.Controllers
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
             model.EMPID = SessionUtility.Code;
+            model.PostingDate = CommonAttributes.GetDate(model.PostingDate.Value.ToString());
+            model.DeliveryDate = CommonAttributes.GetDate(model.DeliveryDate.Value.ToString());
+            model.DocDate = CommonAttributes.GetDate(model.DocDate.ToString());
             if ((model.DocEntry != null && model.DocEntry > 0) || model.DocumentStatus == "A")
             {
                 response = invoiceRepository.SAPARInvoiceInsertUpdate(model);

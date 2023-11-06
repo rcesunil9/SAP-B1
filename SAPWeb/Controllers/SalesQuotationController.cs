@@ -73,7 +73,10 @@ namespace SAPWeb.Controllers
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
             model.EMPID = SessionUtility.Code;
-            if((model.DocEntry!=null && model.DocEntry>0) || model.DocumentStatus=="A")
+            model.PostingDate = CommonAttributes.GetDate(model.PostingDate.Value.ToString());
+            model.DeliveryDate = CommonAttributes.GetDate(model.DeliveryDate.Value.ToString());
+            model.DocDate = CommonAttributes.GetDate(model.DocDate.ToString());
+            if ((model.DocEntry!=null && model.DocEntry>0) || model.DocumentStatus=="A")
             {
                 response = salesQuotationRepository.SAPSalesQuotation(model);
             }

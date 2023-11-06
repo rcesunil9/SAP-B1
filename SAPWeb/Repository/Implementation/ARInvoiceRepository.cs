@@ -86,6 +86,7 @@ namespace SAPWeb.Repository.Implementation
                 SuccessData = ServiceLayerData.SAPGetSalesInvoicesList("Invoices?$skip="+skip + "&$orderby=DocEntry desc");
                 if (SuccessData.Value != null && SuccessData.Value.Count > 0)
                 {
+                    SuccessData.Value.ForEach(x => x.DocDate = CommonAttributes.GetDate(x.DocDate).ToString("dd/MM/yyyyy"));
                     obj.QuotationDetails = SuccessData;
                     obj.errorCode = "1";
                     obj.errorMsg = "Data Found";
@@ -343,7 +344,7 @@ namespace SAPWeb.Repository.Implementation
                             objModel.DocumentStatus = status;
                             SAPARInvoiceInsertUpdateUser(objModel);
                         }
-                        SAPErrMsg = "Sales Invoice Submitted Successfully. Document Number : " + NEWDOCENTRY.ToString();//Common.SAP_DOCUMENTNUMBER("OINV", NEWDOCENTRY.ToString(), "DocEntry");
+                        SAPErrMsg = "AR Invoice Submitted Successfully. Document Number : " + NEWDOCENTRY.ToString();//Common.SAP_DOCUMENTNUMBER("OINV", NEWDOCENTRY.ToString(), "DocEntry");
 
                         obj.errorCode = "1";
                         obj.errorMsg = SAPErrMsg;
@@ -464,7 +465,7 @@ namespace SAPWeb.Repository.Implementation
                 var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OINVInsertUpdate", 27, ParamName, ParamVal);
                 if (dtItemDetails > 0)
                 {
-                    SAPErrMsg = "Sales Quotation Submitted Successfully. Document Number : " + dtItemDetails.ToString();//Common.SAP_DOCUMENTNUMBER("OQUT", NEWDOCENTRY.ToString(), "DocEntry");
+                    SAPErrMsg = "AR Invoice Submitted Successfully. Document Number : " + dtItemDetails.ToString();//Common.SAP_DOCUMENTNUMBER("OQUT", NEWDOCENTRY.ToString(), "DocEntry");
                     foreach (var item in objModel.DocumentLines)
                     {
                         ParamName = "@InvoiceDetailsID|@InvoiceID|@ItemCode|@Dscription|@Quantity|@DiscPrcnt|@WhsCode|@TaxCode|@UnitPrice|@RETURNID";
@@ -493,7 +494,7 @@ namespace SAPWeb.Repository.Implementation
                 string query = @"SELECT  InvoiceID,
  (CASE WHEN DocEntry = 0 OR DocEntry is null THEN InvoiceID ELSE DocEntry end) as DocEntry,
  DocNum,
-CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
+CONVERT(varchar, CAST(DocDate AS datetime), 103) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
 DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, ISNULL(DocTotal,0) AS DocTotal,U_Payment as U_PT,ARStatus   FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE UserSign='" + userID + "'";
@@ -501,10 +502,10 @@ DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, 
                 {
                     query = @"SELECT (CASE WHEN DocEntry = 0 OR DocEntry is null THEN InvoiceID ELSE DocEntry end) as DocEntry,
  DocNum,
-CONVERT(varchar, CAST(DocDate AS datetime), 23) as DocDate,
+CONVERT(varchar, CAST(DocDate AS datetime), 103) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, ISNULL(DocTotal,0) AS DocTotal,U_Payment as U_PT,ARStatus  FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE DocStatus='O'";
+DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, ISNULL(DocTotal,0) AS DocTotal,U_Payment as U_PT,ARStatus  FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE ARStatus='O'";
                 }
                 var Data = objCon.ByQueryReturnDataTable(query);
                 if (Data != null && Data.Rows.Count > 0)

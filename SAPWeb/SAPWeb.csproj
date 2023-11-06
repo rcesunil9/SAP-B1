@@ -231,6 +231,7 @@
     <Compile Include="Repository\Interface\ICustomerRepository.cs" />
     <Compile Include="Repository\Interface\IItemRepository.cs" />
     <Compile Include="Repository\Interface\ISalesQuotationRepository.cs" />
+    <Compile Include="Utility\CommonAttributes.cs" />
     <Compile Include="Utility\CustomAuthenticationFilter.cs" />
     <Compile Include="Utility\Extensions.cs" />
     <Compile Include="Utility\ReportUtility.cs" />
