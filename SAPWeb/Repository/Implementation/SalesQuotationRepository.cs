@@ -295,7 +295,7 @@ namespace SAPWeb.Repository.Implementation
                 SuccessData = ServiceLayerData.SAPGetSalesQuotations("Quotations?$skip=" + skip + "&$orderby=DocEntry desc");
                 if (SuccessData.Value != null && SuccessData.Value.Count > 0)
                 {
-                    SuccessData.Value.ForEach(x => x.DocDate = CommonAttributes.GetDate(x.DocDate).ToString("dd/MM/yyyyy"));
+                    SuccessData.Value.ForEach(x => x.DocDate = CommonAttributes.GetDate(x.DocDate).ToString("dd/MM/yyyy"));
                     obj.QuotationDetails = SuccessData;
                     obj.errorCode = "1";
                     obj.errorMsg = "Data Found";
