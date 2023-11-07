@@ -19,7 +19,7 @@
 <div class="row">
     <input type="hidden" id="hdnDocEntry" value="@Model.DocEntry" />
     <input type="hidden" id="hdnQuotaionID" value="@Model.QuotaionID" />
-    <input type="hidden" id="hdnU_User" value="@Model.U_USER" />
+    <input type="hidden" id="hdnU_User" value="@(Model.U_USER??SessionUtility.Name)" />
     <div class="col-12">
         <div class="white-box">
             <h3 class="box-title m-b-0">Create @ViewBag.Title</h3>

@@ -17,7 +17,7 @@
 }
 <input id="hdnDocEntry" type="hidden" value="@Model.DocEntry"/>
 <input type="hidden" id="hdnQuotaionID" value="@Model.QuotaionID" />
-<input type="hidden" id="hdnU_User" value="@Model.U_USER" />
+<input type="hidden" id="hdnU_User" value="@(Model.U_USER??SessionUtility.Name)" />
 <div class="row">
     <div class="col-12">
         <div class="white-box">
@@ -61,7 +61,7 @@
              
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="ddlU_Territory">Territory</label>
+                        <label for="ddlU_Territory">Territory *</label>
                         @*<input id="txtTerritoty" class="form-control" placeholder="Territoty" value="@(Model.U_Territory)" readonly>*@
                         <select id="ddlU_Territory" class="form-control">
                             <option value="99">Select Location</option>
@@ -126,8 +126,8 @@
             <div class="row">
                 <div class="col-md-2">
                     <div class="form-group">
-                        <label for="txtQuotationNumber ">Quotation Number </label>
-                        <input type="text" class="form-control" id="txtQuotationNumber" value="@Model.DocEntry" readonly>
+                        <label for="txtQuotationNumber ">Doc Number </label>
+                        <input type="text" class="form-control" id="txtQuotationNumber" value="@Model.DocNum" readonly>
                     </div>
                 </div>
                 <div class="col-md-2">

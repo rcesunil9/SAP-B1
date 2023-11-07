@@ -321,6 +321,7 @@ namespace SAPWeb.Repository.Implementation
             Documents GetByKey = ServiceLayerData.SAPGetSalesQuotations(docEntry);
             model.DocumentLines = new List<DataItems>();
             model.DocEntry = docEntry;
+            model.DocNum = GetByKey.DocNum;
             model.ContactPersonCode = GetByKey.ContactPersonCode;
             model.SalesEmployee = GetByKey.SalesPersonCode;
             model.NumAtCard = GetByKey.CardName;

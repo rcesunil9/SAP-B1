@@ -49,6 +49,10 @@ sapWEB.ARInvoice = (function () {
             sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select Sales Employeee");
             return;
         }
+        if (sapWEB.helper.GetString('ddlU_Territory option:selected') == '' || sapWEB.helper.GetString('ddlU_Territory option:selected') == '99') {
+            sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select Territory");
+            return;
+        }
         //if (sapWEB.helper.GetString('ddlBillToID') == '') {
         //    sapWEB.dialog.ShowToaster(DialogType.Error, "Please Select BillTo");
         //    return;
