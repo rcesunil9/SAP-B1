@@ -52,6 +52,7 @@
     <script>
         var reportURL = '@Url.Action("GetReport", "Invoice", new { area = "" })';
         var cancelURL = '@Url.Action("CancelInvoice", "Invoice", new { area = "" })';
+        var uraPostedURL = '@Url.Action("URAPosted", "Invoice", new { area = "" })';
        $(document).ready(function () {
            invoiceGetURL = '@Url.Action("GetARInvoices", "Invoice", new { area = "" })';
            if ('@SessionUtility.U_AdminRights' == "Y") {
@@ -83,6 +84,24 @@
                 function (response) {
                     if (response.errorCode == 1) {
                         sapWEB.dialog.ShowToaster(DialogType.Success, response.errorMsg);
+                       
+                    }
+                    else {
+                        sapWEB.dialog.ShowToaster(DialogType.Error, response.errorMsg);
+                    }
+                },
+                function (error) {
+
+                    sapWEB.dialog.ShowToaster(DialogType.Error, error.responseText);
+
+                })
+        }
+        function URAInvoice(docEntry) {
+            sapWEB.ajax.jsonGet(uraPostedURL + "?id=" + docEntry,
+                function (response) {
+                    if (response.errorCode == 1) {
+                        sapWEB.dialog.ShowToaster(DialogType.Success, response.errorMsg);
+                        loadTable.ajax.reload();
                     }
                     else {
                         sapWEB.dialog.ShowToaster(DialogType.Error, response.errorMsg);

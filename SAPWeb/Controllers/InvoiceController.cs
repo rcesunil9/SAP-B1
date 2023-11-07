@@ -127,5 +127,12 @@ namespace SAPWeb.Controllers
             response = invoiceRepository.CancelInvoice(id); 
             return Json(response, JsonRequestBehavior.AllowGet);
         }
+        [HttpGet]
+        public ActionResult URAPosted(int id)
+        {
+            SalesDocumentsDefault response = new SalesDocumentsDefault();
+            response = invoiceRepository.URAPosted(id);
+            return Json(response, JsonRequestBehavior.AllowGet);
+        }
     }
 }

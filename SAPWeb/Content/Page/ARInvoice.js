@@ -8,6 +8,7 @@ var prevLink;
 var paging = false;
 var firstLoad = true;
 var slpCode = 0;
+var loadTable;
 var sapWEB = sapWEB || {}
 sapWEB.ARInvoice = (function () {
     var init = function () {
@@ -167,7 +168,7 @@ sapWEB.ARInvoice = (function () {
 
     }
     var loadGrid = function (link) {
-        $("#tblSalesOrder").DataTable({
+       loadTable = $("#tblSalesOrder").DataTable({
             "processing": true, // for show progress bar
             "bDestroy": true,
             "lengthChange": false,
@@ -260,8 +261,11 @@ sapWEB.ARInvoice = (function () {
                     render: function (data, type, row) {
                         var htmlContent = '';
                         htmlContent += "<a href='/Invoice/Create/" + row.DocEntry + "/" + row.ARStatusName + "' class='btn btn-sm btn-primary' style='margin-right:5px;' onclick='' ><i class='fa fa-edit'></i></a>";
-                        if (row.DocumentStatusName !== "DRAFT" && row.U_VerCode !== null && row.U_URAPosted.toLocaleLowerCase() == "yes" && row.U_FiscalDoc!=null) {
+                        if (row.DocumentStatusName !== "DRAFT" && row.U_VerCode !== null && row.U_URAPosted.toLocaleLowerCase() == "yes" && row.U_FiscalDoc != null) {
                             htmlContent += "<a href='#' class='btn  btn-sm btn-success'style='margin-right:5px;' onclick='getReport(" + row.DocEntry + ")' ><i class='fa fa-print'></i></a>";
+                        }
+                        else if (row.DocumentStatusName !== "DRAFT" ){
+                            htmlContent += "<a href='#' class='btn  btn-sm btn-success'style='margin-right:5px;' onclick='URAInvoice(" + row.DocEntry + ")' ><i class='fa-solid fa-arrows-rotate'></i></a>";
                         }
                         return htmlContent;
                     }

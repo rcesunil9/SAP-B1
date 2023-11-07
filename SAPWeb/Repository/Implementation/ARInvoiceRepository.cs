@@ -439,6 +439,49 @@ namespace SAPWeb.Repository.Implementation
             return obj;
         }
 
+        public SalesDocumentsDefault URAPosted(int docEntry)
+        {
+            SalesDocumentsDefault obj = new SalesDocumentsDefault();
+            try
+            {
+                var arInvoice = GetARInvoiceById(docEntry);
+                if (arInvoice != null && arInvoice.DocEntry > 0)
+                {
+                    objCon = new SQL_CONN_Class();
+                    int RETURNID = 0;
+                    string ParamName = "";
+                    string ParamVal = "";
+                    ParamName = "@DocEntry|@U_VerCode|@U_FiscalDoc|@U_URAPosted|@RETURNID";
+                    ParamVal = arInvoice.DocEntry + "|" + arInvoice.U_VerCode + "|" + arInvoice.U_FiscalDoc + "|" + arInvoice.U_URAPosted + "|" + RETURNID;
+                    var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OINVURAPOSTED", 5, ParamName, ParamVal);
+                    if (dtItemDetails > 0)
+                    {
+                        SAPErrMsg = "Sales Invoice URA Posted Sucessfully";
+                        obj.errorCode = "1";
+                        obj.errorMsg = SAPErrMsg;
+                    }
+                    else
+                    {
+                        SAPErrMsg = "Contact to system administrator";
+                        obj.errorCode = "0";
+                        obj.errorMsg = SAPErrMsg;
+                    }
+                }
+                else
+                {
+                    SAPErrMsg = "Contact to system administrator";
+                    obj.errorCode = "0";
+                    obj.errorMsg = SAPErrMsg;
+                }
+            }
+            catch (Exception ex)
+            {
+                obj.errorCode = "0";
+                obj.errorMsg = ex.Message.ToString();
+            }
+            return obj;
+        }
+
         #region User
         public SalesDocumentsDefault SAPARInvoiceInsertUpdateUser(SalesOrderQuotationDocument objModel)
         {

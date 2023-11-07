@@ -13,7 +13,7 @@ namespace SAPWeb.Repository.Interface
         QuotationListDefault SAPARInvoiceList(int skip);
         SalesOrderQuotationDocument GetARInvoiceById(int docEntry);
         SalesDocumentsDefault CancelInvoice(int docEntry);
-
+        SalesDocumentsDefault URAPosted(int docEntry);
         SalesDocumentsDefault SAPARInvoiceInsertUpdateUser(SalesOrderQuotationDocument objModel);
         QuotationListDefault SAPARInvoiceListUser(string userID, int skip);
         SalesOrderQuotationDocument GetARInvoiceUserById(int docEntry);
