@@ -202,7 +202,22 @@ sapWEB.ARInvoice = (function () {
                 { "data": "DocEntry", "name": "DocEntry", "autoWidth": true },
                 { "data": "DocNum", "name": "DocNum", "autoWidth": true, "className": "numeric" },
                 { "data": "DocDate", "name": "DocDate", "autoWidth": true },
-                { "data": "NumAtCard", "name": "NumAtCard", "autoWidth": true },
+                {
+                    "className": "text-center",
+                    "orderable": false,
+                    data: null,
+                    render: function (data, type, row) {
+                        var htmlContent = '';
+                        if (row.U_URAPosted == "Yes") {
+                            htmlContent += '<span class="label label-success">' + row.U_URAPosted + '</span>'
+                        }
+                        else if (row.U_URAPosted == "No") {
+                            htmlContent += '<span class="label label-warning">' + row.U_URAPosted + '</span>'
+                        }
+                        return htmlContent;
+                    }
+                },
+                { "data": "NumAtCard", "name": "NumAtCard", "autoWidth": false },
                 {
                     "className": "text-center",
                     "orderable": false,
