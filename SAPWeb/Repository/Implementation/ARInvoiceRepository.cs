@@ -87,7 +87,10 @@ namespace SAPWeb.Repository.Implementation
                 SuccessData = ServiceLayerData.SAPGetSalesInvoicesList("Invoices?$skip="+skip + "&$orderby=DocEntry desc");
                 if (SuccessData.Value != null && SuccessData.Value.Count > 0)
                 {
-                    SuccessData.Value.ForEach(x => x.DocDate = CommonAttributes.GetDate(x.DocDate).ToString("dd/MM/yyyy"));
+                    SuccessData.Value.ForEach(x => {
+                        x.DocDate = CommonAttributes.GetDate(x.DocDate).ToString("dd/MM/yyyy");
+                        x.ARStatus = x.U_Avalibility;
+                    });
                     obj.QuotationDetails = SuccessData;
                     obj.errorCode = "1";
                     obj.errorMsg = "Data Found";
@@ -445,7 +448,7 @@ namespace SAPWeb.Repository.Implementation
             try
             {
                 var arInvoice = GetARInvoiceById(docEntry);
-                if (arInvoice != null && arInvoice.DocEntry > 0)
+                if (arInvoice != null && arInvoice.DocEntry > 0 && arInvoice.U_URAPosted.ToLower()!="no" && !string.IsNullOrEmpty(arInvoice.U_FiscalDoc) && !string.IsNullOrEmpty(arInvoice.U_VerCode))
                 {
                     objCon = new SQL_CONN_Class();
                     int RETURNID = 0;
@@ -456,20 +459,20 @@ namespace SAPWeb.Repository.Implementation
                     var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OINVURAPOSTED", 5, ParamName, ParamVal);
                     if (dtItemDetails > 0)
                     {
-                        SAPErrMsg = "Sales Invoice URA Posted Sucessfully";
+                        SAPErrMsg = "AR Invoice URA Posted Sucessfully";
                         obj.errorCode = "1";
                         obj.errorMsg = SAPErrMsg;
                     }
                     else
                     {
-                        SAPErrMsg = "Contact to system administrator";
+                        SAPErrMsg = "AR Invoice URA Data No Posted. Please Contact to system administrator";
                         obj.errorCode = "0";
                         obj.errorMsg = SAPErrMsg;
                     }
                 }
                 else
                 {
-                    SAPErrMsg = "Contact to system administrator";
+                    SAPErrMsg = "AR Invoice URA Data No Posted. Please Contact to system administrator";
                     obj.errorCode = "0";
                     obj.errorMsg = SAPErrMsg;
                 }

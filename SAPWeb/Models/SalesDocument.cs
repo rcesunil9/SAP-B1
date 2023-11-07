@@ -53,6 +53,7 @@ namespace SAPWeb.Models
         public string U_FiscalDoc { get; set; }
         public string U_URAPosted { get; set; }
         public string U_PT { get; set; }
+        public string U_Avalibility { get; set; }
         public string U_PaymentType
         {
             get { 

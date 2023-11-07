@@ -261,11 +261,11 @@ sapWEB.ARInvoice = (function () {
                     render: function (data, type, row) {
                         var htmlContent = '';
                         htmlContent += "<a href='/Invoice/Create/" + row.DocEntry + "/" + row.ARStatusName + "' class='btn btn-sm btn-primary' style='margin-right:5px;' onclick='' ><i class='fa fa-edit'></i></a>";
-                        if (row.DocumentStatusName !== "DRAFT" && row.U_VerCode !== null && row.U_URAPosted.toLocaleLowerCase() == "yes" && row.U_FiscalDoc != null) {
+                        if (row.ARStatus === "A" && row.U_VerCode !== null && row.U_URAPosted.toLocaleLowerCase() == "yes" && row.U_FiscalDoc != null) {
                             htmlContent += "<a href='#' class='btn  btn-sm btn-success'style='margin-right:5px;' onclick='getReport(" + row.DocEntry + ")' ><i class='fa fa-print'></i></a>";
                         }
-                        else if (row.DocumentStatusName !== "DRAFT" ){
-                            htmlContent += "<a href='#' class='btn  btn-sm btn-success'style='margin-right:5px;' onclick='URAInvoice(" + row.DocEntry + ")' ><i class='fa-solid fa-arrows-rotate'></i></a>";
+                        if (row.ARStatus === "A" && row.U_VerCode === null && (row.U_URAPosted == null || row.U_URAPosted.toLocaleLowerCase() !== "yes") && row.U_FiscalDoc == null) {
+                            htmlContent += "<a href='#' class='btn btn-sm btn-rounded btn-info' title='URA POSTED' style='margin-right:5px;' onclick='URAInvoice(" + row.DocEntry + ")' ><i class='icon-refresh'></i></a>";
                         }
                         return htmlContent;
                     }
