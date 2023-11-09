@@ -34,7 +34,8 @@ namespace SAPWeb.Repository.Implementation
             model.DocNum = GetByKey.DocNum;
             model.ContactPersonCode = GetByKey.ContactPersonCode;
             model.SalesEmployee = GetByKey.SalesPersonCode;
-            model.NumAtCard = GetByKey.CardName;
+            model.NumAtCard = GetByKey.NumAtCard;
+            model.CardName = GetByKey.CardName;
             model.DocCurrency = GetByKey.DocCurrency;
             model.U_ExchRate = GetByKey.DocRate;
             model.CardCode = GetByKey.CardCode;
@@ -147,6 +148,7 @@ namespace SAPWeb.Repository.Implementation
                     oSalesInvoices.DocDate = objModel.PostingDate;
                     oSalesInvoices.TaxDate = objModel.DocDate;
                     oSalesInvoices.DocDueDate = objModel.DeliveryDate;
+                    oSalesInvoices.NumAtCard = objModel.NumAtCard;
                     //oSalesInvoices.U_TRADEREGION = objModel.TradeRegion;
 
                     oSalesInvoices.ContactPersonCode = objModel.ContactPersonCode;
@@ -499,17 +501,17 @@ namespace SAPWeb.Repository.Implementation
                     "|@DocCur" +
                     "|@SlpCode|@CntctCode|@Series|@UserSign|@PayToCode|@ShipToCode|@Comments|" +
                     "@U_Territory|@U_VerCode|@U_FiscalDoc|@U_URAPosted|@U_Payment" +
-                    "|@RoundDif|@DocTotal|@Rounding|@ARStatus|@RETURNID";
+                    "|@RoundDif|@DocTotal|@Rounding|@ARStatus|@NumAtCard|@RETURNID";
                 ParamVal = objModel.QuotaionID + "|" + objModel.DocEntry + "|" + objModel.DocNum
                     + "|" + objModel.DocumentStatus + "|" + Convert.ToDateTime(objModel.PostingDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DeliveryDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DocDate).ToString("yyyy-MM-dd")
                     + "|" + objModel.CardCode + "|" + objModel.CardName
                     + "|" + objModel.DocCurrency + "|" + objModel.SalesEmployee + "|" + objModel.ContactPersonCode + "|" + objModel.Series
                     + "|" + SessionUtility.Code + "|" + objModel.PayToCode + "|" + objModel.ShipToCode + "|" + objModel.Comments
                     + "|" + objModel.U_Territory +  "|" + objModel.U_VerCode + "|" + objModel.U_FiscalDoc + "|" + objModel.U_URAPosted + "|" + objModel.RequestType.ToString()
-                    + "|" + objModel.RoundingDiffAmount + "|" + objModel.DocTotal + "|" + objModel.Rounding + "|" + objModel.ARStatus
+                    + "|" + objModel.RoundingDiffAmount + "|" + objModel.DocTotal + "|" + objModel.Rounding + "|" + objModel.ARStatus + "|" + objModel.NumAtCard
                     + "|" + objModel.RETURNID;
 
-                var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OINVInsertUpdate", 27, ParamName, ParamVal);
+                var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OINVInsertUpdate", 28, ParamName, ParamVal);
                 if (dtItemDetails > 0)
                 {
                     SAPErrMsg = "AR Invoice Submitted Successfully. Document Number : " + dtItemDetails.ToString();//Common.SAP_DOCUMENTNUMBER("OQUT", NEWDOCENTRY.ToString(), "DocEntry");
@@ -520,10 +522,16 @@ namespace SAPWeb.Repository.Implementation
                             + "|" + item.ItemDescription + "|" + item.ItemQuantity + "|" + item.DiscountPercent + "|" + item.WarehouseCode + "|" + item.ItemTax + "|" + item.ItemPrice + "|" + objModel.RETURNID;
                         objCon.ByProcedureExecScalar_Return("SAP_U_INV1InsertUpdate", 10, ParamName, ParamVal);
                     }
-
+                    obj.errorCode = "1";
+                    obj.errorMsg = SAPErrMsg;
                 }
-                obj.errorCode = "1";
-                obj.errorMsg = SAPErrMsg;
+                else
+                {
+                    SAPErrMsg = "AR Invoice does ot Save";
+                    obj.errorCode = "0";
+                    obj.errorMsg = SAPErrMsg;
+                }
+                
             }
             catch (Exception ex)
             {
@@ -601,7 +609,7 @@ DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, 
 				TaxDate as DocDate,
                 U_Territory as U_Territory
 ,
-U.Name as U_USER,U_Payment,U_VerCode,U_FiscalDoc,U_URAPosted,ARStatus
+U.Name as U_USER,U_Payment,U_VerCode,U_FiscalDoc,U_URAPosted,ARStatus,NumAtCard
                 from U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign  WHERE InvoiceID = " + docEntry;
                 var Data = objCon.ByQueryReturnDataTable(queryHeader);
                 if (Data != null && Data.Rows.Count > 0)
@@ -612,7 +620,8 @@ U.Name as U_USER,U_Payment,U_VerCode,U_FiscalDoc,U_URAPosted,ARStatus
                     model.QuotaionID = Convert.ToInt32(Data.Rows[0]["QuotaionID"]);
                     model.SalesEmployee = Convert.ToInt32(Data.Rows[0]["SalesEmployee"]);
                     model.ContactPersonCode = Convert.ToInt32(!string.IsNullOrEmpty(Data.Rows[0]["ContactPersonCode"].ToString()) ? Data.Rows[0]["ContactPersonCode"].ToString() : "0");
-                    model.NumAtCard = Data.Rows[0]["CardName"].ToString();
+                    model.NumAtCard = Data.Rows[0]["NumAtCard"].ToString();
+                    model.CardName = Data.Rows[0]["CardName"].ToString();
                     model.DocCurrency = Data.Rows[0]["DocCurrency"].ToString();
                     model.DocumentStatus = Data.Rows[0]["DocumentStatus"].ToString();
                     model.CardCode = Data.Rows[0]["CardCode"].ToString();

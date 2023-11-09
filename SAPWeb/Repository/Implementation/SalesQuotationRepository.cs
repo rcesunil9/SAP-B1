@@ -72,6 +72,7 @@ namespace SAPWeb.Repository.Implementation
                     oSalesQuotations.TaxDate = objModel.DocDate;
                     oSalesQuotations.DocDueDate = objModel.DeliveryDate;
                     oSalesQuotations.U_USER = objModel.U_USER;
+                    oSalesQuotations.NumAtCard = objModel.NumAtCard;
                     //oSalesQuotations.DocDueDate = objModel.DeliveryDate;
                     //oSalesQuotations.U_TRADEREGION = objModel.TradeRegion;
 
@@ -324,12 +325,13 @@ namespace SAPWeb.Repository.Implementation
             model.DocNum = GetByKey.DocNum;
             model.ContactPersonCode = GetByKey.ContactPersonCode;
             model.SalesEmployee = GetByKey.SalesPersonCode;
-            model.NumAtCard = GetByKey.CardName;
+            model.NumAtCard = GetByKey.NumAtCard;
             model.DocCurrency = GetByKey.DocCurrency;
             model.DocumentStatus = GetByKey.DocumentStatus;
             model.Cancelled = GetByKey.Cancelled;
             model.U_ExchRate = GetByKey.DocRate;
             model.CardCode = GetByKey.CardCode;
+            model.CardName = GetByKey.CardName;
             model.Series = GetByKey.Series;
             //model.DocDate = GetByKey.DocDate.HasValue?GetByKey.DocDate.Value:DateTime.Today;
             model.DeliveryDate = GetByKey.DocDueDate.HasValue ? GetByKey.DocDueDate.Value : DateTime.Today;
@@ -374,16 +376,16 @@ namespace SAPWeb.Repository.Implementation
                 string ParamVal = "";
                 ParamName = "@QuotaionID|@DocEntry|@DocNum|@DocStatus|@DocDate|@DocDueDate|@TaxDate|@CardCode|@CardName" +
                     "|@DocCur" +
-                    "|@SlpCode|@CntctCode|@Series|@UserSign|@PayToCode|@ShipToCode|@Comments|@U_Territory|@RoundDif|@Rounding|@DocTotal|@RETURNID";
+                    "|@SlpCode|@CntctCode|@Series|@UserSign|@PayToCode|@ShipToCode|@Comments|@U_Territory|@RoundDif|@Rounding|@DocTotal|@NumAtCard|@RETURNID";
                 ParamVal = objModel.QuotaionID + "|" + objModel.DocEntry + "|" + objModel.DocNum
                     + "|" + objModel.DocumentStatus + "|" + Convert.ToDateTime(objModel.PostingDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DeliveryDate).ToString("yyyy-MM-dd") + "|" + Convert.ToDateTime(objModel.DocDate).ToString("yyyy-MM-dd")
                     + "|" + objModel.CardCode + "|" + objModel.CardName 
                     + "|" + objModel.DocCurrency + "|" + objModel.SalesEmployee + "|" + objModel.ContactPersonCode + "|" + objModel.Series
                     + "|" + SessionUtility.Code + "|" + objModel.PayToCode + "|" + objModel.ShipToCode + "|" + objModel.Comments
                     +"|"+ objModel.U_Territory +"|"+objModel.RoundingDiffAmount +"|"+objModel.Rounding
-                    + "|" + objModel.DocTotal +"|"+objModel.RETURNID;
+                    + "|" + objModel.DocTotal + "|" + objModel.NumAtCard + "|"+objModel.RETURNID;
 
-                var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OQUTInsertUpdate", 22, ParamName, ParamVal);
+                var dtItemDetails = objCon.ByProcedureExecScalar_Return("SAP_U_OQUTInsertUpdate", 23, ParamName, ParamVal);
                 if(dtItemDetails>0)
                 {
                     SAPErrMsg = "Sales Quotation Submitted Successfully. Document Number : " + dtItemDetails.ToString();//Common.SAP_DOCUMENTNUMBER("OQUT", NEWDOCENTRY.ToString(), "DocEntry");
@@ -476,6 +478,7 @@ DocStatus as DocumentStatus,U.Name as U_USER, ISNULL(DocTotal,0) AS DocTotal FRO
                 DocDueDate as DeliveryDate,
 				TaxDate as DocDate,
 U_Territory as U_Territory,
+NumAtCard,
 U.Name as U_USER
                 from U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE QuotaionID = " + docEntry;
                 var Data = objCon.ByQueryReturnDataTable(queryHeader);
@@ -486,7 +489,8 @@ U.Name as U_USER
                     model.QuotaionID = Convert.ToInt32(Data.Rows[0]["QuotaionID"]);
                     model.SalesEmployee = Convert.ToInt32(Data.Rows[0]["SalesEmployee"]);
                     model.ContactPersonCode = Convert.ToInt32(!string.IsNullOrEmpty(Data.Rows[0]["ContactPersonCode"].ToString()) ? Data.Rows[0]["ContactPersonCode"].ToString() : "0");
-                    model.NumAtCard = Data.Rows[0]["CardName"].ToString();
+                    model.CardName = Data.Rows[0]["CardName"].ToString();
+                    model.NumAtCard = Data.Rows[0]["NumAtCard"].ToString();
                     model.DocCurrency = Data.Rows[0]["DocCurrency"].ToString();
                     model.DocumentStatus = Data.Rows[0]["DocumentStatus"].ToString();
                     model.CardCode = Data.Rows[0]["CardCode"].ToString();

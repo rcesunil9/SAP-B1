@@ -584,6 +584,7 @@ namespace SAPWeb.Models
 
         public string CardCode { get; set; }
         public string CardName { get; set; }
+        public string NumAtCard { get; set; }
         public string U_CONTAINERTYPE { get; set; }
         public string U_BRANDINGTYPE { get; set; }
 
