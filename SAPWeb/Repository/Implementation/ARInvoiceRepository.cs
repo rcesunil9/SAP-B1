@@ -55,7 +55,6 @@ namespace SAPWeb.Repository.Implementation
             model.U_USER = GetByKey.U_USER;
             model.RequestType = Convert.ToInt32(GetByKey.U_PT??"0");
             model.ARStatus = GetByKey.U_Avalibility;
-
             model.Comments = GetByKey.Comments;
             model.RoundingDiffAmount = GetByKey.RoundingDiffAmount;
             foreach (var item in GetByKey.DocumentLines)
@@ -316,19 +315,25 @@ namespace SAPWeb.Repository.Implementation
                             DocTotal = data1.DocTotal;
                             if (objModel.RequestType==1)
                             {
+                                var customerRepository = new CustomerRepository();
+                                string U_Cash = SessionUtility.U_Cash;
+                                var user = customerRepository.GetUser(objModel.U_USER);
+                                if (user != null && !string.IsNullOrEmpty(user.Code))
+                                {
+                                    U_Cash = user.U_Cash;
+                                }
 
-                           
-                            PaymentIncoming paymentIncoming = new PaymentIncoming();
-                            paymentIncoming.CardCode = data1.CardCode;
-                            paymentIncoming.CashSum = data1.DocTotal.HasValue ? data1.DocTotal.Value:0;
-                            paymentIncoming.CashAccount = SessionUtility.U_Cash;
-                            paymentIncoming.PaymentInvoices = new List<PaymentInvoice>();
-                            paymentIncoming.PaymentInvoices.Add(new PaymentInvoice
-                            {
-                                DocEntry = NEWDOCENTRY,
-                                SumApplied = data1.DocTotal.HasValue ? data1.DocTotal.Value : 0,
-                            InvoiceType = "it_Invoice"
-                            });
+                                PaymentIncoming paymentIncoming = new PaymentIncoming();
+                                paymentIncoming.CardCode = data1.CardCode;
+                                paymentIncoming.CashSum = data1.DocTotal.HasValue ? data1.DocTotal.Value:0;
+                                paymentIncoming.CashAccount = U_Cash;
+                                paymentIncoming.PaymentInvoices = new List<PaymentInvoice>();
+                                paymentIncoming.PaymentInvoices.Add(new PaymentInvoice
+                                {
+                                    DocEntry = NEWDOCENTRY,
+                                    SumApplied = data1.DocTotal.HasValue ? data1.DocTotal.Value : 0,
+                                InvoiceType = "it_Invoice"
+                                });
                             data = JsonConvert.SerializeObject(paymentIncoming,
                     new JsonSerializerSettings()
                     {
@@ -552,7 +557,7 @@ namespace SAPWeb.Repository.Implementation
 CONVERT(varchar, CAST(DocDate AS datetime), 103) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, ISNULL(DocTotal,0) AS DocTotal,U_Payment as U_PT,ARStatus   FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE UserSign='" + userID + "'";
+DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, ISNULL(DocTotal,0) AS DocTotal,U_Payment as U_PT,ARStatus,NumAtCard   FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE UserSign='" + userID + "'";
                 if (SessionUtility.U_AdminRights == "Y")
                 {
                     query = @"SELECT (CASE WHEN DocEntry = 0 OR DocEntry is null THEN InvoiceID ELSE DocEntry end) as DocEntry,
@@ -560,7 +565,7 @@ DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, 
 CONVERT(varchar, CAST(DocDate AS datetime), 103) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, ISNULL(DocTotal,0) AS DocTotal,U_Payment as U_PT,ARStatus  FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE ARStatus='O'";
+DocStatus as DocumentStatus,U.Name as U_USER,U_VerCode,U_FiscalDoc,U_URAPosted, ISNULL(DocTotal,0) AS DocTotal,U_Payment as U_PT,ARStatus,NumAtCard  FROM U_OINV INNER JOIN [@USER] U ON U.Code = U_OINV.UserSign WHERE ARStatus='O'";
                 }
                 var Data = objCon.ByQueryReturnDataTable(query);
                 if (Data != null && Data.Rows.Count > 0)

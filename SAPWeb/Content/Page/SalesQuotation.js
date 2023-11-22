@@ -229,7 +229,9 @@ sapWEB.SalesQuotation = (function () {
             Series: sapWEB.helper.GetString('ddlSeries option:selected'),
             DocDate: sapWEB.helper.GetString('txtDocumentDate'),
             PostingDate: sapWEB.helper.GetString('txtPostingDate'),
+            PDate: sapWEB.helper.GetString('txtPostingDate'),
             DeliveryDate: sapWEB.helper.GetString('txtDueDate'),
+            DEDate: sapWEB.helper.GetString('txtDueDate'),
             SalesEmployee: sapWEB.helper.GetString('ddlEmployee option:selected'),
             Comments: sapWEB.helper.GetString('txtOtherRemarks'),
             RoundingDiffAmount: sapWEB.helper.GetNumericValue('txtRounding'),
@@ -441,7 +443,7 @@ sapWEB.SalesQuotation = (function () {
         sapWEB.helper.SetText('lblDocumentTotal', totalDocument + roundingAmount);
     }
     var fnSalesQuotation = function () {
-        var param = $.param({ 'code': sapWEB.helper.GetString('txtCustomerCode') })
+        var param = $.param({ 'code': sapWEB.helper.GetString('txtCustomerCode'), 'username': sapWEB.helper.GetString('hdnU_User') })
         sapWEB.ajax.jsonGet(salesQuotationHeaderURL + "?" + param,
             function (response) {
                 if (response != null && response.errorCode == "1") {
@@ -526,13 +528,16 @@ sapWEB.SalesQuotation = (function () {
                     var ShipTo = $("#ddlShipTOID").data('shipto');
                     $("#ddlShipTOID").val(ShipTo);
                     $("#ddlShipTOID").trigger('change');
-                    $("#ddlSeries").html('');
-                    $.each(response.SeriesQuotation, function (i, item) {
-                        $('#ddlSeries').append($('<option></option>').val(item.Series).html(item.U_SERIES));
-                        if (sapWEB.helper.GetNumericValue('hdnDocEntry') <= 0) {
-                            sapWEB.helper.SetValue('txtQuotationNumber', item.QuotationNumber);
-                        }
-                    });
+                    if (response.SeriesQuotation.length > 0) {
+                        $("#ddlSeries").html('');
+                        $.each(response.SeriesQuotation, function (i, item) {
+                            $('#ddlSeries').append($('<option></option>').val(item.Series).html(item.U_SERIES));
+                            if (sapWEB.helper.GetNumericValue('hdnDocEntry') <= 0) {
+                                sapWEB.helper.SetValue('txtQuotationNumber', item.QuotationNumber);
+                            }
+                        });
+                    }
+                    
                 }
             },
             function (error) { })

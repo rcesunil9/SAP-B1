@@ -16,6 +16,12 @@ namespace SAPWeb.Models
         public List<SeriesQuotation> SeriesQuotation { get; set; }
 
     }
+    public class SeriesQuotationDefault
+    {
+        public string errorCode { get; set; }
+        public string errorMsg { get; set; }
+        public List<SeriesQuotation> SeriesQuotation { get; set; }
+    }
     public class SeriesQuotation
     {
         public string Series { get; set; }

@@ -37,7 +37,8 @@ namespace SAPWeb.Utility
                   @"d.MM.yyyy hh:mm:ss tt", @"d.MM.yyyy hh:mm:ss tt",
                   @"dd.M.yyyy hh:mm:ss tt", @"dd.MM.yyyy hh:mm:ss tt",
                   @"yyyy-MM-dd hh:mm:ss tt",@"yyyy/MM/dd hh:mm:ss tt",
-
+                  @"MM/dd/yyyy hh:mm:ss", @"MM/dd/yyyy",
+                  @"MM/dd/yyyy hh:mm:ss tt", @"MM/dd/yyyy",
 
                   };
             //ExceptionLog.WriteInfoLog("DateFormate"+value,"Helper","GetDate()");

@@ -25,7 +25,7 @@ namespace SAPWeb.Controllers
             if (!string.IsNullOrEmpty(model.UserName) && !string.IsNullOrEmpty(model.Password))
             {
                 DateTime EDDate = Common.DateTimeConvert("15/11/2023");
-                if (EDDate >= DateTime.Now)
+                if (EDDate <= DateTime.Now)
                 {
                     objUser = db.CheckLogin(model);
                     if (objUser != null && objUser.errorCode == "0")

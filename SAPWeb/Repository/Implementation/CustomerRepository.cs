@@ -131,7 +131,7 @@ namespace SAPWeb.Repository.Implementation
             return objAddressDetail;
         }
 
-        public CommonSalesQuotation GetSalesQuotation(string code)
+        public CommonSalesQuotation GetSalesQuotation(string code,string username = "")
         {
             CommonSalesQuotation objItemDefault = new CommonSalesQuotation();
             objItemDefault.SalesEmployee = new List<SalesEmployee>();
@@ -141,9 +141,18 @@ namespace SAPWeb.Repository.Implementation
             objItemDefault.SeriesQuotation = new List<SeriesQuotation>();
             try
             {
+                string loginID = SessionUtility.Code;
+                string U_SERIES = SessionUtility.U_SERIES;
+                var user = GetUser(username);
+                if (user != null && !string.IsNullOrEmpty(user.Code))
+                {
+                    loginID = user.Code;
+                    U_SERIES = user.U_SERIES;
+                }
+                
                 string ParamName = "@CODE|@seriessq|@LogiID";
-                string ParamVal = code.Trim() + "|" + SessionUtility.U_SERIES+"|"+SessionUtility.Code;
-                var dtItemDetails = objCon.ByProcedureReturnDataSet("SAP_SalesQuotationHeaderList", 2, ParamName, ParamVal);
+                string ParamVal = code.Trim() + "|" + U_SERIES + "|"+ loginID;
+                var dtItemDetails = objCon.ByProcedureReturnDataSet("SAP_SalesQuotationHeaderList", 3, ParamName, ParamVal);
                 if(dtItemDetails!=null && dtItemDetails.Tables.Count > 0)
                 {
                     objItemDefault.ContactPerson = dtItemDetails.Tables[0]?.ConvertToList<ContactPerson>();
@@ -169,7 +178,7 @@ namespace SAPWeb.Repository.Implementation
             return objItemDefault;
         }
 
-        public CommonSalesQuotation GetARInvoice(string code)
+        public CommonSalesQuotation GetARInvoice(string code, string username = "")
         {
             CommonSalesQuotation objItemDefault = new CommonSalesQuotation();
             objItemDefault.SalesEmployee = new List<SalesEmployee>();
@@ -179,9 +188,17 @@ namespace SAPWeb.Repository.Implementation
             objItemDefault.SeriesQuotation = new List<SeriesQuotation>();
             try
             {
+                string loginID = SessionUtility.Code;
+                string U_IN_Series = SessionUtility.U_IN_Series;
+                var user = GetUser(username);
+                if (user != null && !string.IsNullOrEmpty(user.Code))
+                {
+                    loginID = user.Code;
+                    U_IN_Series = user.U_IN_Series;
+                }
                 string ParamName = "@CODE|@seriessq|@LogiID";
-                string ParamVal = code.Trim() + "|" + SessionUtility.U_IN_Series + "|" + SessionUtility.Code;
-                var dtItemDetails = objCon.ByProcedureReturnDataSet("SAP_ARInoviceHeaderList", 2, ParamName, ParamVal);
+                string ParamVal = code.Trim() + "|" + U_IN_Series + "|" + loginID;
+                var dtItemDetails = objCon.ByProcedureReturnDataSet("SAP_ARInoviceHeaderList", 3, ParamName, ParamVal);
                 if (dtItemDetails != null && dtItemDetails.Tables.Count > 0)
                 {
                     objItemDefault.ContactPerson = dtItemDetails.Tables[0]?.ConvertToList<ContactPerson>();
@@ -205,6 +222,28 @@ namespace SAPWeb.Repository.Implementation
                 return objItemDefault;
             }
             return objItemDefault;
+        }
+
+        public User GetUser(string username)
+        {
+            var user = new User();
+            try
+            {
+                var Data = objCon.ByQueryReturnDataTable(@"select TOP 1 * from [@USER] Where Name='" + username + "'");
+                if (Data != null && Data.Rows.Count > 0)
+                {
+                    user = Data.ConvertToModel<User>();
+                    if (user != null && !string.IsNullOrEmpty(user.Code))
+                    {
+                        return user;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return user;
         }
     }
 }

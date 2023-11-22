@@ -419,7 +419,7 @@ namespace SAPWeb.Repository.Implementation
 CONVERT(varchar, CAST(DocDate AS datetime), 103) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus,U.Name as U_USER , ISNULL(DocTotal,0) AS DocTotal
+DocStatus as DocumentStatus,U.Name as U_USER , ISNULL(DocTotal,0) AS DocTotal,NumAtCard
 FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE UserSign='" + userID+"'";
                 if(SessionUtility.U_AdminRights=="Y")
                 {
@@ -429,7 +429,7 @@ FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE UserSign='" +
 CONVERT(varchar, CAST(DocDate AS datetime), 103) as DocDate,
 CardCode as CardCode,
 CardName as CardName,
-DocStatus as DocumentStatus,U.Name as U_USER, ISNULL(DocTotal,0) AS DocTotal FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE DocStatus='O'";
+DocStatus as DocumentStatus,U.Name as U_USER, ISNULL(DocTotal,0) AS DocTotal,NumAtCard FROM U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE DocStatus='O'";
                 }
                 var Data = objCon.ByQueryReturnDataTable(query);
                 if (Data != null && Data.Rows.Count > 0)
@@ -468,7 +468,7 @@ DocStatus as DocumentStatus,U.Name as U_USER, ISNULL(DocTotal,0) AS DocTotal FRO
                 DocCur as DocCurrency,
                 PayToCode,
                 ShipToCode,
-                Series as Series,
+                t1.Series as Series,
                 Comments as  Comments,
                 Rounding as  Rounding,
                 DocDate as PostingDate,
@@ -479,16 +479,21 @@ DocStatus as DocumentStatus,U.Name as U_USER, ISNULL(DocTotal,0) AS DocTotal FRO
 				TaxDate as DocDate,
 U_Territory as U_Territory,
 NumAtCard,
-U.Name as U_USER
-                from U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign WHERE QuotaionID = " + docEntry;
+U.Name as U_USER,
+U_SERIES as U_SERIES,t1.NextNumber as QuotationNumber
+                from U_OQUT INNER JOIN [@USER] U ON U.Code = U_OQUT.UserSign
+                inner join NNM1 t1 on t1.SeriesNAme = U_SEries
+                WHERE QuotaionID = " + docEntry;
                 var Data = objCon.ByQueryReturnDataTable(queryHeader);
                 if (Data != null && Data.Rows.Count > 0)
                 {
                     model.DocumentLines = new List<DataItems>();
                     model.DocEntry = Convert.ToInt32(Data.Rows[0]["DocEntry"]);
+                    model.DocNum = Convert.ToInt32(Data.Rows[0]["QuotationNumber"]);
                     model.QuotaionID = Convert.ToInt32(Data.Rows[0]["QuotaionID"]);
                     model.SalesEmployee = Convert.ToInt32(Data.Rows[0]["SalesEmployee"]);
                     model.ContactPersonCode = Convert.ToInt32(!string.IsNullOrEmpty(Data.Rows[0]["ContactPersonCode"].ToString()) ? Data.Rows[0]["ContactPersonCode"].ToString() : "0");
+                    model.U_SERIES = Data.Rows[0]["U_SERIES"].ToString();
                     model.CardName = Data.Rows[0]["CardName"].ToString();
                     model.NumAtCard = Data.Rows[0]["NumAtCard"].ToString();
                     model.DocCurrency = Data.Rows[0]["DocCurrency"].ToString();
@@ -499,6 +504,7 @@ U.Name as U_USER
                     model.DocDate = Convert.ToDateTime(Data.Rows[0]["DocDate"].ToString());
                     model.PayToCode = Data.Rows[0]["PayToCode"].ToString();
                     model.ShipToCode = Data.Rows[0]["ShipToCode"].ToString();
+                    model.NumAtCard = Data.Rows[0]["NumAtCard"].ToString();
                     model.Comments = Data.Rows[0]["Comments"].ToString();
                     model.U_Territory = Data.Rows[0]["U_Territory"].ToString();
                     model.Rounding = Data.Rows[0]["Rounding"].ToString();

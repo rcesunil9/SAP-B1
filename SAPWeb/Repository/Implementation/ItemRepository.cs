@@ -101,5 +101,35 @@ namespace SAPWeb.Repository.Implementation
             return ObjUser;
         }
 
+        public SeriesQuotationDefault GetSeriesQuotation(int series)
+        {
+            SeriesQuotationDefault ObjUser = new SeriesQuotationDefault();
+            ObjUser.SeriesQuotation = new List<SeriesQuotation>();
+            try
+            {
+                var Data = objCon.ByQueryReturnDataTable(@"
+				select U_SERIES as U_SERIES,t1.NextNumber as QuotationNumber,t1.Series as Series from NNM1 t1 INNER JOIN [@USER] t0
+				ON t1.SeriesNAme  = t0.U_SEries OR t1.SeriesName = t0.U_IN_Series where t1.Series=" + series);
+                if (Data != null && Data.Rows.Count > 0)
+                {
+                    ObjUser.SeriesQuotation = Data.ConvertToList<SeriesQuotation>();
+                    ObjUser.errorCode = "1";
+                    ObjUser.errorMsg = "";
+                }
+                else
+                {
+                    ObjUser.errorCode = "0";
+                    ObjUser.errorMsg = "Wrong Username/Password.";
+                }
+            }
+            catch (Exception ex)
+            {
+                ObjUser.errorCode = "0";
+                ObjUser.errorMsg = ex.Message;
+                return ObjUser;
+            }
+            return ObjUser;
+        }
+
     }
 }

@@ -193,6 +193,8 @@ namespace SAPWeb.Models
         public double? U_ExchRate { get; set; }
         //public string OrderType { get; set; }
         //public string CustomerCode { get; set; }
+        public string PDate { get; set; }//PostingDate
+        public string DEDate { get; set; }//DeliveryDate
         public DateTime? PostingDate { get; set; } = DateTime.Today;
         public DateTime? DeliveryDate { get; set; } = DateTime.Today;
         //public DateTime DocDate { get; set; }
@@ -275,7 +277,7 @@ namespace SAPWeb.Models
                 return status;
             }
         }
-
+        public string U_SERIES { get; set; }
         public List<DataItems> DocumentLines { get; set; }
     }
     public class SalesOrderQuotationDocumentItem

@@ -14,6 +14,8 @@
         adminRigth = "";
     }
     string whsCode = SessionUtility.U_WhsCode;
+    var seriesQuotation = ViewBag.Series as List<SeriesQuotation>;
+
 }
 <input id="hdnDocEntry" type="hidden" value="@Model.DocEntry"/>
 <input type="hidden" id="hdnQuotaionID" value="@Model.QuotaionID" />
@@ -118,6 +120,13 @@
                     <div class="form-group">
                         <label for="txtSeries">Series *</label>
                         <select id="ddlSeries" class="form-control" data-series="@(Model.Series.HasValue?Model.Series.Value:0)">
+                            @if (seriesQuotation != null && seriesQuotation.Count > 0)
+                            {
+                                foreach (var item in seriesQuotation)
+                                {
+                                    <option value="@item.Series">@item.U_SERIES</option>
+                                }
+                            }
                         </select>
                     </div>
                 </div>
@@ -499,16 +508,16 @@
                 $('#txtPostingDate').datepicker({
                     todayHighlight: true,
                     format: 'dd/mm/yyyy',
-                }).datepicker("setDate", new Date($("#txtPostingDate").attr('value').split('-').reverse().join('-')));
+                }).datepicker("setDate", new Date($("#txtPostingDate").attr('value')));
 
                 $('#txtDueDate').datepicker({
                     todayHighlight: true,
                     format: 'dd/mm/yyyy',
-                }).datepicker("setDate", new Date($("#txtDueDate").attr('value').split('-').reverse().join('-')));
+                }).datepicker("setDate", new Date($("#txtDueDate").attr('value')));
                 $('#txtDocumentDate').datepicker({
                     todayHighlight: true,
                     format: 'dd/mm/yyyy',
-                }).datepicker("setDate", new Date($("#txtDocumentDate").attr('value').split('-').reverse().join('-')));
+                }).datepicker("setDate", new Date($("#txtDocumentDate").attr('value')));
 
             }
             $(".mydatepicker").datepicker("destroy");

@@ -96,6 +96,11 @@ sapWEB.ARInvoice = (function () {
                 rowMessage.push('Please enter a unit price greater than 0 At th Row ' + row + 1);
                 return;
             }
+            if (sapWEB.helper.GetNumericValue('txtQTY_' + row) > sapWEB.helper.GetNumericValue('txtInStock_' + row)) {
+                isValidRow = false;
+                rowMessage.push('Quantity can not greater than In Stock At th Row ' + row + 1);
+                return;
+            }
             if (!isValidRow) {
                 return;
             }
@@ -139,7 +144,9 @@ sapWEB.ARInvoice = (function () {
             Series: sapWEB.helper.GetString('ddlSeries option:selected'),
             DocDate: sapWEB.helper.GetString('txtDocumentDate'),
             PostingDate: sapWEB.helper.GetString('txtPostingDate'),
+            PDate: sapWEB.helper.GetString('txtPostingDate'),
             DeliveryDate: sapWEB.helper.GetString('txtDueDate'),
+            DEDate: sapWEB.helper.GetString('txtDueDate'),
             SalesEmployee: sapWEB.helper.GetString('ddlEmployee option:selected'),
             Comments: sapWEB.helper.GetString('txtOtherRemarks'),
             Rounding: $("#rdtRoundOff").is(':checked') ? "tYES" : "tNO",
@@ -299,7 +306,7 @@ sapWEB.ARInvoice = (function () {
         $('.dataTables_filter input').addClass('input-sm')
     }
     var fnARInvoice = function () {
-        var param = $.param({ 'code': sapWEB.helper.GetString('txtCustomerCode') })
+        var param = $.param({ 'code': sapWEB.helper.GetString('txtCustomerCode'), 'username': sapWEB.helper.GetString('hdnU_User') })
         sapWEB.ajax.jsonGet(invoiceHeaderURL + "?" + param,
             function (response) {
                 if (response != null && response.errorCode == "1") {

@@ -52,8 +52,22 @@ namespace SAPWeb.Controllers
                 return Json(response, JsonRequestBehavior.AllowGet);
             }
             model.EMPID = SessionUtility.Code;
-            model.PostingDate = CommonAttributes.GetDate(model.PostingDate.Value.ToString());
-            model.DeliveryDate = CommonAttributes.GetDate(model.DeliveryDate.Value.ToString());
+            if (!string.IsNullOrEmpty(model.PDate))
+            {
+                model.PostingDate = CommonAttributes.GetDate(model.PDate);
+            }
+            else
+            {
+                model.PostingDate = CommonAttributes.GetDate(model.PostingDate.Value.ToString());
+            }
+            if (!string.IsNullOrEmpty(model.DEDate))
+            {
+                model.DeliveryDate = CommonAttributes.GetDate(model.DEDate.ToString());
+            }
+            else
+            {
+                model.DeliveryDate = CommonAttributes.GetDate(model.DeliveryDate.Value.ToString());
+            }
             model.DocDate = CommonAttributes.GetDate(model.DocDate.ToString());
             if ((model.DocEntry != null && model.DocEntry > 0) || model.DocumentStatus == "A")
             {
@@ -68,7 +82,6 @@ namespace SAPWeb.Controllers
         [Route("Invoice/Create/{id}/{type}")]
         public ActionResult Create(int id = 0,string type="")
         {
-            Init();
             var response = new SalesOrderQuotationDocument();
             ViewBag.Approved = false;
             if (id > 0)
@@ -85,7 +98,7 @@ namespace SAPWeb.Controllers
                 if(response.DocumentLines.Count > 0)
                 {
                     foreach (var line in response.DocumentLines) {
-                        var item = itemRepository.GetItem(line.ItemItemCode, SessionUtility.U_WhsCode);
+                        var item = itemRepository.GetItem(line.ItemItemCode, line.WarehouseCode??SessionUtility.U_WhsCode);
                         if(item!=null && item.errorCode=="1" )
                         {
                             var itemCodeData = item.Items.FirstOrDefault();
@@ -103,10 +116,12 @@ namespace SAPWeb.Controllers
                     ViewBag.Approved = true;
                 }
             }
+            Init(response.Series.HasValue ? response.Series.Value : 0);
             return View(response);  
         }
-        public void Init()
+        public void Init(int series)
         {
+            ViewBag.Series = itemRepository.GetSeriesQuotation(series).SeriesQuotation;
             ViewBag.TaxCode = itemRepository.GetTaxCode().GetTaxCode;
             ViewBag.WarHouseCode = itemRepository.GetWarHouse().GetWareHouse;
         }

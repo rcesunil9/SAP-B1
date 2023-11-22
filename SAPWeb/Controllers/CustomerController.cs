@@ -40,15 +40,15 @@ namespace SAPWeb.Controllers
             return Json(response, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult GetSalesQuotation(string code)
+        public JsonResult GetSalesQuotation(string code,string username)
         {
-            var response = customerRepository.GetSalesQuotation(code);
+            var response = customerRepository.GetSalesQuotation(code,username);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
         [HttpGet]
-        public JsonResult GetARInvoice(string code)
+        public JsonResult GetARInvoice(string code, string username)
         {
-            var response = customerRepository.GetARInvoice(code);
+            var response = customerRepository.GetARInvoice(code,username);
             return Json(response, JsonRequestBehavior.AllowGet);
         }
     }
