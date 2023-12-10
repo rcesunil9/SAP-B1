@@ -4,6 +4,7 @@ using SAPWeb.Repository.Implementation;
 using SAPWeb.Utility;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -24,7 +25,9 @@ namespace SAPWeb.Controllers
             UserDefault objUser = new UserDefault();
             if (!string.IsNullOrEmpty(model.UserName) && !string.IsNullOrEmpty(model.Password))
             {
-                DateTime EDDate = Common.DateTimeConvert("15/11/2023");
+                string dateString = "15/11/2023";
+                DateTime EDDate = DateTime.ParseExact(dateString, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+
                 if (EDDate <= DateTime.Now)
                 {
                     objUser = db.CheckLogin(model);
